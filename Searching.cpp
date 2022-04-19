@@ -17,6 +17,7 @@ int binarySearch(int arr[], int size, int target){
     return -1;
 }
 
+
 // Order Agnostic Search
 // T.C - O(logN)
 int orderAgnosticSearch(int arr[], int start, int end, int target){
@@ -44,6 +45,7 @@ int orderAgnosticSearch(int arr[], int start, int end, int target){
         }
     }
 }
+
 
 // First and Last Occurrence
 // T.C - O(logN)
@@ -87,6 +89,7 @@ int lastOcc(vector<int> &nums, int target){
     return res;
 }
 
+
 // Count Occurrence of an Element
 // T.C- O(logN)
 return firstOcc - lastOcc + 1
@@ -111,6 +114,7 @@ int countRotations(int arr[], int size){
             start = mid + 1;
     }
 }
+
 
 //Search in Rotated Sorted Array
 // T.C - O(logN)
@@ -144,6 +148,7 @@ int searchRotatedSortedArray(int arr[],int size, int target){
     }
 }
 
+
 //Search in Nearly Sorted Array
 //T.C - O(logN)
 int nearlySortedSearch(int arr[], int size, int target){
@@ -173,6 +178,7 @@ int nearlySortedSearch(int arr[], int size, int target){
     }
     return -1;
 }
+
 
 //Floor and Ceil of an element
 //T.C - O(logN)
@@ -219,6 +225,7 @@ int findCeil(int arr[], int size, int target){
     return res;
 }
 
+
  //Next Alphabetical Element
  //T.C - O(logN)
  int nextAlphabet(char arr[], int size, char target){
@@ -242,6 +249,7 @@ int findCeil(int arr[], int size, int target){
     return arr[res];
 }
 
+
 //Search in Infinite Sorted Array
 //T.C - O(logi), i = pos of element
 int searchInfiniteSortedArray(int arr[],int size,int key){
@@ -256,6 +264,7 @@ int searchInfiniteSortedArray(int arr[],int size,int key){
     return binarySearch(arr,size,left,right,key);
 }
 
+
 //Index of First Occurrence of element in a Sorted Infinite Array
 //T.C - O(logN)
 int firstOneInfiniteArray(int arr[],int size,int key){
@@ -269,6 +278,7 @@ int firstOneInfiniteArray(int arr[],int size,int key){
 
     return first_occ(arr,size,left,right,key);
 }
+
 
 //Minimum Difference Element in a Sorted Array
 //T.C - O(logN)
@@ -292,6 +302,7 @@ int minDifferenceElement(int arr[],int size,int key){
     return arr[high];
 }
 
+
 //Find Min in Rotated Sorted Array
 //T.C - O(logN)
 int findMinInRotatedSortedArray(vector<int>num){
@@ -308,6 +319,7 @@ int findMinInRotatedSortedArray(vector<int>num){
         return num[start];
 }
 
+
 //Binary Search on Unsorted Array
 
 //Peak Element
@@ -323,6 +335,7 @@ int peakElement(int arr[], int size){
         }
         return arr[low];
 }
+
 
 //Find Maximum in Bitonic Array
 //T.C - O(logN)
@@ -341,6 +354,7 @@ int findMaxBitonicArray(int arr[],int size, int low, int high){
 
 }
 
+
 //Search in Bitonic Array
 //T.C - O(3logN)
 int searchBitonicArray(int arr[],int size,int low, int high,int target){
@@ -354,6 +368,7 @@ int searchBitonicArray(int arr[],int size,int low, int high,int target){
 
     return -1;
 }
+
 
 //Search in Row wise And Column wise Sorted Array
 //T.C - O(n+m)
@@ -370,6 +385,7 @@ int searchSortedMatrix(int arr[][],int size,int key){
     }
     return -1;
 }
+
 
 //Allocate Minimum Number of Pages
 //T.C - O(NlogN)
@@ -420,6 +436,7 @@ int minPageAllocation(int arr[], int size,int students){
     return res;
 }
 
+
 //Aggressive Cows
 // T.C - O(NlogN)
 bool canPlaceCows(int arr[], int size,int cows,int distance){
@@ -453,6 +470,7 @@ int aggressiveCows(int arr[], int size,int cows){
     }
     return res;
 }
+
 
 //Painter Partition
 //T.C - O(NlogN)
@@ -498,6 +516,7 @@ int paintersPartition(int arr[], int size,int painters){
     return low;
 }
 
+
 //Min Size Subarray Sum(Greater than or equal to target)
 //T.C - O(NlogN)
 //Check if there's an array of size k which has sum >= target
@@ -538,6 +557,7 @@ int minSubarraySum(int arr[], int size,int target){
     return 0;
 }
 
+
 //Split Array Largest Sum
 //T.C - O(N*log(sum-max+1))
 bool blackBox(int arr[], int size,int limit,int m){
@@ -574,6 +594,7 @@ int splitArraySum(int arr[], int size,int m){
     return ans;
 }
 
+
 //Divide Chocolates
 //T.C - O(NlogN)
 int canGetMoreThanKSubarrays(int arr[], int size,int limit, int k){
@@ -604,6 +625,7 @@ int divideChocolates(int arr[], int size,int k){
      }
      return ans;
 }
+
 
 //Capacity to ship within 'd' days
 //T.C - O(NlogN)
@@ -642,6 +664,7 @@ int shipWithinDays(vector<int>& weights, int days) {
     return res;
 }
 
+
 //Nth Root of a Number
 //T.C - O(Nlog(M*10^d))
 double multiply(int number, int n){
@@ -663,6 +686,7 @@ pair<int,int> getNthRoot(int num,int root){
     return make_pair({low,high});
 }
 
+
 //Single Element in a Sorted Array
 //T.C - O(logN)
 int singleNonDuplicate(vector<int>& nums) {
@@ -676,6 +700,7 @@ int singleNonDuplicate(vector<int>& nums) {
         }
         return nums[low];
 }
+
 
 //Median of 2 sorted Arrays
 //T.C - O(log(min(n1,n2)))
@@ -706,6 +731,7 @@ double findMedianSortedArrays(vector<int>& nums1,vector<int>& nums2){
     return 0.0;
 }
 
+
 //K-th element of two sorted Arrays
 //T.C - O(log(min(n,m)))
 int kthElementSortedArray(int arr1[], int size1,int arr2[], int size2,int k){
@@ -728,6 +754,7 @@ int kthElementSortedArray(int arr1[], int size1,int arr2[], int size2,int k){
     }
     return 1;
 }
+
 
 //Minimum Speed to Arrive on Time
 //T.C - O(NlogN)
@@ -754,6 +781,7 @@ int minSpeedOnTime(vector<int>& dist, double hour) {
         }
         return ans;
 }
+
 
 //Ugly Number III
 //T.C - O(logN)
@@ -788,6 +816,7 @@ int nthUglyNumber(int n, int a, int b, int c) {
     }
     return ans;
 }
+
 
 //Equilibrium Index
 //T.C - O(N)

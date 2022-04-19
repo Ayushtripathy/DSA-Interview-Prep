@@ -29,6 +29,7 @@ int main(){
     }
 }
 
+
 //Queue Implementation(2 Stacks)
 //T.C - O(1)Amortised S.C - O(2N)
 int main(){
@@ -62,14 +63,15 @@ int main(){
     }
 }
 
+
 //Implement Queue using Linked List
-class Node*{
+class LLNode*{
     int data;
     Node* next;
-}
-Node* front = NULL;
-Node* rear = NULL;
-void enqueue(int value){
+
+    Node* front = NULL;
+    Node* rear = NULL;
+ void enqueue(int value){
     Node* newNode = new Node(value);
     newnode->next = NULL;
 
@@ -78,8 +80,8 @@ void enqueue(int value){
         rear->next = newNode;
         rear = newNode;
     }
-}
-int dequeue(){
+ }
+ int dequeue(){
     if(!front) return -1;
     else{
         Node* temp = front;
@@ -88,7 +90,9 @@ int dequeue(){
         free(temp);
         return tempData;
     }
+ }
 }
+
 
 //Implement Circular Queue
 //T.C - O(1)
@@ -133,6 +137,7 @@ class CircularQueue{
         }
     }
 };
+
 
 //Implement Doubly Ended Queue
 //T.C - O(1)
@@ -214,6 +219,7 @@ void reverseQueue(queue<int>&q){
     q.push(data);
 }
 
+
 //Reverse the first “K” elements of a queue
 //T.C - O(N+K) S.C - O(N)
 void reverseQueueFirstKElements(int k, queue<int>&q){
@@ -236,6 +242,7 @@ void reverseQueueFirstKElements(int k, queue<int>&q){
         q.pop();
     }
 }
+
 
 //Rotting Oranges
 //T.C - O(N*N)*4 S.C - O(N*N)
@@ -279,6 +286,7 @@ int orangesRotting(vector<vector<int>>& grid){
     return total == count ? days : -1;
 }
 
+
 //First non-repeating character in a stream
 //T.C - O(N) S.C - O(N)
 vector<char> firstNonRepeating(string &str){
@@ -303,6 +311,7 @@ vector<char> firstNonRepeating(string &str){
     }
     return ans;
 }
+
 
 //Minimum sum of squares of character counts in a given string after removing “k” characters.
 //T.C - O(K*logN) S.C - O(N)
@@ -330,6 +339,7 @@ int minStringValue(string str, int k){
     }
     return result;
 }
+
 
 //Interleave First half of queue with Second half
 //T.C - O() S.C - O()

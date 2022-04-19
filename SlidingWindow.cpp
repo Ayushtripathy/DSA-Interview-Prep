@@ -1,4 +1,4 @@
-//Sliding Window Algorithm
+//Sliding Window Algorithm Template
 void slidingWindow(){
     initialize i and j
     while(j<size){
@@ -14,7 +14,7 @@ void slidingWindow(){
         }
     }
 }
-// Variable Sliding Window
+// Variable Sliding Window Template
 void variableSlidingWindow(){
     initialize i and j
     while(j < size){
@@ -57,6 +57,7 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k){
     return ans;
 }
 
+
 //Maximum Sum Subarray of Size K
 //T.C - O(N) S.C - O(1)
 int slidingWindowMaxSum(int arr[], int size,int k){
@@ -80,17 +81,7 @@ int slidingWindowMaxSum(int arr[], int size,int k){
     }
     return 
 }
-int maximumSumSubarray(vector<int> &Arr , int N, int K){
-    int i = 0, j = 0, sum = 0, max_el = INT_MIN;
-    while (j < N) {
-        sum += Arr[j++];
-        if (j - i == K) {//Hits the window size
-        max_el = max(max_el, sum);
-        sum -= Arr[i++];
-          }
-        }
-        return max_el;
-}
+
 
 //Sum of minimum and maximum elements of all subarrays of size “k”.
 //T.C - O(2N) S.C - O(2K)
@@ -115,6 +106,7 @@ int sumMinMaxSubarray(vector<int>arr,int k){
     return sum;
 }
 
+
 //First negative integer in every window of size k 
 //T.C - O(N) S.C - O(N)
 vector<int> firstNegative(vector<int>& nums, int k){
@@ -137,9 +129,10 @@ vector<int> firstNegative(vector<int>& nums, int k){
     return ans;
 }
 
+
 //Count Occurrences Of Anagrams
 //T.C - O(N) S.C - O(K) where k = p.length()
-int countOccurance(string s, string p){
+int countOccurrence(string s, string p){
     unordered_map<char, int> mp;
     int ans = 0;
     //storing the occ. of string p in the map
@@ -176,6 +169,7 @@ int countOccurance(string s, string p){
     return ans;
 }
 
+
 //Variable Size Sliding Window
 //T.C - O(N) S.C - O(1)
 int largestSubarraySumK(vector<int> arr,int k){
@@ -199,6 +193,7 @@ int largestSubarraySumK(vector<int> arr,int k){
 	return maxWin;
 }
 
+
 //Smallest Subarray with a given sum(equal or greater)
 //T.C - O(N) S.C - O(1)
 int minSubArrayLen(int s, vector<int>& nums){
@@ -215,6 +210,7 @@ int minSubArrayLen(int s, vector<int>& nums){
     }
     return (ans != INT_MAX) ? ans : 0;
 }
+
 
 //Longest Substring With K Unique Characters
 //T.C - O(N) S.C - O(K)
@@ -242,6 +238,7 @@ int longestKSubstr(string s, int k) {
     return maxLen;
 }
 
+
 //Fruit into Baskets
 //T.C - O(N) S.C - O(1)
 int totalFruit(vector<int>& fruits) {
@@ -268,6 +265,7 @@ int totalFruit(vector<int>& fruits) {
     return maxLen;
 }
 
+
 //Longest Substring with no repeating characters
 //T.C - O(N) S.C - O(N)
 int longestNonRepeatingSubstring(string s) {
@@ -292,6 +290,7 @@ int longestNonRepeatingSubstring(string s) {
     }
     return maxLen;
 }
+
 
 //Smallest Window containing Substring (Doubt)????
 string minWindow(string s, string t) {
@@ -332,6 +331,7 @@ string minWindow(string s, string t) {
     return minLen;
 }
 
+
 //Permutation in a String(Same as anagram)
 //T.C - O(N2) S.C - O(N1)
 bool checkInclusion(string s1, string s2) {
@@ -358,6 +358,7 @@ bool checkInclusion(string s1, string s2) {
     return false;
 }
 
+
 //Longest Subarray with Ones after Replacement
 int longestOnes(vector<int>& nums, int k) {
     int count = 0;
@@ -382,6 +383,7 @@ int longestOnes(vector<int>& nums, int k) {
     return maxLen;
 }
 
+
 //Longest Substring with Same Letters after Replacement
 //T.C - O(N) S.C - O(1)
 int characterReplacement(string s, int k) {
@@ -399,6 +401,7 @@ int characterReplacement(string s, int k) {
         }
         return maxLen;
 }
+
 
 //Subarray with Palindromic Concatenation (Doubt)?????
 //T.C - O(N*N) S.C - O(1)
@@ -425,6 +428,7 @@ int findPalindromicSubarray(vector<int>arr,int k){
     }
     return -1;
 }
+
 
 //Form Number from Subarray Divisible by 3
 //T.C - O(N) S.C - O(1)
@@ -458,6 +462,7 @@ void divisibleBy3(vector<int>arr,int k){
         }
     }
 }
+
 
 //Words Concatenation (Doubt)?????
 //T.C - O() S.C - O()
@@ -494,6 +499,7 @@ vector<int> findSubstring(string s, vector<string>& words) {
         
     return ans;
 }
+
 
 //Perfect Numbers in Subarrays size k
 //T.C - O(N*sqrtN) S.C - O(1)

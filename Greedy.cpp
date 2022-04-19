@@ -26,6 +26,7 @@ pair<int,int> JobSequencing(Job arr[],int n){
     return make_pair(jobProfit, countJobs);
 }
 
+
 //Fractional Knapsack Problem
 //T.C - O(NlogN + N) S.C - O(1)
 bool compare(Item a,Item b) {
@@ -51,6 +52,7 @@ double fractionalKnapsack(Item arr[],int size,int W){
     }
     return finalValue;
 }
+
 
 //N Meetings in a room(N Activities)
 //T.C - O(NlogN + N + N) S.C - O(N)
@@ -87,6 +89,7 @@ vector<int> maxMeetings(int start[],int end[],int n){
     return ans;
 }
 
+
 //Find minimum number of coins that make a given value
 //T.C - O(V) S.C - O(1)
 vector<int> minCoinsChange(int value){
@@ -102,7 +105,8 @@ vector<int> minCoinsChange(int value){
     return ans;
 }
 
-//Minimium Platforms Required
+
+//Minimum Platforms Required
 //T.C - O(2NlogN + 2N) S.C - O(1)
 int minimumPlatforms(int arr[],int dept[],int N){
     sort(arr,arr+N);
@@ -125,6 +129,7 @@ int minimumPlatforms(int arr[],int dept[],int N){
     return maxPlat;
 }
 
+
 //Optimal Pattern Merge
 //T.C - O(N) S.C - O(N)
 int optimalMerge(int arr[],int size){
@@ -145,6 +150,7 @@ int optimalMerge(int arr[],int size){
     return minCost;
 }
 
+
 //Maximum and Minimum Array Difference
 //T.C - O(NlogN + N) S.C - O(1)
 pair<int,int> maxMinDiff(int arr[],int size){
@@ -158,6 +164,7 @@ pair<int,int> maxMinDiff(int arr[],int size){
     returm make_pair(maxDiff,minDiff);
 }
 
+
 // Best Time to Buy and Sell Stock(N transactions)
 //T.C - O(N) S.C - O(1)
 int stockProblem(int arr[],int size){
@@ -167,6 +174,7 @@ int stockProblem(int arr[],int size){
     }
     return maxProfit;
 }
+
 
 // Chocolate Distribution Problem
 //T.C - O(NlogN + N) S.C - O(1)
@@ -185,6 +193,7 @@ int findMinDiffChocolate(vector<int>choco,int students){
     return minDiff;
 }
 
+
 // Maximize Toys Count
 //T.C - O(NlogN + N) S.C - O(1)
 int toyCount(int arr[],int N,int K){
@@ -200,6 +209,7 @@ int toyCount(int arr[],int N,int K){
     }
     return count;
 }
+
 
 // First circular tour to visit all Petrol Pumps
 //T.C - O(N) S.C - O(1)

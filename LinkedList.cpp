@@ -53,6 +53,7 @@ class Node {
                 }
 };
 
+
 //Implementation and Operation Doubly Linked Lists
 class DLLNode {
   int data;
@@ -129,6 +130,7 @@ class DLLNode {
   free(del_node);
   }
 };
+
 
 //Implementation and Operation Circular Linked Lists
 class CLLNode {
@@ -217,6 +219,7 @@ class CLLNode {
   }
 };
 
+
 //Reverse a Linked List
 //T.C - O(N) S.C - O(1)
 void reverseLL(Node* head){
@@ -233,6 +236,7 @@ void reverseLL(Node* head){
     }
     head = prev;
 }
+
 
 //Reverse a Linked list in groups of size k
 //T.C - O((N/k)*k) S.C - O(1)
@@ -257,6 +261,7 @@ Node* reverseKGroup(Node* head, int k){
     if(next) head->next = reverseKGroup(next,k);
     return prev;//After complete reversing,prev becomes head;
 }
+
 
 //Reverse alternate K nodes in a Linked List
 //T.C - O(N) S.C - O(N)
@@ -284,6 +289,7 @@ Node* reverseAlternativelyInGroup(Node* head, int k){
     }
     return prev;
 }
+
 
 //Reverse a Sub-list
 //T.C - O(N) S.C - O(1)
@@ -318,6 +324,7 @@ Node* reverseBetween(ListNode* head, int left, int right){
     return head;
 }
 
+
 //Middle of a Linked List
 //T.C - O(N) S.C - O(1)
 int middleLL(Node* head){
@@ -332,6 +339,7 @@ int middleLL(Node* head){
 
     return slow->data;
 }
+
 
 //Merge Sort Linked List
 //T.C - O(NlogN) S.C - O(logN)
@@ -350,7 +358,8 @@ Node* mergeSort(Node* head){
     return ans;
 }
 
-//Check if given Linked List is Plaindrome
+
+//Check if given Linked List is Palindrome
 //T.C - O(3N/2) S.C - O(1)
 bool isPalindrome(Node* head){
     if(head==NULL || head->next==NULL) return true;
@@ -373,12 +382,14 @@ bool isPalindrome(Node* head){
       return true;  
 }
 
+
 //Delete a given Node when a node is given
 //T.C - O(1) S.C - O(1)
 void deleteNode(ListNode* node) {
     node->val = node->next->val;
     node->next = node->next->next;
 }
+
 
 //Detect a cycle in Linked List
 //T.C - O(N) S.C - O(1)
@@ -393,6 +404,7 @@ bool detectCycle(Node* head){
     }
     return false;
 }
+
 
 //Find the starting point of the Loop of LinkedList and Remove it
 //T.C - O(N) S.C - O(1)
@@ -421,6 +433,7 @@ void startingPointLoop(Node* head){
     fast->next = NULL;//Remove the loop
     return;
 }
+
 
 //Merge two sorted Linked Lists
 //T.C - O(N+M) S.C - O(1)
@@ -460,6 +473,7 @@ Node* mergeTwoLists(Node* list1,Node* list2){
     return newHead;
 }
 
+
 //Remove Nth node from end
 //T.C - O(N) S.C - O(1)
 Node* removeNthFromEnd(Node* head,int n){
@@ -479,6 +493,7 @@ Node* removeNthFromEnd(Node* head,int n){
     slow->next = slow->next->next;
     return dummy->next;
 }
+
 
 //Intersection 'Y' of two linked lists
 //T.C - O(n1 + n1 - n2 + n2) S.C - O(1)
@@ -508,6 +523,7 @@ Node* getIntersection(Node* headA,Node* headB){
 
     return NULL;
 }
+
 
 //Intersection of two Linked Lists(Common elements)
 //T.C - O(N+M) S.C - O(N+M)
@@ -540,6 +556,7 @@ Node* findIntersection(Node* headA, Node* headB){
     return head;
 }
 
+
 //Remove Duplicates in a Sorted Linked List.
 //T.C - O(N) S.C - O(1)
 void removeDuplicates(Node* head){
@@ -555,6 +572,7 @@ void removeDuplicates(Node* head){
         else  curr = curr->next;
     }
 }
+
 
 //Remove Duplicates in a Un-sorted Linked List.
 //T.C - O(N) S.C - O(N)
@@ -575,6 +593,7 @@ void removeDuplicates(Node* head){
         curr = prev->next;//Because curr is deleted
     }
 }
+
 
 //Add two linked lists
 //T.C - O(max(n1,n2)) S.C - O(N)
@@ -602,6 +621,7 @@ Node* addTwoNumbers(Node *headA, Node *headB){
     }
     return dummy->next;//Next node is head of new LL
 }
+
 
 //Multiply two linked lists
 //T.C - O(M*N) S.C - O(N+M)
@@ -651,6 +671,7 @@ Node* multiplyLL(Node* list1, Node* list2){
     return dummy->next;
 }
 
+
 //Rotate a Linked List
 //T.C - O(N + (N-N%k)) S.C - O(1)
 Node* rotateLinkedList(Node* head,int k){
@@ -672,6 +693,7 @@ Node* rotateLinkedList(Node* head,int k){
 
     return head;
 }
+
 
 //Flatten a LinkedList
 //T.C - O(N) S.C - O(1)
@@ -704,6 +726,7 @@ Node* flatten(Node* root){
     root = mergeTwoLists(root,root->next);
     return root;
 }
+
 
 //Segregate even and odd nodes in a Linked List(Pos based)
 //T.C - O(N) S.C - O(1)
@@ -766,6 +789,7 @@ Node* oddEvenList(Node* head){
     return head;
 }
 
+
 //Sort a linked list of 0s, 1s and 2s
 //T.C - O(N) S.C - O(1)
 Node* segregate012(Node* head){
@@ -791,6 +815,7 @@ Node* segregate012(Node* head){
     return head;
 }
 
+
 //Rearrange a LinkedList
 //T.C - O(3N/2) S.C - O(N)
 void reorderList(Node* head){
@@ -815,6 +840,7 @@ void reorderList(Node* head){
     }
     ptr->next = NULL;
 }
+
 
 //Pairwise swap of a linked list (Doubt)?????
 //T.C - O(N) S.C - O(1)
@@ -842,6 +868,7 @@ Node* pairWiseSwap(Node* head){
     return dummy->next;
 }
 
+
 //Happy Number
 //T.C - O(logN) S.C - O(1)
 int utilFn(int n){
@@ -863,6 +890,7 @@ bool isHappy(int n) {
     } while(slow != fast);
     return slow == 1;
 }
+
 
 //Merge K sorted Linked list(Brute Force - Merge One by one)
 //T.C - O(N*K) S.C - O(1)
@@ -929,6 +957,7 @@ Node* mergeKLists(vector<ListNode*>& lists){
       }
       return dummy->next;
 }
+
 
 //Clone a Linked List with Random and Next Pointer
 //T.C - O(3N) S.C - O(N)

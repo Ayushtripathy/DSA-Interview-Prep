@@ -62,6 +62,7 @@ void stackLL(){
     }
 }
 
+
 //Implementation of Stack(Queues)
 //Using Two Queues
 //T.C - O(N) S.C - O(N)
@@ -99,6 +100,7 @@ int main(){
     }
 }
 
+
 //Valid Parantheses
 //T.C - O(N) S.C - O(N)
 bool isValidParantheses(string str){
@@ -123,6 +125,7 @@ bool isValidParantheses(string str){
     if(stack.empty) return true;
     return false;
 }
+
 
 //Next Greater Element
 //T.C - O(2N) + O(2N) S.C - O(N)
@@ -160,6 +163,7 @@ vector<int> nextSmallerElements(vector<int>& nums,int n){
        return ans;
 }
 
+
 //Reverse a Stack(Recursion)
 //T.C - O()  S.C - O()
 void insertAtBottom(stack<int>&st,int element){
@@ -182,7 +186,8 @@ void reverseStack(stack<int> &stack){
     insertAtBottom(stack,top);
 }
 
-//Sort a stack(Recusrion)
+
+//Sort a stack(Recursion)
 //T.C - O(N*N)  S.C - O(N)
 void sortedInsert(stack<int> &stack, int element){
     if(stack.empty() || element > stack.top()){
@@ -204,6 +209,7 @@ void sortStack(stack<int> &stack){
     sortedInsert(stack,top);
 }
 
+
 //Stock Span Problem
 //T.C - O(N)  S.C - O(N)
 vector<int> stockSpan(int price[],int size){
@@ -224,6 +230,7 @@ vector<int> stockSpan(int price[],int size){
     }
     return output;
 }
+
 
 //Celebrity Problem
 //T.C - O(N) S.C - O(N)
@@ -263,6 +270,7 @@ int findCelebrity(int n){
     }
     return celeb;
 }
+
 
 //LRU Cache
 //T.C - O(1)
@@ -338,6 +346,7 @@ class LRUCache{
     }
 };
 
+
 //Largest Area Histogram
 //T.C - O(N*N*N)  S.C - O(1)
 //Brute Force
@@ -408,6 +417,7 @@ int largestRectangleArea(int* heights,int size){
     return maxArea;
 }
 
+
 //Max Rectangle in Binary Matrix with all 1's
 //T.C - O(N*M) S.C - O(M)
 int maxAreaMatrix(int M[MAX][MAX],int n,int m){
@@ -425,6 +435,7 @@ int maxAreaMatrix(int M[MAX][MAX],int n,int m){
      }
      return area;
 }
+
 
 //Expression contains redundant bracket or not
 //T.C - O(N)  S.C - O(N)
@@ -449,6 +460,7 @@ bool findRedundantBrackets(string &str){
     }
     return false;
 }
+
 
 //Minimum Cost to Make String Valid
 //T.C - O(N) S.C - O(N)
@@ -476,6 +488,7 @@ int findMinCost(string str){
         int cost = (((a+1) >> 1) + ((b+1) >> 1));
         return cost;
 }
+
 
 //Design a Stack that supports getMin() in O(1) time and space.
 //T.C - O(1) S.C - O(1)
@@ -537,6 +550,7 @@ class SpecialStack {
     }  
 };
 
+
 //Merge Overlapping Intervals
 //T.C - O(NlogN) S.C - O(N)
 bool cmp(vector<int>v1,vector<int>v2){
@@ -571,6 +585,7 @@ void mergeOverlappingIntervals(vector<vector<int>>& intervals){
     }
 }
 
+
 //Evaluation of Postfix expression
 int postfixEvaluation(string str){
     stack<int>st;
@@ -603,6 +618,7 @@ int postfixEvaluation(string str){
     }
     return st.top();
 }
+
 
 //Infix to Postfix expression
 string infixToPostfix(stack<char> st,string infix){
@@ -639,6 +655,7 @@ string infixToPostfix(stack<char> st,string infix){
     return postfix;
 }
 
+
 //Find and Delete the middle element of a stack
 //T.C - O(N) S.C - O(N)
 void deleteUtil(stack<int> &st,int size,int current){
@@ -651,8 +668,9 @@ void deleteUtil(stack<int> &st,int size,int current){
 }
 void deleteMiddleStack(stack<int>st,int sizeStack){
     if(!st.empty()) return;
-    deleteUtil(stacl,sizeStack,0);
+    deleteUtil(stack,sizeStack,0);
 }
+
 
 //Length of the Longest Valid Parantheses
 //T.C - O(N) S.C - O(N)
@@ -661,7 +679,7 @@ int longestValidParantheses(string s){
     st.push(-1);
     int maxLen = INT_MIN;
     for(int i=0; i<s.length(); i++){
-        if(s[i] == '(') st.push(i);//Oprning Braces
+        if(s[i] == '(') st.push(i);//Opening Braces
         else{
             st.pop();//Pop the idx
             if(st.empty()) st.push(i);
@@ -673,6 +691,7 @@ int longestValidParantheses(string s){
     }
     return maxLen;
 }
+
 
 //N stacks in Array
 //T.C - O(1) S.C - O(2S+N)
@@ -722,6 +741,7 @@ class NStack{
 
     }
 };
+
 
 //Maximum of minimum for every window size
 //T.C - O(N) S.C - O(N)
