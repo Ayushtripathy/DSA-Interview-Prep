@@ -342,8 +342,95 @@ int minStringValue(string str, int k){
 
 
 //Interleave First half of queue with Second half
-//T.C - O() S.C - O()
+//T.C - O(N) S.C - O(N)
+void interLeaveQueue(queue<int>& q){
+    if(q.size()%2 != 0) return;
+    stack<int> st;
+    int half = q.size()/2;
+    // test case : 11 12 13 14 15 16 17 18 19 20
+    for(int i=0; i<half; i++){
+        //queue:16 17 18 19 20, stack: 15 14 13 12 11
+        st.push(q.front());//Push half of the queue to stack
+        q.pop();
+    }
+
+    while(!st.empty()){
+        //queue : 16 17 18 19 20 15 14 13 12 11
+        q.push(st.top());
+        st.pop();
+    }
+
+    for(int i = 0; i <half;i++){
+        //queue: 15 14 13 12 11 16 17 18 19 20
+        q.push(q.front());
+        q.pop();
+    }
+
+    for(int i=0;i<half;i++){
+        // queue: 16 17 18 19 20, stack: 11 12 13 14 15
+        st.push(q.front());
+        q.pop();
+    }
+
+    while(!st.empty()){
+        q.push(st.top());
+        st.pop();
+        q.push(q.front());
+        q.pop();
+    }
+}
 
 
 //Implement K queues in an array
-//T.C - O() S.C - O()
+//T.C - O(1) S.C - O(2N+2K)
+class KQueue{
+    public:
+    int *arr;
+    int *front;//To store the queue front
+    int *rear;//To store the queue front
+    int *next;//Store the address of next freespot
+    int n,k;
+    int freespot;
+    public:
+    KQueue(int n, int k){
+        this->n = n;
+        this->k = k;
+        arr = new int[n];
+        front = new int[k];
+        front = new int[k];
+        next = new int[n];
+
+        for(int i = 0; i <k;++i){
+             front[i] = -1;
+             rear[i] = -1;
+        }
+        for(int i = 0; i <n;++i) next[i] = i+1;
+        next[n-1] = -1;//Last index
+        freespot = 0;
+    }
+
+    // Pushes 'X' into the Qth queue
+    void enqueue(int data, int qn){
+        if(freespot == -1) return;//Overflow
+
+        int index = freespot;//Find index where to push
+        freespot = next[index]//Update freespot
+        if(front[qn-1] == -1) front[qn-1] = index;//First element to be inserted
+        else{
+        next[rear[qn-1]] = index;//link new element to prev element
+        next[index] = -1;//Slot is filled now
+        rear[qn-1] = index;//move rear to the recently inserted element
+        arr[index] = data;//Insert in array
+        }
+    }
+
+    // Pops front element from Mth Queue. Returns -1 if the stack is empty, otherwise returns the popped element.
+    int dequeue(int qn){
+        if(front[qn-1] == -1) return -1;
+        int index = front[qn-1]//Find index of element to be popped
+        front[qn-1] = next[index];//Move front to the next index of the curr element
+        next[index] = freespot;//Point the next of curr element to freespot
+        freespot = index;//Move freespot to curr element as it gets deleted
+        return arr[index];
+    }
+};

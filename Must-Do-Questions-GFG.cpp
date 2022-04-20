@@ -26,9 +26,9 @@
 // Jumping Caterpillars
 // Array Product except itself
 // Cycle in a Circular Array
-// Jumping Game
 // Ugly Numer 1
 // Count primes
+
 
 
 //                              Strings
@@ -54,6 +54,7 @@
 //String valid shuffle
 
 
+
 //                              Tree
 // Connect Nodes at Same Level
 // Number of leaf nodes
@@ -64,6 +65,7 @@
 //Check if all levels of two trees are anagrams or not.
 
 
+
 //                              Heap
 // Find median in a stream
 // Heap Sort
@@ -72,6 +74,7 @@
 // Kth largest element in a stream
 //Merge two maxheaps
 // Ugly Number II
+
 
 
 //                              Hashing
@@ -93,10 +96,14 @@
 // Smallest window in a string containing all the characters of another string
 // First element to occur k times
 // Check if frequencies can be equal
+// Encode and Decode TinyUrl
+// Repeated DNA Sequences
+// Check If a String Contains All Binary Codes of Size K
+// Delete Duplicate Folders in System
+
 
 
 //                               Graph
-
 // Minimum Swaps
 // Shortest Source to Destination Path
 // Find whether path exist
@@ -105,18 +112,6 @@
 // Alien Dictionary
 // Snake and Ladder Problem
 // Minimum Spanning Tree
-
-
-//                             Greedy
-// Coin Piles
-// Page Faults in LRU
-// Largest number possible
-// Minimize the heights
-// Minimize the sum of product
-// Huffman Decoding
-// Shop in Candy Store
-// Geek collects the balls
-// Travelling Salesman
 
 
 
@@ -132,6 +127,8 @@
 // Count number of ways to cover a distance
 // Optimal Strategy for a Game
 // Shortest Common Supersequence
+// Travelling Salesman
+
 
 
 //                       Recursion & Backtracking
@@ -140,6 +137,7 @@
 // Number of paths
 // Special Keyboard
 // Josephus problem
+
 
 
 //                                Bit Magic

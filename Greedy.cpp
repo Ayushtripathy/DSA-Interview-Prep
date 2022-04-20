@@ -228,3 +228,163 @@ int circularTour(petrolPump p[],int n){
     if(deficit + reservePetrol >= 0) return start;//Circular tour is possible
     else return -1;
 }
+
+
+// Shop in Candy Store
+//T.C - O(NlogN ) S.C - O(1)
+pair<int,int> findMinMaxCandies(int arr[],int n,int k){
+    int minCost = 0;
+    int maxCost = 0;
+
+    sort(arr,arr+n);
+    for(int i=0;i<n;i++){
+        minCost += arr[i];//Buying the candy with min amt so add the cost
+        n = n - k;//Remove k candies from n as every purchase gives k candies for free
+    }
+    
+    int index = 0;//Move idx from front when taking candies
+    for(int i=n - 1;i>index;i--){
+        maxCost += arr[i];//Buy the candy with max amt
+        index = index + k;//Remove k candies from start as every purchase gives k candies for free
+    }
+    return make_pair(minCost,maxCost);
+}
+
+
+// Minimize the heights
+//T.C - O(NlogN + N) S.C - O(1)
+int getMinDiffHeight(int arr[],int n,int k){
+    sort(arr,arr+n);
+    int minHeight = arr[0];
+    int maxHeight = arr[n-1];
+    int ans = maxHeight - minHeight;
+    // Ex. a c b d sorted array
+    // d is max and a is min
+    // add k to a and subtract k from d
+    // in case of adj elements increase c and decrease d
+
+
+    for(int i = 1; i < n; i++){
+        maxHeight = max((arr[i-1] + k),(arr[n-1] - k));//max from c and d
+        minHeight = min((arr[i] - k),(arr[0] + k));//min from b and a
+
+        ans = min(ans,(maxHeight - minHeight));
+    }
+    return ans;
+}
+
+
+// Minimize the sum of product
+//T.C - O(2NlogN + N) S.C - O(1)
+long long int minValue(int a[], int b[], int n){
+    //Sort both the arrays and multiply smalllest of a to largest of b
+    sort(a,a+n);
+    sort(b,b+n);
+
+    long long int res = 0;
+    for(int i = 0; i < n; i++){
+        res += (a[i] * b[n-i-1]);
+    }
+    return res;
+}
+
+
+// Largest number possible
+//T.C - O(d) S.C - O(d)
+vector<int>largestDigitArray(int sum,int digits){
+    vector<int> ans;
+    if(sum == 0){
+        if(digits == 1) ans.push_back(0);
+        else return ans;
+    }
+    if(sum > 9*digits) return ans;//Sum is greater than max possible sum of digits
+
+    for(int i=0;i<digits;i++){
+        if(sum >= 9){//Fill 9 to make largest digit 
+            ans.push_back(9);
+            sum -= 9;
+        }
+        else{
+            ans.push_back(sum);
+            sum = 0;
+        }
+    }
+    return ans;
+}
+
+
+// Jumping Game I
+//T.C - O(N) S.C - O(1)
+bool canJump(vector<int>nums){
+    int lastIndex = nums.size() - 1;
+    for(int i = nums.size() - 1; i >= 0; i--){
+        //i is curr pos and nums[i] is distance that i can jump from that pos 
+        //if we can reach to end from that index then make it the last index
+        //and check whether we can reach that or not
+        if(i + nums[i] >= lastIndex) lastIndex = i;
+    }
+    return lastIndex == 0;//lastIndex gets 0 only if we can reach the end
+}
+
+
+// Jumping Game II
+//T.C - O(N) S.C - O(1)
+int countJumps(vector<int>& nums) {
+    int jump = 0;
+    int i = 0;
+    int end = nums.size()-1;
+    while(i < nums.size() && end != 0){
+        if(nums[i] + i >= end){//If we can reach end from that idx
+            end = i;//Make that index the end
+            i=0;//reset i and now figure out how to reach end
+            jump++;
+            }
+            else i++;//Can't be reached from that idx
+        }
+    return jump;
+}
+
+
+// Geek collects the balls
+//T.C - O() S.C - O()
+int maxBalls(int a[],int b[],int n,int m){
+
+}
+
+
+// Coin Piles
+//T.C - O(2N) S.C - O(1)
+int minimumCoins(int arr[],int n,int k){
+    int count = 0;
+    int minVal = *min_element(arr,arr+n);//find min element
+
+    for(int i = 0; i < n; i++){
+        int diff = arr[i] - minVal;
+        // If diff between the current pile and the min  pile is greater than k
+        if(diff > k) count += (diff - k);
+    }
+    return count;
+}
+
+
+// Page Faults in LRU
+// T.C - O(N*C) S.C - O(C)
+int pageFaults(int pages[],int n,int capacity){
+    int pageFault = 0;
+    vector<int>v;//To store elements in size of cap
+    for(int i=0;i<=n-1;++i){
+        //Find if the curr element is already present in memory
+        auto it = find(v.begin(),v.end(),pages[i]);
+        if(it == v.end()){//If element is not present in memory
+        //If memory is full then remove the first element from memory as its LRU
+        if(v.size() == capacity) v.erase(v.begin());
+        v.push_back(pages[i]);//Add recent to memory
+        pageFault++;
+        }
+        else{
+            v.erase(it);//Remove the element from memory
+            v.push_back(pages[i]);//Add it again to make it MRU
+        }
+    }
+    return pageFault;
+}
