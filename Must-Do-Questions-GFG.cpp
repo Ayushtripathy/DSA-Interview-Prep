@@ -62,7 +62,7 @@
 // Serialize and Deserialize a Binary Tree
 // Longest consecutive sequence in Binary tree
 // Lowest Common Ancestor in a Binary Tree
-//Check if all levels of two trees are anagrams or not.
+// Check if all levels of two trees are anagrams or not.
 
 
 
@@ -78,16 +78,17 @@
 
 
 //                              Hashing
+// Design Hashmap
 // Relative Sorting
 // Sorting Elements of an Array by Frequency
 // Common elements
+// Minimum number of swaps required to sort an array
 // Find all four sum numbers
 // Swapping pairs make sum equal
 // Count distinct elements in every window
 // Array Pair Sum Divisibility Problem
 // Longest consecutive subsequence
 // Array Subset of another array
-// Find all pairs with a given sum
 // Find first repeated character
 // Zero Sum Subarrays
 // Minimum indexed character
@@ -100,19 +101,19 @@
 // Repeated DNA Sequences
 // Check If a String Contains All Binary Codes of Size K
 // Delete Duplicate Folders in System
+// Word Ladder
 
 
 
 //                               Graph
-// Minimum Swaps
-// Shortest Source to Destination Path
 // Find whether path exist
+// Shortest Source to Destination Path Binary Matrix
 // Minimum Cost Path
 // Circle of Strings
 // Alien Dictionary
 // Snake and Ladder Problem
-// Minimum Spanning Tree
-
+// Reconstructing a Sequence (hard)
+// Minimum Height Trees (hard) 
 
 
 //                       Dynamic Programming

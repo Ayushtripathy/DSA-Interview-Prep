@@ -345,13 +345,6 @@ int countJumps(vector<int>& nums) {
 }
 
 
-// Geek collects the balls
-//T.C - O() S.C - O()
-int maxBalls(int a[],int b[],int n,int m){
-
-}
-
-
 // Coin Piles
 //T.C - O(2N) S.C - O(1)
 int minimumCoins(int arr[],int n,int k){
