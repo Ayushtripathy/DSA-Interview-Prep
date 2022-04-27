@@ -124,7 +124,7 @@ int minimumPlatforms(int arr[],int dept[],int N){
         platforms--;//Decrease platforms
         j++;
         }
-        if(platforms > maxPlat) maxPlat = platforms;
+        maxPlat = max(maxPlat,platforms);
     }
     return maxPlat;
 }
@@ -380,4 +380,58 @@ int pageFaults(int pages[],int n,int capacity){
         }
     }
     return pageFault;
+}
+
+// Police and Thieves
+//T.C - O(N) S.C - O(N)
+int catchThieves(char arr[], int n, int k){
+    int maxThief = 0;
+    vector<int>police;
+    vector<int>thief;
+
+    for(int i=0; i<n; i++){//Store the indices of police and theives
+        if(arr[i] == 'P') police.push_back(i);
+        else if(arr[i] == 'T') thief.push_back(i);
+    }
+
+    int policeIndex = 0 , thiefIndex = 0;//Curr pos of police and thief
+    while(thiefIndex < thief.size() && policeIndex < police.size()){
+        if(abs(thief[thiefIndex] - police[policeIndex]) <= k){//Can be caught
+            thiefIndex++;//move to the next thief as a thief can't get caught more than once
+            policeIndex++;
+            maxThief++;
+        }
+        else if(thief[thiefIndex] < police[policeIndex]){
+            //thief is far away so move it close
+            thiefIndex++;
+        }
+        else policeIndex++;
+    }
+    return maxThief;
+}
+
+// Minimum Number of Taps to Open to Water a Garden
+// T.C - O(N*N)  S.C - O(1)
+int minTaps(int n, vector<int>& ranges) {
+    //As i tap can go from i+ranges[i] to i-ranges[i]
+    int minRange = 0;
+    int maxRange = 0;
+    int minOpenTap = 0;
+    int index = 0;
+
+    while(maxRange < n){//In range
+    //This loop gives the range of tap that satisfies the cond.
+       for(int i=index;i<ranges.size();i++){
+           //Store the ranges of the taps from left to right
+           if((i - ranges[i]) <= minRange && (i + ranges[i]) > maxRange){
+               maxRange = i + ranges[i];
+               index = i;
+           }
+           if(minRange == maxRange) return -1;
+           minOpenTap++;//Found one tap
+
+           minRange = maxRange;//Now max range is min for next slot range
+       }
+    }
+    return minOpenTap;
 }

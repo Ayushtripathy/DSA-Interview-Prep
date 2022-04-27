@@ -677,13 +677,13 @@ void deleteMiddleStack(stack<int>st,int sizeStack){
 int longestValidParantheses(string s){
     stack<int>st;
     st.push(-1);
-    int maxLen = INT_MIN;
+    int maxLen = 0;
     for(int i=0; i<s.length(); i++){
         if(s[i] == '(') st.push(i);//Opening Braces
         else{
             st.pop();//Pop the idx
             if(st.empty()) st.push(i);
-            else{//There must be a vlaid length for parantheses
+            else{//There must be a valid length for parantheses
                int len = i - st.top(); 
                maxLen = max(maxLen, len);
             }
@@ -770,3 +770,86 @@ vector<int> maxOfMinWindowSize(int arr[],int size){
     return res;
 }
 
+
+//132 Pattern Geeky Buildings
+//T.C - O(N) S.C - O(N)
+bool find132pattern(vector<int>& nums) {
+    int s3 = INT_MIN;
+    stack<int> st;
+    for( int i = nums.size()-1; i >= 0; i -- ){
+        if( nums[i] < s3 ) return true;
+        else while( !st.empty() && nums[i] > st.top() ){ 
+            s3 = st.top(); 
+            st.pop(); 
+        }
+        st.push(nums[i]);
+        }
+    return false;
+}
+
+
+//Restrictive Candy Crush
+//T.C - O(N)  S.C - O(N)
+string Reduced_String(int k,string s){
+    if(k == 1) return "";//Every char should be removed
+
+    stack<pair<char,int>>st;//store the char and its count of occ
+    string ans = "";
+    for(int i=0;i<s.length();i++){
+        if(st.empty()) st.push({s[i],1});
+
+        else if(st.top().first == s[i]){//Found same char
+        st.push({s[i],st.top().second+1});//store the char and increase count
+        if(st.top().second == k){//Reached the repetition limit
+            int x = k;//Can't change k because we have to remove k every time
+            while(x--) st.pop();
+           }
+        }
+        else if(st.top().first != s[i]) st.push({s[i],1});//Any other that enters for first time
+    }
+
+    while(!st.empty()){
+        ans = st.top().first + ans;
+        st.pop();
+    }
+
+    return ans;
+}
+
+
+//Remove K digits
+//T.C - O(N) S.C - O(N)
+string removeKDigits(string num, int k) {
+    if(k >= num.size()) return "0";//Edge case
+
+    stack<char>st;
+
+    for(int i=0;i<num.size();i++){
+        if(st.empty()) st.push(num[i]);
+        else{//Remove larger digits in left
+            if(!st.empty() && num[i] < st.top() && k > 0){
+                st.pop();
+                k--;//We can only remove k digits
+            }
+            st.push(num[i]);
+        }
+    }
+
+    if(k > 0){//If no small no.'s are present in stack but still we can remove digits
+        st.pop();
+        k--;
+    }
+    if(st.empty()) return "0";
+
+    string ans;
+    while(!st.empty()){
+        // st - 0 0 2 0 if we do ans+=st.pop ans'd be 002
+        ans = st.top() + ans;//Store ans in order(attach the popped no. to back)
+        st.pop();
+    }
+
+    int i = 0;
+    while(ans[i] == '0') i++;//Remove any leading zeroes(0200 -> 200)
+
+    return (ans.substr(i) == "") ? "0" : ans.substr(i);
+}

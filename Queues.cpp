@@ -272,7 +272,7 @@ int orangesRotting(vector<vector<int>>& grid){
             int x =  rotten.front().first;
             int y = rotten.front().second;
             rotten.pop();
-            for(int i = 0; i <4;i++){//Check all 4 directions
+            for(int i = 0; i <4;i++){//Check all 4 directions whether curr orange can rot anyone
             int nx = x + dx[i];//Add the dir value to curr idx value
             int ny = y + dy[i];
             //If invalid due to any of these reasons,skip the cell
@@ -283,7 +283,7 @@ int orangesRotting(vector<vector<int>>& grid){
         }
         if(!rotten.empty()) days++;//After every k oranges increment the days to rot
     }
-    return total == count ? days : -1;
+    return total == count ? days : -1;//All oranges are rotten
 }
 
 
@@ -321,21 +321,21 @@ int minStringValue(string str, int k){
     //Store the freq of each char
     for(int i=0;i<str.length();i++) freq[str[i] - 'a']++;
 
-    priority_queue<int>q;//Store the freq in max heap
-    for(int i=0;i<26;i++) q.push(freq[i]);
+    priority_queue<int>pq;//Store the freq in max heap
+    for(int i=0;i<26;i++) pq.push(freq[i]);
 
     while(k--){//This is to remove the highly frequent char
         //Extract max k freq and decrease them by 1
-        int temp = q.top();
-        q.pop();
-        q.push(--temp);
+        int temp = pq.top();
+        pq.pop();
+        pq.push(--temp);
     }
     //Calculate the sum of squares by taking values from heap
     int result = 0;
-    while(!q.empty()){
-        int temp = q.top();
+    while(!pq.empty()){
+        int temp = pq.top();
         result += temp*temp;
-        q.pop()
+        pq.pop();
     }
     return result;
 }

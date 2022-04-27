@@ -2,7 +2,6 @@
 // Subarray with given sum
 // Count the triplets
 // Kadane’s Algorithm
-// Missing number in array
 // Rearrange array alternatively
 // Number of pairs
 // Leaders in an array
@@ -51,7 +50,7 @@
 // Geek and its Colored Strings
 // Second most repeated string in a sequence
 // Wildcard matching
-//String valid shuffle
+// String valid shuffle
 
 
 
@@ -59,10 +58,18 @@
 // Connect Nodes at Same Level
 // Number of leaf nodes
 // Mirror a Tree
-// Serialize and Deserialize a Binary Tree
 // Longest consecutive sequence in Binary tree
-// Lowest Common Ancestor in a Binary Tree
 // Check if all levels of two trees are anagrams or not.
+// Symmetric Binary Tree	
+// Minimum depth of binary tree		
+// Check if a binary tree is subtree of another binary tree			
+// Convert a given Binary Tree to SumTree	
+// Burning Tree	
+// Remove BST keys outside the given range		
+// Unique BSTs		
+// Merge two BST’s		
+// Fixing two nodes of a BST	
+
 
 
 
@@ -101,24 +108,13 @@
 // Repeated DNA Sequences
 // Check If a String Contains All Binary Codes of Size K
 // Delete Duplicate Folders in System
-// Word Ladder
 
-
-
-//                               Graph
-// Find whether path exist
-// Shortest Source to Destination Path Binary Matrix
-// Minimum Cost Path
-// Circle of Strings
-// Alien Dictionary
-// Snake and Ladder Problem
-// Reconstructing a Sequence (hard)
-// Minimum Height Trees (hard) 
 
 
 //                       Dynamic Programming
 // Minimum Operations
 // Max length chain
+// Minimum Path Sum
 // Minimum number of Coins
 // Longest Common Substring
 // Minimum number of jumps
@@ -138,6 +134,8 @@
 // Number of paths
 // Special Keyboard
 // Josephus problem
+// Word Search
+
 
 
 
@@ -156,3 +154,19 @@
 // Sparse Number
 // Alone in a couple
 // Maximum subset XOR
+
+
+
+//                           Sorting
+// Wave array		
+// Count the number of possible triangles		
+// Triplets with sum with given range		
+// Count Inversions		
+// Relative Sorting		
+// Maximum Index
+// Minimum Number of Arrows to Burst Balloons		
+// find four elements that sum to a given value
+// find a pair with a given difference
+// minimum no. of swaps required to sort the array
+// K-th Element of Two Sorted Arrays
+// Missing Number in AP

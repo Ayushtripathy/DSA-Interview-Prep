@@ -716,7 +716,7 @@ Node* mergeTwoLists(Node* a, Node* b){
     if(a) temp->bottom = a;
     if(b) temp->bottom = b;
 
-    return res->bottom
+    return res->bottom;
 }
 Node* flatten(Node* root){
     if(!root || root->next == NULL) return root;
@@ -996,4 +996,66 @@ Node* cloneRandomList(Node* head){
         copy = copy->next;
     }
     return temp;
+}
+
+
+//Partition a linked list around a given value
+//Partition function of quick sort fails because order won't be maintained
+//T.C - O(N)  S.C - O(1)
+Node* partition(Node* head, int x) {
+    //Partition the LL into 3 parts
+    //Store the nodes lesser than x
+    Node* smallerhead = NULL;
+    Node* smallerTail = NULL;
+    //Store the nodes greater than x
+    Node* greaterhead = NULL;
+    Node* greaterTail = NULL;
+    //Store the nodes equal to x
+    Node* equalhead = NULL;
+    Node* equalTail = NULL;
+
+    while(head){
+        //Build the three portions based on values
+        if(head->data == x){
+            if(!equalhead) equalHead = equalTail = head;
+            else{
+                equalTail->next = head;
+                equalTail = equalTail->next;
+            }
+        }
+        else if(head->data < x){
+            if(!smallerHead) smallerHead = smallerTail = head;
+            else{
+                smallerTail->next = head;
+                smallerTail = smallerTail->next;
+            }
+        }
+        else{
+            if(!greaterHead) greaterHead = greaterTail = head;
+            else{
+                greaterTail->next = head;
+                greaterTail = greaterTail->next;
+            }
+        }
+        head = head->next;
+    }
+
+    //It will be at the end of LL
+    if(greaterTail) greaterTail->next = NULL;
+
+    if(!smallerHead){
+        if(!equalHead) return greaterHead;//If only greaterHead is not NULL
+        equalTail->next = greaterHead;
+        return equalHead;
+    }
+
+    if(!equalHead){//If equal node is not present
+        smallerTail->next = greaterHead;
+        return smallerHead;
+    }
+
+    //All three nodes are present
+    smallerTail->next = equalHead;
+    equalTail->next = greaterHead;
+    return smallerHead;
 }

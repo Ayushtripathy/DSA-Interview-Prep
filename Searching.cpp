@@ -94,6 +94,7 @@ int lastOcc(vector<int> &nums, int target){
 // T.C- O(logN)
 return firstOcc - lastOcc + 1
 
+
 // Times a sorted Array is Rotated
 // T.C- O(logN)
 int countRotations(int arr[], int size){
@@ -313,7 +314,7 @@ int findMinInRotatedSortedArray(vector<int>num){
             if (num[start]<num[end]) return num[start];
             //In case of duplicates
             // if(nums[left] == nums[mid ] && nums[right] == nums[mid]) left ++, right -- ;
-            if (num[mid]>=num[start]) start = mid+1;
+            if (num[mid]>=num[start]) start = mid+1;//Left half is sorted go right half
             else end = mid;
         }
         return num[start];
@@ -665,6 +666,49 @@ int shipWithinDays(vector<int>& weights, int days) {
 }
 
 
+//Minimized Maximum of Products Distributed to Any Store
+//T.C - O(NlogN)
+int minimizedMaximum(int n, vector<int>& quantities) {
+    int m=quantities.size(), l=1,r=0;
+    for(auto quantity: quantities) r=max(r,quantity);
+        
+    int mid=0, ans=0;
+    while(l<=r){
+        mid=(l+r)/2;
+        int count=0;
+        for(auto quantity: quantities){
+            count+=quantity/mid;
+            if(quantity%mid) count++;
+        }
+
+        if(count<=n) ans=mid,r=mid-1;
+        else l=mid+1;
+        }
+    return ans;
+}
+
+
+//Koko Eating Bananas
+//T.C - O(NlogN)
+int minEatingSpeed(vector<int>& piles, int h) {
+        int m=piles.size(), l=1,r=0;
+        for(auto bananas: piles) r=max(r,bananas);
+        
+        int mid=0, ans=0;
+        while(l<=r){
+            mid=(l+r)/2;
+            int count=0;
+            for(auto bananas: piles){
+                count+=bananas/mid;
+                if(bananas%mid) count++;
+            }
+            if(count<=h) ans=mid,r=mid-1;
+            else l=mid+1;
+        }
+        return ans;
+}
+
+
 //Nth Root of a Number
 //T.C - O(Nlog(M*10^d))
 double multiply(int number, int n){
@@ -832,4 +876,85 @@ int equilibrium(int arr[], int n){
         leftsum += arr[i];
     }
     return -1;
+}
+
+
+// Search insert position of K in a sorted array
+// T.C - O(logN)  S.C - O(1)
+int insertPosK(int arr[], int n, int K){
+    int start = 0;
+    int end = n - 1;
+ 
+    while (start <= end) {
+        int mid = (start + end) / 2;
+ 
+        // If K is found
+        if (arr[mid] == K) return mid;
+ 
+        else if (arr[mid] < K) start = mid + 1;
+ 
+        else end = mid - 1;
+    }
+ 
+    // Didn'y find the element but inserting here will keep array sorted
+    return end + 1;
+}
+
+
+// Binary Search in forest
+// T.C - O(NlogN)  S.C - O(1)
+int woodCollected(int height[],int n,int cut){
+    int sum = 0;
+    for(int i=n-1;i>=0;i--){
+        if(height[i] - cut < 0) break;
+        sum += (height[i] - cut);
+    }
+    return sum;
+}
+int collectKWood(int height[], int n, int k){
+    sort(arr,arr+n);
+    int low = 0;
+    int high = height[n-1];//We can cut upto size of max tree
+
+    while(low <= high){
+        int mid = low + (high - low) / 2;
+
+        //The amount of wood collected  when cut is made at the mid
+        int collected = woodCollected(height,n,mid);
+
+        if(collected == k) return mid;//Currently collected wood is enough
+        //If it's more than req amt then the cut needs to be made at a
+        // height higher than the current height
+        if(collected > k) low = mid + 1;
+        else high = mid -1;
+    } 
+    return -1;
+}
+
+
+//Minimize maximum array element possible by at most K splits on the given array
+// T.C - O(NlogM) where M is max element  S.C - O(1)
+int canReduceToMidByKSplit(int arr[],int N,int  id,int K){
+    int count = 0;
+    for(int i=0;i<N;i++){
+        count += (arr[i]-1)/mid;//arr[i] can be split into count parts by mid
+    }
+    return count <= K;//can reduce to mid 
+}
+int minimumMaximum(int arr[], int N, int K){
+    int lo = 1;
+    int hi = *max_element(A, A + N);
+ 
+    while (lo < hi) {
+         int mid = (lo + hi) / 2;
+ 
+        //If all elements can be reduced to at most
+        // mid by at most K splits
+        if (canReduceToMidByKSplit(A, N, mid, K)) {//Kya sbko mid bna skte h K split krke
+            //Jb mid tk kr skte h to usse km tk bhi kr skte h
+             hi = mid;//mid itself can be the ans
+        }
+         else lo = mid + 1;
+    }
+    return hi;
 }
