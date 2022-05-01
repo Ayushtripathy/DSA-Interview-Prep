@@ -55,20 +55,14 @@
 
 
 //                              Tree
-// Connect Nodes at Same Level
-// Number of leaf nodes
 // Mirror a Tree
+// Construct tree from level order
 // Longest consecutive sequence in Binary tree
 // Check if all levels of two trees are anagrams or not.
-// Symmetric Binary Tree	
-// Minimum depth of binary tree		
-// Check if a binary tree is subtree of another binary tree			
-// Convert a given Binary Tree to SumTree	
-// Burning Tree	
-// Remove BST keys outside the given range		
-// Unique BSTs		
-// Merge two BST’s		
-// Fixing two nodes of a BST	
+// Check if a binary tree is subtree of another binary tree				
+// Reconstruct itinerary
+// Print all root-to-leaf paths in any order
+
 
 
 
