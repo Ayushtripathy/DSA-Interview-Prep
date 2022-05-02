@@ -10,4 +10,4 @@
 ### Hi! I am preparing for Interview rounds of top product based companies.</br>
 ### Solving questions from above sheets and resources.</br>
 ### Feel free to join and start your prep with me.</br>
-### Please the star the repository if it helps you in any way.
+### 🙏 star the repository if it helps you in any way.
