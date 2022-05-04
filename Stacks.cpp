@@ -459,8 +459,8 @@ bool findRedundantBrackets(string &str){
         }
     }
     return false;
+    }
 }
-
 
 //Minimum Cost to Make String Valid
 //T.C - O(N) S.C - O(N)
@@ -496,8 +496,7 @@ class SpecialStack {
     // Define the data members.
     stack<int>st;
     int mini = INT_MAX;
-    public:
-        
+    public: 
     void push(int data) {
         // Implement the push() function.
         if(st.empty()){//For 1st element
@@ -515,7 +514,7 @@ class SpecialStack {
 
     int pop() {
         // Implement the pop() function.
-        if(st.empty() return -1;
+        if(st.empty()) return -1;
 
         int curr = st.top();
         st.pop();

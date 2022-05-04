@@ -65,19 +65,6 @@
 
 
 
-
-
-//                              Heap
-// Find median in a stream
-// Heap Sort
-// Operations on Binary Min Heap
-// Rearrange characters
-// Kth largest element in a stream
-//Merge two maxheaps
-// Ugly Number II
-
-
-
 //                              Hashing
 // Design Hashmap
 // Relative Sorting
@@ -119,6 +106,10 @@
 // Optimal Strategy for a Game
 // Shortest Common Supersequence
 // Travelling Salesman
+// Paint fence (Permutation Combination)
+// Find optimal cost to construct a binary search tree
+// Unique BSTs		
+
 
 
 
@@ -129,6 +120,7 @@
 // Special Keyboard
 // Josephus problem
 // Word Search
+// Goldmine problem
 
 
 

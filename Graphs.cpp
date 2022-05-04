@@ -108,7 +108,7 @@ vector<int> dfsGraph(int V, vector<int> adj[]){
 
 
 //Cycle Detection(Undirected Graph)
-//T.C - O(N+E) S.C - O(N) + O(N) + O(N+E)
+//T.C - O(N+E) S.C - O(N) + O(N+E)
 bool cycleBFS(int node,int V,vector<int>adj[],vector<int>&vis){
     queue<pair<int, int>> q;//pair to store node and parent
     q.push({node, -1});//Initially no one is parent
@@ -137,7 +137,8 @@ bool cycleDFS(int node, int parent, vector<int> adj[], vector<int> &vis){
             if (cycleDFS(it, node, adj, vis)) return true;
         }
         else if (it != parent) return true;//Only parent could mark the node visited
-        return false;
+    }
+    return false;
 }
 bool isCycle(int V, vector<int> adj[]){
  // Intuition - Check for parent node and current node using pair. If the adjacent
@@ -1092,6 +1093,7 @@ int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
             q.push({nx,ny});
     }
     return -1;
+    }
 }
 
 
@@ -1322,4 +1324,42 @@ int findMaxArea(vector<vector<int>>& grid){
         }
     }
     return maxArea;
+}
+
+
+//Flood Fill Algorithm
+//T.C - O(N)  S.C - O(N)
+vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor){
+    if(sr==sc && sc==newColor && image[sr][sc]==newColor) return image;
+
+    int m=image.size();
+    int n=image[0].size();
+
+    queue<pair<int,int>> q;//Store thr xy coordinates
+    q.push({sr,sc});//Push the initial coordinates
+    int prevColor = image[sr][sc];
+    image[sr][sc] = newColor;//Paint the initial point with new color
+
+    while(!q.empty()){
+        //Get the coordinates out
+        int i = q.front().first;
+        int j = q.front().second;
+        q.pop();
+
+        int dx[]={1,0,-1,0};
+        int dy[]={0,1,0,-1};
+
+        for(int i=0;i<4;i++){
+            int nx = i + dx[i];
+            int ny = j + dy[i];
+
+            //Covers all the invalid conditions
+            if(nx>=0 && ny>=0 && nx<m && ny<n && image[nx][ny]==prevColor){
+            //If we somehow get here it means that we can change value in this point
+            image[nx][ny] = newColor;//Paint the point
+            q.push({nx,ny});
+            }
+        }
+    }
+    return image;
 }

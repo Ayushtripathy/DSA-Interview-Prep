@@ -1121,21 +1121,21 @@ TreeNode* deserialize(string data) {
 //  Flatten a Binary Tree to Linked List
 //Recursive Solution
 //T.C - O(N)  S.C - O(N)
-TreeNode* temp=NULL;
-void flatten(TreeNode* root){
+void flattenToSortedDLL(TreeNode* root,TreeNode* head){
     if(!root) return;
 
-    flatten(root->right);
-    flatten(root->left);
+    flattenToSortedDLL(root->right,head);
 
-    root->right = temp;
-    root->left = NULL;
+    root->right = head;
 
-    temp = root;
+    if(head) head->left = root;
+
+    head = root;
+
+    flattenToSortedDLL(root->left,head);
 }
 //Optimized Solution
 //T.C - O(N)  S.C - O(1)
-TreeNode* temp=NULL;
 void flatten(TreeNode* root){
     if(!root) return;
 
@@ -1361,4 +1361,91 @@ vector<string> binaryTreePaths(TreeNode* root) {
     vector<string> ans;
     treePathHelper(root,ans,"");
     return ans;
+}
+
+
+// Even Odd Tree
+//T.C - O(N)  S.C - O(N)
+bool isEvenOddTree(TreeNode* root) {
+    if(!root) return false;
+
+    queue<TreeNode*>q;
+    q.push(root);
+    int level = 0;
+
+    while(q.empty()){
+        int size = q.size();
+        int prev = level%2 == 0 ? 0 : INT_MAX;//Store thr prev node in a given level
+        while(size--){
+            auto node = q.front();
+            q.pop();
+
+            if(level%2==0){//If its an even level
+            //For even level nodes should be odd and strictly increasing
+            if(node->val %2 ==0 || node->val <= prev) return false;
+            }
+            else{
+            //For odd level nodes should be even and strictly decreasing
+            if(node->val %2 == 1 || node->val >= prev) return false;
+            }
+
+            prev = node->val;
+
+            if(node->left) q.push(node->left);
+            if(node->right) q.push(node->right);
+        }
+    }
+}
+
+
+// Check if given graph is tree or not
+//T.C - O(N+Even) S.C - O(N)
+bool cycleDFS(int node, int parent, vector<int> adj[], vector<int> &vis){
+    vis[node] = 1;
+    for (auto it : adj[node]){
+        if (!vis[it]){
+            if (cycleDFS(it, node, adj, vis)) return true;
+        }
+        else if (it != parent) return true;//Only parent could mark the node visited
+    }
+    return false;
+}
+bool checkTree(int V,vector<int> adj[]){
+    // An undirected graph is tree if :
+    // 1) There is no cycle. 
+    // 2) The graph is connected.
+    vector<int> visited(V,0);
+    //Check for cycle
+    if(cycleDFS(0,-1,adj,visited)) return false;
+    //Check if any node is unvisited(not connected)
+    for (int u = 0; u < V; u++){
+        if (!visited[u]) return false;
+    }
+    return true;
+}
+
+
+// Find distance between 2 nodes in a Binary tree
+//T.C - O(2N)  S.C - O(2H)
+int findLevel(TreeNode* root,int k ,int level){
+    if(!root) return -1;
+    if(root->val == k) return level;//Found the key at this level;
+
+    int left = findLevel(root->left,k,level+1);//Find the key in left subtree & increment level(going 1 lvl down)
+    //Didn't find the key in left subtree so go right
+    if(left == -1) return findLevel(root->right,k,level+1);
+
+    return left;
+}
+int findDistance(TreeNode* root,int a,int b){
+    // Intuition - Find Lca and then dist of both nodes from lca
+    TreeNode* lca = lowestCommonAncestor(root,a,b);
+
+    //Finds the level at which a is(dist from lca)
+    int dist1 = findLevel(lca,a,0);
+    //Finds the level at which b is(dist from lca)
+    int dist2 = findLevel(lca,b,0);
+
+    //Add the 2 dist for dist b/w a and b
+    return dist1 + dist2;
 }
