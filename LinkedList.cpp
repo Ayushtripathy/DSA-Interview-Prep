@@ -934,7 +934,7 @@ Node* mergeKLists(vector<Node*>& lists) {
 }
 //Merge K sorted Linked list(Optimal - Min Heap)
 //T.C - O(NlogK) S.C - O(K)
-Node* mergeKLists(vector<ListNode*>& lists){
+Node* mergeKLists(vector<Node*>& lists){
     priority_queue <Node*, vector<Node*>, greater<Node*>> pq;
 
     //Push head of all k lists

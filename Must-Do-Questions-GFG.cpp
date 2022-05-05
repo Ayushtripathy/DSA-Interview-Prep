@@ -7,7 +7,6 @@
 // Leaders in an array
 // Minimum Platforms
 // Reverse array in groups
-// K’th smallest element
 // Pythagorean Triplet
 // All Chocolate Distribution Problems
 // Element with left side smaller and right side greater
@@ -27,6 +26,9 @@
 // Cycle in a Circular Array
 // Ugly Numer 1
 // Count primes
+// Find Right Interval
+// Maximum distinct elements after removing k elements
+
 
 
 
