@@ -227,7 +227,7 @@ int findCeil(int arr[], int size, int target){
 }
 
 
- //Next Alphabetical Element
+//Next Alphabetical Element
  //T.C - O(logN)
  int nextAlphabet(char arr[], int size, char target){
     int start = 0;
@@ -957,4 +957,42 @@ int minimumMaximum(int arr[], int N, int K){
          else lo = mid + 1;
     }
     return hi;
+}
+
+
+// Matrix Median
+// T.C - O(32*N*logM)  S.C - O(1)
+int countSmallerThanMid(vector<int>&row,int mid){
+    int l = 0;
+    int h = row.size();
+    //Row are sorted so if we find mid in row,left side will have all smaller elements
+    while(l <= h){
+        int middle = (l + h) >> 1;
+        if(row[middle] <= mid){
+            l = middle + 1;
+        }
+        else{
+            h = middle - 1;
+        }
+    }
+    return l;
+}
+int findMedian(vector<vector<int>>&arr) {
+    int low = 1;//Search space is 1 to 10^9
+    int high = 1e9;
+
+    int row = arr.size();
+    int col = arr[0].size();
+
+    while(low <= high) {
+        int mid = (low + high) >> 1;//Calculate the mid
+        int count = 0;
+        //Count elements smaller than equal to mid in each row;
+        for(int i = 0; i < row;i++) count += countSmallerThanMid(arr[i],mid);
+
+        //Count is less than half the elements in matrix
+        if(count <= (n*m)/2) low = mid + 1;
+        else high = mid - 1;
+    }
+    return low;
 }

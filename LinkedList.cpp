@@ -327,7 +327,7 @@ Node* reverseBetween(ListNode* head, int left, int right){
 
 //Middle of a Linked List
 //T.C - O(N) S.C - O(1)
-int middleLL(Node* head){
+Node* middleLL(Node* head){
     if(!head || !head->next) return head;
     Node* slow = head;
     Node* fast = head;
@@ -337,7 +337,46 @@ int middleLL(Node* head){
         slow = slow->next;
     }
 
-    return slow->data;
+    return slow;
+}
+
+
+//Merge two sorted Linked Lists
+//T.C - O(N+M) S.C - O(1)
+Node* mergeTwoLists(Node* list1,Node* list2){
+    if(!list1) return list2;
+    if(!list2) return list1;
+    ListNode* newHead = NULL;
+    ListNode* newTail = NULL;
+    //Initialize the list by the smaller value out of two
+    if(list1->val < list2->val){
+        newHead = list1;
+        newTail = list1;
+        list1 = list1->next;
+    }
+    else{
+        newHead = list2;
+        newTail = list2;
+        list2 = list2->next;
+    }
+
+    while(list1 && list2){
+        if(list1->val <= list2->val){
+        newTail->next = list1;
+        newTail = list1;
+        list1 = list1->next;
+        }
+        else{
+        newTail->next = list2;
+        newTail = list2;
+        list2 = list2->next;
+        }
+    }
+    //If any one is exhausted and one is remaining
+    if(list1) newTail->next = list1;
+    if(list2) newTail->next = list2;
+
+    return newHead;
 }
 
 
@@ -432,45 +471,6 @@ void startingPointLoop(Node* head){
     while(fast->next != slow) fast = fast->next;
     fast->next = NULL;//Remove the loop
     return;
-}
-
-
-//Merge two sorted Linked Lists
-//T.C - O(N+M) S.C - O(1)
-Node* mergeTwoLists(Node* list1,Node* list2){
-    if(!list1) return list2;
-    if(!list2) return list1;
-    ListNode* newHead = NULL;
-    ListNode* newTail = NULL;
-    //Initialize the list by the smaller value out of two
-    if(list1->val < list2->val){
-        newHead = list1;
-        newTail = list1;
-        list1 = list1->next;
-    }
-    else{
-        newHead = list2;
-        newTail = list2;
-        list2 = list2->next;
-    }
-
-    while(list1 && list2){
-        if(list1->val <= list2->val){
-        newTail->next = list1;
-        newTail = list1;
-        list1 = list1->next;
-        }
-        else{
-        newTail->next = list2;
-        newTail = list2;
-        list2 = list2->next
-        }
-    }
-    //If any one is exhausted and one is remaining
-    if(list1) newTail->next = list1;
-    if(list2) newTail->next = list2;
-
-    return newHead;
 }
 
 

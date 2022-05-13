@@ -812,3 +812,61 @@ int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capita
     }
     return ans;
 }
+
+
+// Minimum Distinct Elements
+//T.C - O(n + i log m)  S.C - O(M)
+// where m is unique elements, and i - number of elements we need to remove.
+// M space for the hash map and heap.
+int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
+	map<int, int> freq;
+    //Store the frequencies of all array elements
+	for (auto a : arr) freq[a]++;
+
+    //To get the least frequency
+	priority_queue<int, vector<int>, greater<int>> pq;
+    //Push the frequencies in min heap 
+	for (auto& f : freq) pq.push(f.second);
+
+	while (k > 0) {
+		k -= pq.top();//Remove a freq from heap
+
+		if (k >= 0) pq.pop();//If k still ahs some value
+	}
+	return pq.size();
+}
+
+
+// Running Median in a Stream
+//T.C - O(logN)  S.C - O(N)
+class MedianFinder {
+    // Brute force -  As numbers are incoming find their pos to be inserted(insertion sort) and shift the rest elements(n)
+    // Do this for n times so T.C - O(N^2) 
+    priority_queue<int> lows;//Gives the max from small elements
+    priority_queue<int, vector<int>, greater<int>> highs;//Gives the min from large elements
+    public:
+    MedianFinder() {}
+    
+    void addNum(int num) {
+        //Lows heap is empty of the num incoming is smaller than the max in heap
+        if(lows.empty() || num < lows.top()) lows.push(num);
+        else highs.push(num);
+
+        //Rebalance the heaps to avoid highs heap becoming larger
+        if(lows.size() < highs.size()){
+            lows.push(highs.top());
+            highs.pop();
+        }
+        //Lows can only have 1 extra element than highs(for odd cases - 9 elements -> 5 in lows & 4 in highs)
+        else if(lows.size() > highs.size() + 1){
+            highs.push(lows.top());
+            lows.pop();
+        }
+    }
+    
+    double findMedian() {
+      // computing the result depending if we have seen odd amount of elements or not
+      // if lows size > highs means we have odd elements else even elements
+      return lows.size() > highs.size() ? lows.top() : (lows.top() + highs.top()) / 2.0;
+    }
+};

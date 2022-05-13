@@ -1,7 +1,6 @@
 //                               Arrays
 // Subarray with given sum
 // Count the triplets
-// Kadane’s Algorithm
 // Rearrange array alternatively
 // Number of pairs
 // Leaders in an array
@@ -14,7 +13,6 @@
 // Last Index of 1
 // Spirally traversing a matrix
 // Largest Number formed from an Array
-// Find Missing And Repeating
 // Maximum Index
 // Consecutive 1’s not allowed
 // Two numbers with sum closest to zero
@@ -28,6 +26,7 @@
 // Count primes
 // Find Right Interval
 // Maximum distinct elements after removing k elements
+// Pascals Triangle
 
 
 
@@ -67,33 +66,6 @@
 
 
 
-//                              Hashing
-// Design Hashmap
-// Relative Sorting
-// Sorting Elements of an Array by Frequency
-// Common elements
-// Minimum number of swaps required to sort an array
-// Find all four sum numbers
-// Swapping pairs make sum equal
-// Count distinct elements in every window
-// Array Pair Sum Divisibility Problem
-// Longest consecutive subsequence
-// Array Subset of another array
-// Find first repeated character
-// Zero Sum Subarrays
-// Minimum indexed character
-// Check if two arrays are equal or not
-// Uncommon characters
-// Smallest window in a string containing all the characters of another string
-// First element to occur k times
-// Check if frequencies can be equal
-// Encode and Decode TinyUrl
-// Repeated DNA Sequences
-// Check If a String Contains All Binary Codes of Size K
-// Delete Duplicate Folders in System
-
-
-
 //                       Dynamic Programming
 // Minimum Operations
 // Max length chain
@@ -110,20 +82,24 @@
 // Travelling Salesman
 // Paint fence (Permutation Combination)
 // Find optimal cost to construct a binary search tree
-// Unique BSTs		
+// Unique BSTs	
+// Word break	
+// Partition to K Equal Sum Subsets
+
 
 
 
 
 //                       Recursion & Backtracking
-// Word Boggle
 // Generate IP Addresses
-// Number of paths
+// Word Boggle
 // Special Keyboard
-// Josephus problem
-// Word Search
-// Goldmine problem
-
+// Find shortest safe route in a path with landmines
+// Special Keyboard
+// Largest number in K swaps
+// String Permutations by changing case
+// Unique Generalized Abbreviations
+// Different Ways to Add Parentheses
 
 
 
@@ -141,7 +117,11 @@
 // Longest Consecutive 1’s
 // Sparse Number
 // Alone in a couple
+// Flipping an Image
 // Maximum subset XOR
+// Single Number (easy)
+// Two Single Numbers (medium) *
+// Complement of Base 10 Number (medium)
 
 
 
@@ -153,8 +133,35 @@
 // Relative Sorting		
 // Maximum Index
 // Minimum Number of Arrows to Burst Balloons		
-// find four elements that sum to a given value
-// find a pair with a given difference
-// minimum no. of swaps required to sort the array
+// Find four elements that sum to a given value
+// Find a pair with a given difference
+// Minimum no. of swaps required to sort the array
 // K-th Element of Two Sorted Arrays
 // Missing Number in AP
+// Sort array according to count of set bits
+// Insertion Sort Algorithm
+// Selection Sort Algorithm
+// Bubble Sort Algorithm
+// Merge Sort Algorithm
+// QuickSort Algorithm
+// Relative Sorting
+// Shell Sort
+// Radix Sort
+// Heap Sort Algorithm
+// Introsort Algorithm
+// Counting Sort Algorithm
+// Inversion Count of an array
+// Sort elements by their frequency and Index
+// Sort an array based on order defined by another array
+// Efficiently sort an array with many duplicated values
+// Find largest number possible from set of given numbers
+// Find the surpasser count for each element of an array
+// Segregate positive and negative integers using Merge Sort
+// Group anagrams together from given list of words
+// First Missing Positive
+// Valid Pairs
+// Find The Repeating And Missing Number
+// Intersection Of Two Arrays
+// Find K Closest Elementss
+// Order of People Heights
+// Attend Maximum Parties
