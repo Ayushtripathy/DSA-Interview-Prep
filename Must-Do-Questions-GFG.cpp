@@ -42,7 +42,6 @@
 // CamelCase Pattern Matching
 // String Ignorance
 // Smallest window in a string containing all the characters of another string
-// Design a tiny URL or URL shortener
 // Non Repeating Character
 // Check if strings are rotations of each other or not
 // Save Ironman
@@ -51,7 +50,9 @@
 // Geek and its Colored Strings
 // Second most repeated string in a sequence
 // Wildcard matching
+// Regular Expression Matching
 // String valid shuffle
+// Find minimum operations required to transform a string into another string
 
 
 
@@ -63,6 +64,7 @@
 // Check if a binary tree is subtree of another binary tree				
 // Reconstruct itinerary
 // Print all root-to-leaf paths in any order
+// Delete Duplicate Folders in System
 
 
 
@@ -162,6 +164,6 @@
 // Valid Pairs
 // Find The Repeating And Missing Number
 // Intersection Of Two Arrays
-// Find K Closest Elementss
+// Find K Closest Elements
 // Order of People Heights
 // Attend Maximum Parties

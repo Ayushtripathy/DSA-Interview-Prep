@@ -535,3 +535,58 @@ int maxPerfectNumbers(int arr[],int size,int k){
     }
     return maxSUm(arr,size,k);
 }
+
+
+// Subarrays with K Different Integers
+//T.C - O(2N)  S.C - O(K)
+int atmostK(vector<int>& arr, int K) {
+    int i = 0, j = 0, substrings = 0;
+    unordered_map<int, int> freq;
+    const int N = arr.size();
+        
+    while(i < N) {
+        // Expand the window
+        if(K >= 0) {//If we have scope of finding more unique no.
+            ++freq[arr[i]];//Inc count in map
+            if(freq[arr[i]] == 1) --K;//Found an unique no. so decrement k
+            ++i;//MOve window
+        }
+        // make the window valid
+        while(K < 0) {
+            --freq[arr[j]];//Now remove no. from left of window
+            if(freq[arr[j]] == 0) ++K;//Completely remove the unique value so scope of unique(k) increases
+            ++j;//Slide the window to right
+        }
+        // Each valid window adds the subarrays which satisfies the condition
+        // For : 1,2,1, k=2
+        // 1: [1] 
+        // 2: [2], [1,2]
+        // 3: [1,2], [2,1], [1,2,1]
+        substrings += i - j + 1;//calculate the window size
+    }
+    return substrings;
+}
+int subarraysWithKDistinct(vector<int>& arr, int K) {
+    return atmostK(arr, K) - atmostK(arr, K-1);
+}
+
+
+// Check If a String Contains All Binary Codes of Size K
+// T.C - O(N)  S.C - O(N)
+bool hasAllCodes(string s, int k) {
+    f (k > s.size()) return false;
+    int count = 0;
+    int start = 0;
+    set<int>hash;//sets doesn't allow duplicates'
+    for(int i = 0; i <s.length(); i++) {
+        count++;//Increase the window
+        if(count == k){//We are in the req window
+        hash.insert(s.substr(start,start+k));//Insert k size substr into set
+        start++;
+        count--;//Move the window
+        }
+    }
+   return hash.size() == pow(2,k);
+}
+
+
