@@ -1363,3 +1363,43 @@ vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int ne
     }
     return image;
 }
+
+
+//Critical Connections in a Network
+//T.C - O()  S.C - O()
+void dfs(int node, int parent,vector<int>&vis ,vector<int>&low,vector<int>&time,int timer,vector<vector<int>>&adj,vector<vector<int>>&bridges){
+    vis[node]=1;
+    low[node]=time[node]=timer++;//Increment the time whenever we visit a node
+    for(auto it : adj[node]){//Traverse the adj node
+        if(it == parent) continue;//If adj node is parent then skip
+            
+        if(!vis[it]){//Found an unvisited node
+            dfs(it,node,vis,low,time,timer,adj,bridges);//Dfs further
+            low[node]=min(low[node],low[it]);
+            if(low[it]>time[node]){
+                bridges.push_back({node,it}); 
+            }
+        }
+        else low[node]=min(low[node],time[it]);
+    }
+}
+vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+    vector<vector<int>>adj(n);
+    //Convert and store as graph
+    for(auto &x:connections){
+        adj[x[0]].push_back(x[1]);
+        adj[x[1]].push_back(x[0]);
+    }
+    //To store ans
+    vector<vector<int>>bridges;
+        
+    vector<int>vis(n,0); 
+    vector<int>low(n,-1);
+    vector<int>time(n,-1);
+    int timer=0;
+       
+    for(int i=0;i<n;i++){
+        if(!vis[i]) dfs(i,-1,vis,low,time,timer,adj,bridges);
+    }
+    return bridges;
+}

@@ -72,8 +72,6 @@
 // Minimum Operations
 // Max length chain
 // Minimum Path Sum
-// Minimum number of Coins
-// Longest Common Substring
 // Minimum number of jumps
 // Box Stacking
 // Path in Matrix
@@ -81,7 +79,7 @@
 // Count number of ways to cover a distance
 // Optimal Strategy for a Game
 // Shortest Common Supersequence
-// Travelling Salesman
+// Traveling Salesman
 // Paint fence (Permutation Combination)
 // Find optimal cost to construct a binary search tree
 // Unique BSTs	
@@ -124,7 +122,10 @@
 // Single Number (easy)
 // Two Single Numbers (medium) *
 // Complement of Base 10 Number (medium)
-
+// Maximum AND
+// Gray code
+// Find the element that appears once
+// Reverse bits
 
 
 //                           Sorting
