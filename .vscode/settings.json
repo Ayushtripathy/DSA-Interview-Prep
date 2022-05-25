@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["freqs", "heapify", "Indegree", "inorder", "stoi"]
+  "cSpell.words": [
+    "freqs",
+    "heapify",
+    "Indegree",
+    "inorder",
+    "Parenthesization",
+    "stoi",
+    "Supersequence"
+  ]
 }

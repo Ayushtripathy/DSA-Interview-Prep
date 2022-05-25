@@ -69,7 +69,6 @@
 
 
 //                       Dynamic Programming
-// Minimum Operations
 // Max length chain
 // Minimum Path Sum
 // Minimum number of jumps
@@ -78,7 +77,6 @@
 // Minimum sum partition
 // Count number of ways to cover a distance
 // Optimal Strategy for a Game
-// Shortest Common Supersequence
 // Traveling Salesman
 // Paint fence (Permutation Combination)
 // Find optimal cost to construct a binary search tree
@@ -101,31 +99,6 @@
 // Unique Generalized Abbreviations
 // Different Ways to Add Parentheses
 
-
-
-//                                Bit Magic
-// Find first set bit
-// Rightmost different bit
-// Check whether K-th bit is set or not
-// Toggle bits given range
-// Set kth bit
-// Power of 2
-// Bit Difference
-// Rotate Bits
-// Swap all odd and even bits
-// Count total set bits
-// Longest Consecutive 1’s
-// Sparse Number
-// Alone in a couple
-// Flipping an Image
-// Maximum subset XOR
-// Single Number (easy)
-// Two Single Numbers (medium) *
-// Complement of Base 10 Number (medium)
-// Maximum AND
-// Gray code
-// Find the element that appears once
-// Reverse bits
 
 
 //                           Sorting
