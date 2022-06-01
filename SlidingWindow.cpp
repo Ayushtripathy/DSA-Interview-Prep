@@ -590,3 +590,27 @@ bool hasAllCodes(string s, int k) {
 }
 
 
+// Subarrays with Product Less than a Target
+//T.C - O(N)  S.C - O(1)
+int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+    if(k <= 1) return 0;// Base case
+
+    int prod = 1;//Store the product
+    int subarrays = 0;//Number of subarrays
+
+    //Sliding window
+    int left = 0;
+    int right = 0;
+
+    while(right < nums.size()) {
+        prod *= nums[right];
+        //Exceed the window boundary
+        while(prod >= k){//Until the product becomes less than k
+            prod /= nums[left];//Divide the multiplied element from left
+            left++;
+        }
+        subarrays += right - left + 1;//Window size
+        right++;
+    }
+    return subarrays;
+}

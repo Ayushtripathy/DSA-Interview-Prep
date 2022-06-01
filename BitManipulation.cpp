@@ -269,3 +269,64 @@ vector<int> generateSubsets(int arr[],int n){
     }
     return ds;
 }
+
+
+//Number of Steps to Reduce a Number to Zero
+int numberOfSteps (int num) {
+    int count=0;
+    while(num){
+        if(num%2) --num;//If odd just reduce the num
+        else num>>=1; // num=num/2
+        ++count;
+    }
+    return count;
+}
+
+// Maximum Product of Word Lengths
+// T.C - O(N*N) S.C - O(N)
+bool checkCommon(bitset<26> &a, bitset<26> &b){ // function to check if two bitset are common
+    for(int i=0;i<26;i++) if(a[i] && b[i]) return true; // if any of the bits are true, return true
+    return false; // otherwise return false
+}
+int maxProduct(vector<string>& words) { // function to find the maximum product
+    int n = words.size(); // number of words
+    int ans=0; // initialize the answer
+    vector<bitset<26>> chars(n); // vector of bitset
+
+    for(int i=0;i<n;i++){ // iterate over all the words 
+
+        // iterate over all the characters in the words[]
+        for(auto &ch:words[i]) chars[i][ch-'a'] = 1; // set the bitset to 1
+
+        for(int j=0;j<i;j++){ // iterate over all the words before the current word
+            if(!checkCommon(chars[i],chars[j])){// if the two words are not common
+                ans = max(ans, (int)words[i].size()*(int)words[j].size()); // update the answer
+            } 
+        }
+    }
+    return ans; // return the answer
+}
+
+
+// Divide two integers
+//T.C - O(log(dividend))
+int divide(int dividend, int divisor) {
+    if(dividend == divisor) return 1;//Same number division
+        
+    bool isPositive = (dividend<0 == divisor<0);    // if both are of same sign, answer is positive
+        
+    unsigned int a = abs(dividend);
+    unsigned int b = abs(divisor);
+    unsigned int ans = 0;
+        
+    while(a >= b){  // while dividend is greater than or equal to divisor
+        short q = 0;
+        while(a > (b<<(q+1))) q++;//Keep increasing the power of 2(i.e q)
+        ans += (1<<q);  // add the power of 2 found to the answer
+        a = a - (b<<q);  // reduce the dividend by divisor * power of 2 found
+    }
+        
+    // if ans cannot be stored in signed int
+    if(ans == (1<<31) and isPositive) return INT_MAX;
+    return isPositive ? ans : -ans;
+}

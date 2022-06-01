@@ -27,6 +27,12 @@
 // Find Right Interval
 // Maximum distinct elements after removing k elements
 // Pascals Triangle
+// Insert Interval (medium): LC 57
+// Intervals Intersection (medium): LC 986
+// Find all Missing Numbers (easy): LC 448
+// Find the Duplicate Number (easy): LC 287
+// Find all Duplicate Numbers (easy): LC 442
+// Set Mismatch
 
 
 
@@ -104,13 +110,13 @@
 //                           Sorting
 // Wave array		
 // Count the number of possible triangles		
-// Triplets with sum with given range		
+// Triplets with sum with given range	
+// Count all distinct pairs with difference equal to k
 // Count Inversions		
 // Relative Sorting		
 // Maximum Index
 // Minimum Number of Arrows to Burst Balloons		
 // Find four elements that sum to a given value
-// Find a pair with a given difference
 // Minimum no. of swaps required to sort the array
 // K-th Element of Two Sorted Arrays
 // Missing Number in AP
@@ -123,6 +129,7 @@
 // Relative Sorting
 // Shell Sort
 // Radix Sort
+// Cyclic Sort
 // Heap Sort Algorithm
 // Introsort Algorithm
 // Counting Sort Algorithm
@@ -134,8 +141,8 @@
 // Find the surpasser count for each element of an array
 // Segregate positive and negative integers using Merge Sort
 // Group anagrams together from given list of words
-// First Missing Positive
 // Valid Pairs
+// First Missing Positive
 // Find The Repeating And Missing Number
 // Intersection Of Two Arrays
 // Find K Closest Elements

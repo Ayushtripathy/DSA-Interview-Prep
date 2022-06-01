@@ -1111,3 +1111,136 @@ class EggDropping {
         return dp[eggs][floors] = minAttempts;
     }
 };
+
+
+// Climbing Stairs
+class ClimbingStairs {
+    //Recursive Method
+    //T.C - O(2^N)  S.C - O(1)
+    int minSteps(int n){
+        if(n == 0 || n == 1 || n == 2) return n;
+
+        return (steps(n-1) + steps(n-2));
+    }
+
+    //Dynamic Programming
+    //T.C - O(N) S.C - O(N)
+    int climbStairs(int n) {
+        if(n==1) return 1;//Base case
+        int* dp = new int[n+1];//Dp array
+        dp[0]= 1;//Initialization
+        dp[1]= 1;
+
+        for(int i=2;i<=n;i++){
+            dp[i] = dp[i-1] + dp[i-2];//Store the ans for prev steps
+        }
+        return dp[n];
+    }
+};
+
+
+// Min Cost Climbing Stairs
+// T.C - O(N)  S.C - O(N)
+int minCostClimbingStairs(vector<int>& cost) {
+    int n = cost.size();
+    int *dp = new int[n+1];
+    dp[0] = cost[0];
+    dp[1] = cost[1];
+    for(int i = 2; i < n;i++){
+        //Add curr stair cost with the prev(min cost) min step
+        dp[i] = cost[i] + min(dp[i-1],dp[i-2]);
+    }
+    return min(dp[n],dp[n-1]);
+
+    //T.C - O(N)  S.C - O(1)
+     int n = cost.size();//We'll edit the cost array itself
+     for(int i=2;i<n;i++){
+         cost[i] = min(cost[i-1],cost[i-2]) + cost[i];
+        }
+    return min(cost[n-1],cost[n-2]);
+}
+
+
+// Frog Jump
+class FrogJump {
+    public:
+    // Min Cost Frog Jump Energy
+    // T.C - O(N)  S.C - O(N)
+    int frogJump(int n, vector<int> &heights){
+        vector<int>dp(n,0);
+        dp[0] = 0;
+        for(int i = 1; i < n;i++){
+            //Take one step and store energy cost
+            int firstStep = dp[i-1] + abs(heights[i] - heights[i-1]);
+            int secondStep = INT_MAX;
+            if(i > 1) secondStep = dp[i-2] + abs(heights[i] - heights[i-2]);
+
+            dp[i] = min(firstStep, secondStep);//Store min energy cost
+        }
+        return dp[n-1];
+    }
+
+    // Frog Jump Leetcode
+    //T.C - O(N*N)  S.C - O(N)
+    unordered_map<int, bool> dp;
+    bool canCross(vector<int>& stones) {
+        int key = pos | k << 11;//Store the key
+        
+        if (dp.count(key) > 0) return dp[key];//Already the saw the pos
+        
+        for (int i = pos + 1; i < stones.size(); i++) {
+            int gap = stones[i] - stones[pos];//Find the gap
+
+            if (gap < k - 1) continue;//Gap is less than prev jump so skip
+
+            if (gap > k + 1) return dp[key] = false;//Gap is greater than prev jump so return false
+
+            if (canCross(stones, i, gap)) return dp[key] = true;
+        }
+        return dp[key] = (pos == stones.size() - 1);
+    }
+
+
+};
+
+
+// House Robber
+class HouseRobber {
+    public:
+    // House Robber 1
+    // T.C - O(N)  S.C - O(N)
+    int houseRobber(vector<int>& nums) {
+        if(nums.size()==0) return 0;//No money in house
+        
+        if(nums.size()==1) return nums[0];//Only 1 house is there so loot it
+
+        if(nums.size()==2) return max(nums[0],nums[1]);//Two houses are there so loot the one with max money(adj can't be looted)
+        
+        int n = nums.size();
+        int dp[n];
+        dp[0] = nums[0];
+        dp[1] = max(nums[0],nums[1]);
+        
+        for(int i=2;i<n;i++){
+            int robHouse = dp[i] + dp[i-2];//Rob the house take the loot and move two houses(adj looting not allowed)
+            int notRobHouse = dp[i-1];//Move to the next house
+            dp[i] = max(robHouse,notRobHouse);
+        }
+        return dp[n-1];
+    }
+
+    // House Robber II
+    //T.C - O(N)  S.C - O(N)
+    int rob(vector<int>& nums) {//Houses are circular in nature
+        // edge cases:
+        if (nums.size() == 0) return 0;
+        if (nums.size() == 1) return nums[0];
+        if (nums.size() == 2) return max(nums[0], nums[1]);
+        
+        // either use first house and can't use last or last and not first:
+        vector<int> v1(nums.begin(), nums.end()-1);
+        vector<int> v2(nums.begin()+1, nums.end());
+        return max(houseRobber(v1), houseRobber(v2));
+    }
+
+};
