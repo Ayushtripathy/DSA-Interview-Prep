@@ -76,7 +76,6 @@
 
 //                       Dynamic Programming
 // Max length chain
-// Minimum Path Sum
 // Minimum number of jumps
 // Box Stacking
 // Path in Matrix
@@ -87,7 +86,6 @@
 // Paint fence (Permutation Combination)
 // Find optimal cost to construct a binary search tree
 // Unique BSTs	
-// Word break	
 // Partition to K Equal Sum Subsets
 
 

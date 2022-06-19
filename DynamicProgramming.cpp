@@ -297,8 +297,8 @@ class CountSubsetDiff {
     // s1 - s2 = diff (given)
     // s1 + s2=sum of array (logical)
     // Therefore adding both eq we get :
-    // 2s1= diff + sum of array
-    // s1= (diff + sum of array)/2;
+    // 2s1 = diff + sum of array
+    // s1 = (diff + sum of array)/2;
     // Problem reduces to find no of subsets with given sum
     public:
     //T.C - O(N*sum)  S.C - O(N*sum)
@@ -711,13 +711,51 @@ int longestPalindromeSubseq(string s) {
 }
 
 
+// Longest Palindromic Substring
+// Dynamic Programming
+//T.C - O(N*M)  S.C - O(N*M)
+string longestPalindrome(string s) {
+    int n = s.length();
+    if(n == 0) return s;// if there is no string the return empty string
+    
+    bool dp[n][n];// declaring boolean array to be false
+    memset(dp, 0, sizeof(dp));
+    
+    // declaring all the substring with single letter be true because they all are palindromic
+    for(int i = 0; i < n; i++) dp[i][i] = true;
+        
+    // this will store longest palindromic substring
+    string ans = "";
+    // if no palindromic substring found then the single letter will always be the answer
+    ans += s[0];
+        
+    // now iterating the boolean matrix where the 
+    //row and col are the start and end of the substring row == start and column == end
+        
+    for(int i = n-1; i >= 0; i--) {
+        for(int j = i+1; j < n; j++) {
+            // if the start and end are equal then look for next conditions
+            if(s[i] == s[j]) {
+                // whether the substring is of length 2 or the substring inside the extremist is palindromic or not if yes then the whole current substring is pallindromic
+                if(j - i == 1 || dp[i+1][j-1]) {
+                    dp[i][j] = true;        
+                    // if the current substring size if greater then current then the previous ans stored then update the answer
+                    if(ans.size() < j-i+1) ans = s.substr(i, j-i+1);
+                    }
+                }
+            }
+        }
+    return ans;
+}
+
+
 // Count Palindromic substrings
 // Dynamic Programming
 //T.C - O(N^2/2)  S.C - O(N^2)
 int countSubstrings(string s) {
     int n = s.length();
     bool dp[n][n];
-    int cnt=0;
+    int cnt = 0;
     
     // only way is diagonal by diagonal filling as  we will access previous diagonal elements
     for(int gap=0;gap<n;gap++){// gap is len of substr in a cell
@@ -728,7 +766,7 @@ int countSubstrings(string s) {
             if(gap == 0) dp[i][j] = true;
 
             else if(gap == 1){ // diagonal with gap 2
-                if(s[i] == s[j]) dp[i][j]=true;//If chars are same then only its palindrome
+                if(s[i] == s[j]) dp[i][j] = true;//If chars are same then only its palindrome
                 else dp[i][j] = false;
             }
 
@@ -740,9 +778,11 @@ int countSubstrings(string s) {
                 }
             // count all palindromes
             if(dp[i][j]) cnt++;
+            //If asks max longest palindrome len
+            // if(dp[i][j]) maxPal = gap+1;//Store the max palindrome
+
         }
     }
-
     return cnt;
 }
 
@@ -751,13 +791,17 @@ int countSubstrings(string s) {
 // Dynamic Programming
 //T.C - O(N*M) S.C - O(N*M)
 int minDistance(string word1, string word2) {
-     int lcs = LCS(word1,word2,word1.length(),word2.length());
+    int lcs = LCS(word1,word2,word1.length(),word2.length());
 
-     //Now to make two strs same just leave the lcs and remove the rest chars
-     int delete1 = word1.length() - lcs;
-     int delete2 = word1.length() - lcs;
+    // Operations to make str palindrome
+    // lps = LCS(word1,reverse(word1),word1.length(),word2.length());
+    //ans = word1.length() - lps;
 
-     return delete1 + delete2;
+    //Now to make two strs same just leave the lcs and remove the rest chars
+    int delete1 = word1.length() - lcs;
+    int delete2 = word1.length() - lcs;
+
+    return delete1 + delete2;
 }
 
 
@@ -766,6 +810,37 @@ int minDistance(string word1, string word2) {
 // T.C - O(N*M)  S.C - O(N*M)
 int seqMatch(string s,string t){
     return LCS(s,t,s.length(),t.length()) == min(s.length(),t.length());
+}
+
+
+// Edit Distance
+// T.C - O(N*M)  S.C - O(N*M)
+int minDistance(string word1, string word2) {
+    int n = word1.size();
+    int m = word2.size();
+        
+    int dp[n+1][m+1];
+        
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; j <= m; j++){
+            if(i == 0) dp[i][j] = j;//word1 is null so insert word2 in dp
+            if(j == 0) dp[i][j] = i;//word2 is null so insert word1 in dp
+        }
+    }
+        
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            // if char match then check for rest of the string
+            if(word1[i-1] == word2[j-1])
+                dp[i][j] = dp[i-1][j-1];  
+            // if char does not match, we have three options
+            // 1. delete the unmatching char from word1. 
+            // 2. insert the unmaching char in word1.
+            // 3. replace the unmatching char with the char to be matched
+            else dp[i][j] = 1 + min({dp[i-1][j], dp[i][j-1], dp[i-1][j-1]});
+        }
+    } 
+    return dp[n][m];
 }
 
 
@@ -1243,4 +1318,429 @@ class HouseRobber {
         return max(houseRobber(v1), houseRobber(v2));
     }
 
+};
+
+
+// Ninja Training
+class NinjaTraining {
+    public:
+    // Memoized Method
+    // T.C - O(N*12)  S.C - O(N + N*4)
+    int fn(int day,int lastTask,vector<vector<int>>&points,vector<vector<int>>&dp){
+        //Base case
+        if(day == 0){//It's the last day remaining
+        int maxi = 0;
+        //Traverse the task array
+        for(int task=0;task<3;task++){//Only 3 tasks are there
+        //Can't perform two tasks in consecutive days
+        if(task != lastTask) maxi = max(maxi,points[0][task]);//Take the max points
+        }
+        return maxi;
+        }
+
+        //Already computed and stored
+        if(dp[day][lastTask] != -1) return dp[day][lastTask];
+
+        int maxi = 0;
+        for(int task = 0;task<3;task++){//Only 3 tasks are there
+        if(task != lastTask){
+            //Store the points for doing that task on that day and recursively calculate the points for rest days
+            int point = points[day][task] + fn(day-1,task,points,dp);
+            maxi = max(maxi,point);
+        }
+        }
+        return dp[day][lastTask] = maxi;
+    }
+    int ninjaTraining(int n, vector<vector<int>> &points){
+        //Treat days as index
+        vector<vector<int>>dp(n,vector<int>(4,-1));//Dp array
+        return fn(n-1,3,points,dp);
+    }
+
+
+    // Dynamic Programming
+    // T.C - O(N*12)  S.C - O(N*4)
+    int ninjaTraining(int n, vector<vector<int>> &points){
+        vector<vector<int>>dp(n,vector<int>(4,0));//Dp array
+
+        //Base cases(0th day)
+        dp[0][0] = max(points[0][1],points[0][2]);
+        dp[0][1] = max(points[0][0],points[0][2]);
+        dp[0][2] = max(points[0][0],points[0][1]);
+        dp[0][3] = max(points[0][0],max(points[0][1],points[0][2]));
+
+        for(int day=1;day<n;day++){
+            for(int lastTask=0;lastTask<4;lastTask++){
+                int dp[day][lastTask] = 0;
+                for(int task = 0;task<3;task++){//Only 3 tasks are there
+                   if(task != lastTask){
+                    //Store the points for doing that task on that day plus the points for rest days
+                    int point = points[day][task] + dp[day-1][task];
+                    dp[day][lastTask] = max(dp[day][lastTask],point);
+                    }
+                }
+            }
+        }
+        return dp[n-1][3];
+    }
+};
+
+
+// Grid unique paths
+class UniquePath {
+    public:
+    //Recursive Method
+    //T.C - O(2^(M*N))  S.C - O(m-1 + n-1)
+    int uniquePaths(int m, int n) {
+        if(m == 1 && n == 1) return 1;//Count the path
+
+        if(m < 0 || n < 0) return 0;//Not count path
+        
+        int up = uniquePaths(m-1,n);
+        int left = uniquePaths(m,n-1);
+
+        return up + left;//Return sum of all possible paths
+    }
+
+    //Dynamic Programming
+    //T.C - O(N*M)  S.C - O(N*M)
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> dp(m, vector<int> (n));//Dp array
+        
+        for(int i = 0; i < m; i++){//Traverse each cell
+            for(int j = 0; j < n; j++){
+                // if(mat[i][j] == -1) dp[i][j] = 0;//If matrix has obstacles
+                if(i == 0 && j == 0) dp[i][j] = 1;//Reached destination
+                else {
+                    //Go in left dir
+                    int leftSide = 0;
+                    if(i-1 >= 0) leftSide = dp[i-1][j];//Find paths in left
+
+                    //Go in upward dir
+                    int upSide = 0;
+                    if(j-1 >= 0) upSide = dp[i][j-1];//Find paths in up
+                    
+                    dp[i][j] = leftSide + upSide;//Store total paths
+                }
+            }
+        }
+        return dp[m-1][n-1];
+    }
+};
+
+
+// Minimum Path Sum
+// T.C - O(N*M)  S.C - O(N*M)
+int minPathSum(vector<vector<int>>& grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+    vector<vector<int>> dp(m, vector<int> (n,0));
+        
+    //Traverse the matrix
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            //Base case - Add the sum to path(0,0 is part of path)
+            if(i == 0 && j == 0) dp[i][j] = grid[i][j];
+                
+            else {                    
+                int leftSide = grid[i][j];
+                if(i-1 >= 0) leftSide += dp[i-1][j];//Store the path sum if we go left
+                else leftSide += 1e9;//Out of bounds
+                    
+                int upSide = grid[i][j];
+                if(j-1 >= 0) upSide += dp[i][j-1]; //Store the path sum if we go up           
+                else upSide += 1e9;//Out of bounds
+                        
+                dp[i][j] = min(leftSide,upSide);//Store the min of the two path sums
+            }
+        }
+    }
+    return dp[m-1][n-1];
+}
+
+
+// Dungeon Game
+// Recursive Method
+// T.C - O(2^N)  S.C - O(N)
+int getValRecursive(vector<vector<int>> &mat, int i=0, int j=0,vector<vector<int>>& dp){
+    int n = mat.size();
+    int m = mat[0].size();
+    // Base case : we have crossed the matrix, ie. out of bound
+    // if current row crosses then my row is below the princess or 
+    // if current column crosses then my column is ahead the column of princess
+    // and because we can go only down and right so we wont be able reach princess
+    if(i == n || j == m) return 1e9; 
+        
+	// Base Case : we have reached our destination ie. last cell
+    // we reached princess , cheers return this cost;
+    if(i == n-1 and j == m-1) return (mat[i][j] <= 0) ? -mat[i][j] + 1 : 1;
+
+    // if we know the answer for this cell then no need to recalculate those, simply return those values 
+    if( dp[i][j] != 1e9) return dp[i][j];
+        
+    // now we must try all possible paths , we ask our right and and down cell
+    int IfWeGoRight = getValRecursive(mat , i , j+1);
+    int IfWeGoDown = getValRecursive(mat , i+1 , j);
+    
+    // min of either values and then cost of this cell
+    int minHealthRequired =  min(IfWeGoRight , IfWeGoDown) - mat[i][j];
+    
+    // point 2 as explained 
+    dp[i][j] = ( minHealthRequired <= 0 ) ? 1 : minHealthRequired; 
+    return dp[i][j];     
+}
+int calculateMinimumHP(vector<vector<int>>& dungeon) {
+    //vector<vector<int> > dp(n + 1, vector<int>(m + 1, 1e9));
+    // return getValRecursive(dungeon,dp);
+    int n = dungeon.size();
+    int m = dungeon[0].size();
+
+    vector<vector<int> > dp(n + 1, vector<int>(m + 1, 1e9));
+    dp[n][m - 1] = 1;//Min req health is 1 to travel the grid
+    dp[n - 1][m] = 1;
+    
+    //Move from last grid towards the starting point
+    for (int i = n - 1; i >= 0; i--){
+        for (int j = m - 1; j >= 0; j--) {
+            int goDown = dp[i + 1][j];//Health req to go down
+            int goRight = dp[i][j + 1];//Health req to go right
+            int need = min(goDown,goRight) - dungeon[i][j];//Store the HP needed
+            dp[i][j] = need <= 0 ? 1 : need;// store this value
+        }
+    }
+    return dp[0][0];
+}
+
+
+// Triangle Problem
+// T.C - O(N*N)  S.C - O(N*N)
+int minimumTotal(vector<vector<int>>& triangle) {
+    int n = triangle.size();
+    vector<vector<int>> dp(n,vector<int> (n,0));
+
+    for(int i=n-1;i>=0;i--){
+        for(int j=triangle[i].size()-1;j>=0;j--){
+            int down = 0;
+            if(i+1 < n) down = triangle[i][j] + dp[i+1][j];
+            
+            int diagonal = 0;
+            if(i+1 < n && j+1 < triangle[i+1].size()) diagonal = triangle[i][j] + dp[i+1][j+1];
+            
+            
+            dp[i][j] = min(down,diagonal);
+        }
+    }
+    return dp[0][0];
+}
+
+
+// Wildcard Matching
+class WildcardMatch {
+    //Recursive Method
+    //T.C - O(Exponential)  S.C - O(N+M)
+    bool func(int i, int j, string &t, string &s){
+        //Base case
+        if(i < 0 && j < 0) return true;
+        if(i < 0 && j >= 0) return false;
+        
+        if(j < 0 && i >= 0){
+            for(int k=0;k<=i;k++){
+                if(t[k] != '*') return false;
+            }
+            return true;
+        }
+        
+        //if they matched or equal to ?(any 1 char)
+        if(t[i] == s[j] || t[i]=='?') return func(i-1,j-1,t,s);
+        
+        //if They DO NOT match
+        if(t[i] == '*'){
+            return func(i-1,j,t,s) || func(i,j-1,t,s);
+        }
+        return false;// (a == b) no   thats why false;
+    }
+    bool isMatch(string s, string t) {
+        return func(t.size()-1,s.size()-1,t,s);
+    }
+
+    // Dynamic Programming
+    //T.C - O(N*M)  S.C - O(N*M)
+    bool isMatch(string s, string t) {
+        int m = s.size();
+        int n = t.size();
+        vector<vector<bool>> dp(n+1, vector<bool> (m+1,0));
+        
+        dp[0][0] = 1;// base case - 1st cell
+        // base case - 2
+        for(int j=1;j<=m;j++) dp[0][j] = false;//last row
+        // base case - 3
+        for(int i=1;i<=n;i++){//last col
+            int flag = true;
+            for(int k=1;k<=i;k++){
+                if(t[k-1] != '*'){
+                    flag = false;
+                    break;
+                }
+            }
+            dp[i][0] = flag;//found a *
+        }
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                //if chars matched or found a ?
+                if(t[i-1] == s[j-1] || t[i-1]=='?') dp[i][j] = dp[i-1][j-1];
+                
+                // if found a *
+                else if(t[i-1] == '*') dp[i][j] = dp[i-1][j] || dp[i][j-1];
+                
+                else dp[i][j] = false;//Chars did not match
+            }
+        }
+        return dp[n][m];
+    }
+};
+
+
+// Longest Increasing Subsequence
+// Tabulation Method
+// T.C - O(N*N)  S.C - O(N*N)
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    //Make  n+1*n+1 dp array. Why n+1? -> we're doing ind+1
+    vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        
+    //Start from bottom of array
+    for(int ind = n-1;ind>=0;ind--){
+        //Prev for initial element will be -1
+        for(int prev = ind-1;prev>=-1;prev--){
+            //Doing prev+1 for shifting coordinate
+            int len = 0 + dp[ind+1][prev+1];//We don't pick the num to be part of LIS
+            if(prev == -1 || nums[ind] > nums[prev]){//Valid condn. for LIS
+                //Pass curr index(ind) as pre idx
+                len = max(len,1 + dp[ind+1][ind+1]);//We pick the num to be part of LIS 
+            }
+            dp[ind][prev] = len;//Store in dp after taking max len
+        }
+    }
+    return dp[0][-1+1];
+}
+// Binary Search Method
+// T.C - O(N*logN)  S.C - O(N)
+int lengthOfLIS(vector<int>& nums) {
+    vector<int>temp;
+    temp.push_back(nums[0]);
+
+    for(int i=1; i<nums.size();i++){//Traverse the vector
+        //Incoming num is greater than already existing
+        if(nums[i] > temp.back()) temp.push_back(nums[i]);
+        //Found a smaller num so overwrite it
+        else{
+            int idx = lower_bound(temp.begin(), temp.end(),nums[i]) - temp.begin();
+            temp[idx] = nums[i];//Overwrite the new num
+        }
+    }
+    return temp.size();//Length of LIS
+}
+
+
+// Word Break
+class WordBreak {
+ public:
+ // Recursive Method
+ // T.C - O(2^N)  S.C - O(N)
+ bool wordBreak(String s, int curIndex, List<String> wordDict) {
+     // Reached the end of str means found the str in dictionary
+     if (curIndex == s.length()) return true;
+     
+     // Ex -> fix 'l' and recur for 'eetcode'
+     for (int end = curIndex+1; end <= s.length(); end++) {
+         string split = s.substring(curIndex, end);//Split and store the later part of str
+         if (wordDict.contains(split)) {//Dictionary has the splitted str(use set to check)
+             //Recur and check for rest of the string
+             if(recur(s, end, wordDict)) return true;
+         }
+     }    
+     return false;
+ }
+
+ // Dynamic dictionary
+ // T.C - O(N^3)  S.C - O(N)
+ unordered_map<string, bool> dp;
+ bool wordBreakHelp(string word, unordered_map<string, bool>& dict){
+    //if present in dict
+    if(dict.find(word) != dict.end()) return true;
+        
+    //if present in dp, no need to call 
+    if(dp.find(word) != dp.end()) return dp[word];    
+    
+    for(int i=0; i<word.length(); i++){
+        string left = word.substr(0, i+1); //always starts from beginning
+        string right = word.substr(i+1); //remaining string till the last letter;
+            
+        if(dict.find(left) != dict.end()){//Found the left part in dict
+            bool res = wordBreakHelp(right, dict); //rest of the string is recursed for right part
+                
+            if(res == true){
+                dp[word] = true; //entire word exists
+                return true;
+            }
+        }
+    }
+    //if no prefix is found to be matching, word does not exist
+    dp[word] = false;
+    return false;      
+ }
+ bool wordBreak(string s, vector<string>& wordDict) {
+    unordered_map<string, bool> dict;
+    //Push in map which makes it easy to search
+    for(string s : wordDict) dict[s] = true;
+    return wordBreakHelp(s, dict);
+ }
+};
+
+
+class BuySellStock {
+    public:
+    // At most 2 Transactions
+    //Greedy Method
+    //T.C - O(N)  S.C - O(1)
+    int maxProfit(vector<int>& prices) {
+        int minPrice1 = INT_MAX;
+        int minPrice2 = INT_MAX;
+        int profit1 = 0;
+        int profit2 = 0;
+        for(int i=0;i<prices.size();i++){
+            //Min Price on that day for 1st transaction
+            minPrice1 = min(minPrice1,prices[i]);
+            profit1 = max(profit1,prices[i] - minPrice1);
+            //Min Price on that day for 2nd transaction after 1st profit
+            minPrice2 = min(minPrice2,prices[i] - profit1);
+            profit2 = max(profit2 , prices[i] - minPrice2);
+        }
+        return profit2;
+    }
+
+    // At most k transactions
+    //Dynamic Programming
+    //T.C - O(N*k)  S.C - O(2*k)
+    int maxProfit(int k, vector<int>& prices) {
+        //Now we need to store k min prices and profits instead of 2
+        if(k == 0) return 0;
+        int minPrice[k];
+        int maxProf[k];
+        for(int i = 0; i < k; i++){
+            minPrice[i] = INT_MAX;
+            maxProf[i] = 0;
+        }
+
+        for(int i=0;i<prices.size();i++){
+            //Min Price on that day for k transactions
+            for(int j=0;j<k;j++){
+                //Calculate minPrice after the prev transaction
+                minPrice[j] = min(minPrice[j],prices[i] - (j > 0 ? maxProf[j-1] : 0));
+                maxProf[j] = max(maxProf[j],prices[i] - minPrice[j]);
+            }
+        }
+        return maxProf[k-1];
+    }
 };
