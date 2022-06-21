@@ -1698,7 +1698,7 @@ class WordBreak {
  }
 };
 
-
+// Buy and Sell Stock
 class BuySellStock {
     public:
     // At most 2 Transactions
@@ -1744,3 +1744,59 @@ class BuySellStock {
         return maxProf[k-1];
     }
 };
+
+
+// Paint the Fence
+//T.C - O(N)  S.C - O(1)
+long long countWays(int n, int k){
+    if(n == 0) return 0 ;//No fence is there
+    if(n == 1) return k;//For one fence any color can be used
+
+    //In case of two fences
+    long long same = k;//Same color on both fence(choose any from k)
+    long long diff = (k*(k-1));//Diff color on fences(choose from k and then k-1)
+
+    for(long long i=3;i<=n;i++){
+        long long prev = diff;
+        diff = ((same+diff)*(k-1));
+        same = prev;
+    }
+    return (same+diff);
+}
+
+
+// Longest Increasing Path in Matrix
+// T.C - O(M*N)  S.C - O(M*N)
+int dx[4] = {0,0,1,-1};
+int dy[4] = {1,-1,0,0};
+int dfs(vector<vector<int>> &matrix,int i,int j,vector<vector<int>> &dp){
+    if(dp[i][j] != -1) return dp[i][j]; // return if result is already calculated
+	dp[i][j] = 1;  // minimum path from each cell is always atleast 1
+
+    for(int i=0;i<4;i++){//Check all 4 directions whether curr orange can rot anyone
+        int new_i = i + dx[i];
+        int new_j = j + dy[j];
+        //Cell is in bound and next cell has greater value than curr
+        if(x>=0 && y>=0 && x<m && y<n && matrix[x][y] > matrix[i][j]){
+            //Store the max while exploring the further path
+            // max( current optimal, select current + optimal solution after moves[k] from current cell
+            dp[i][j] = max(dp[i][j], 1 + solve(matrix, new_i, new_j,dp));
+        }
+    }
+    return dp[i][j];
+}
+int longestIncreasingPath(vector<vector<int>>& matrix) {
+    int m = matrix.size();
+    int n = matrix[0].size();
+    int longestPath = 0;
+    vector<vector<int>> dp(m, vector<int>(n,-1));//dp memo
+
+    //Go to each cell and calculate the longest path using dfs
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            dp[i][j] = dfs(matrix,i,j,dp);
+            longestPath = max(longestPath,dp[i][j]);
+        }
+    }
+    return longestPath;
+}
