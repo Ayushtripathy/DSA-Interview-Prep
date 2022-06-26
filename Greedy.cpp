@@ -2,7 +2,7 @@
 
 //Job Sequencing Problem
 //T.C - O(NlogN + N*M) S.C - O(M) (Deadline - M)
-bool comparison(Job a,Job b){
+static bool comparison(Job a,Job b){
     return (a.profit > b.profit);
 }
 pair<int,int> JobSequencing(Job arr[],int n){
@@ -61,7 +61,7 @@ struct Meeting{
     int end;
     int pos;
 };
-bool comparator(struct Meeting a, struct Meeting b){
+static bool comparator(struct Meeting a, struct Meeting b){
     if(a.end < b.end) return true; //a ends before b
     else if(a.end > b.end) return false;
     else if(a.pos < b.pos) return true;//If both have same time
@@ -111,7 +111,7 @@ vector<int> minCoinsChange(int value){
 int minimumPlatforms(int arr[],int dept[],int N){
     sort(arr,arr+N);
     sort(dept,dept+N);
-    int platforms = 1;
+    int platforms = 1;//At least one train has to be there
     int maxPlat = 1;
     int i = 1;j = 0;
 
@@ -161,7 +161,7 @@ pair<int,int> maxMinDiff(int arr[],int size){
         maxDiff += (arr[i+size/2] - arr[i]);//Diff of max and min nodes to maximise
         minDiff += (arr[2*i+1] - arr[2*i]);//Diff of adjacent nodes to minimise
     }
-    returm make_pair(maxDiff,minDiff);
+    return make_pair(maxDiff,minDiff);
 }
 
 
@@ -277,7 +277,7 @@ int getMinDiffHeight(int arr[],int n,int k){
 // Minimize the sum of product
 //T.C - O(2NlogN + N) S.C - O(1)
 long long int minValue(int a[], int b[], int n){
-    //Sort both the arrays and multiply smalllest of a to largest of b
+    //Sort both the arrays and multiply smallest of a to largest of b
     sort(a,a+n);
     sort(b,b+n);
 
@@ -382,6 +382,7 @@ int pageFaults(int pages[],int n,int capacity){
     return pageFault;
 }
 
+
 // Police and Thieves
 //T.C - O(N) S.C - O(N)
 int catchThieves(char arr[], int n, int k){
@@ -389,7 +390,7 @@ int catchThieves(char arr[], int n, int k){
     vector<int>police;
     vector<int>thief;
 
-    for(int i=0; i<n; i++){//Store the indices of police and theives
+    for(int i=0; i<n; i++){//Store the indices of police and thieves
         if(arr[i] == 'P') police.push_back(i);
         else if(arr[i] == 'T') thief.push_back(i);
     }
@@ -402,13 +403,14 @@ int catchThieves(char arr[], int n, int k){
             maxThief++;
         }
         else if(thief[thiefIndex] < police[policeIndex]){
-            //thief is far away so move it close
+            //thief is far away so check for next thief
             thiefIndex++;
         }
-        else policeIndex++;
+        else policeIndex++;//Police is far away find another one
     }
     return maxThief;
 }
+
 
 // Minimum Number of Taps to Open to Water a Garden
 // T.C - O(N*N)  S.C - O(1)

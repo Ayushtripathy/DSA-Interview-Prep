@@ -455,7 +455,7 @@ int minCost(int arr[],int n){
 }
 
 
-// Merge K sorted arrays LC 23
+// Merge K sorted arrays
 //T.C - O(NlogK)  S.C - O(K)
 typedef pair<int, pair<int, int> > ppi;
 vector<int> mergeKArrays(vector<vector<int>>arr){

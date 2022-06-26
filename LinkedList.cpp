@@ -257,7 +257,7 @@ Node* reverseKGroup(Node* head, int k){
         cnt++;
     }
 
-    //Conecting nodes after reverse (head)->1 2 3 == 3 2 1(head)->(next)
+    //Connecting nodes after reverse (head)->1 2 3 == 3 2 1(head)->(next)
     if(next) head->next = reverseKGroup(next,k);
     return prev;//After complete reversing,prev becomes head;
 }
@@ -402,23 +402,17 @@ Node* mergeSort(Node* head){
 //T.C - O(3N/2) S.C - O(1)
 bool isPalindrome(Node* head){
     if(head==NULL || head->next==NULL) return true;
-    ListNode* fast =head;
-    ListNode* slow = head;
+   Node* mid = findMidLL(head);
 
-    while(fast->next!=NULL && fast->next->next!=NULL){
-        fast = fast->next->next;
-        slow = slow->next;
+    mid->next = reverseList(mid->next);
+    mid = mid->next;
+
+    while(mid){
+        if(head->val != mid->val) return false;
+        head = head->next;
+        mid = mid->next;
     }
-
-    slow->next = reverseList(slow->next);
-    slow = slow->next;
-
-    while(slow){
-      if(head->val != slow->val) return false;
-      head = head->next;
-      slow = slow->next;
-    }
-      return true;  
+    return true;  
 }
 
 
@@ -448,22 +442,22 @@ bool detectCycle(Node* head){
 //Find the starting point of the Loop of LinkedList and Remove it
 //T.C - O(N) S.C - O(1)
 void startingPointLoop(Node* head){
-     if(head==NULL||head->next==NULL) return;
+    if(head == NULL|| head->next == NULL) return;
     Node*slow = head;
     Node* fast = head;
+
     //Check for Loop
     while(fast && fast->next){
         fast = fast->next->next;
         slow = slow->next;
-        if(slow==fast){
-            break;
-        }
+        if(slow == fast) break;
     }
-    //No loop
-    if(slow!=fast) return;//If the above loop broke for some other reason
 
-     slow = head;//To find the starting of loop
-     while(slow!=fast){
+    //No loop
+    if(slow != fast) return;//If the above loop broke for some other reason
+
+    slow = head;//To find the starting of loop
+    while(slow != fast){
         fast = fast->next;
         slow = slow->next;
     }
@@ -478,25 +472,25 @@ void startingPointLoop(Node* head){
 //T.C - O(N) S.C - O(1)
 Node* removeNthFromEnd(Node* head,int n){
     if(!head) return head;
-    Node* dummy = new Node();
-    dummy->next = head;
-    Node* fast = dummy;
-    Node* slow = dummy;
-
-    for(int i=1;i<=n;++i) fast = fast->next;
-
+        
+    Node* fast = head;
+    Node* slow = head;
+        
+    for(int i=0;i<n;i++) fast = fast->next;
+        
+    if(!fast) return head->next;
+        
     while(fast->next){
         fast = fast->next;
         slow = slow->next;
     }
-
     slow->next = slow->next->next;
-    return dummy->next;
+    return head;
 }
 
 
 //Intersection 'Y' of two linked lists
-//T.C - O(n1 + n1 - n2 + n2) S.C - O(1)
+//T.C - O(2*n1 - 2*n2) S.C - O(1)
 Node* getIntersection(Node* headA,Node* headB){
     if(!headA) return NULL;
     if(!headB) return NULL;
@@ -528,6 +522,7 @@ Node* getIntersection(Node* headA,Node* headB){
 //Intersection of two Linked Lists(Common elements)
 //T.C - O(N+M) S.C - O(N+M)
 Node* findIntersection(Node* headA, Node* headB){
+    //use hashmap tp store both lists
     Node* ptr1 = headA;
     Node* ptr2 = headB;
     Node* head = NULL;
@@ -602,7 +597,7 @@ Node* addTwoNumbers(Node *headA, Node *headB){
     Node* temp = dummy;
     int carry = 0;
 
-    while(headA && headB && carry){
+    while(headA || headB || carry){
         int sum = 0;//To store the sum of node values
         if(headA){
             sum += headA->val;
@@ -696,10 +691,10 @@ Node* rotateLinkedList(Node* head,int k){
 
 
 //Flatten a LinkedList
-//T.C - O(N) S.C - O(1)
+//T.C - O(N*N*M) S.C - O(N*M)
 Node* mergeTwoLists(Node* a, Node* b){
-    Node* temp = new Node(0);
-    Node* res  = temp;
+    Node* res = new Node(0);
+    Node* temp  = res;
 
     while(a && b){
         if(a->data < b->data){
@@ -892,7 +887,7 @@ bool isHappy(int n) {
 }
 
 
-//Merge K sorted Linked list(Brute Force - Merge One by one)
+//Merge K sorted Linked list(Brute Force - Merge 2 at a time)
 //T.C - O(N*K) S.C - O(1)
 Node* mergeTwoLists(Node* l1, Node* l2) {
           Node* head=NULL;  
@@ -934,28 +929,34 @@ Node* mergeKLists(vector<Node*>& lists) {
 }
 //Merge K sorted Linked list(Optimal - Min Heap)
 //T.C - O(NlogK) S.C - O(K)
+class comparator{
+    public:
+    bool operator()(ListNode *x,ListNode *y){
+        return (x->val>y->val);
+    }
+};
 Node* mergeKLists(vector<Node*>& lists){
-    priority_queue <Node*, vector<Node*>, greater<Node*>> pq;
+    priority_queue <Node*, vector<Node*>, comparator> pq;
 
-    //Push head of all k lists
-      for (int i = 0; i < lists.size(); i++){
-      if (lists[i]) pq.push(lists[i]);
-      }
+    //Push heads of all k lists
+    for(int i = 0; i < lists.size(); i++){
+        if(lists[i]) pq.push(lists[i]);
+    }
 
-      if(pq.empty()) return NULL;//K = 0 or lists are empty
+    if(pq.empty()) return NULL;//K = 0 or lists are empty
 
-      Node* dummy = new Node(0);
-      Node* last = dummy;
-      while(!pq.empty()){
-          Node* curr = pq.top();//Extract the smallest out of k
-          pq.pop();
+    Node* dummy = new Node(0);
+    Node* last = dummy;
+    while(!pq.empty()){
+        Node* curr = pq.top();//Extract the smallest out of k
+        pq.pop();
 
-          last->next = curr;//Append this small node to new list
-          last = last->next;
-          //Curr->next holds the address of tha next element that we picked
-          if(curr->next) pq.push(curr->next);
-      }
-      return dummy->next;
+        last->next = curr;//Append this small node to new list
+        last = last->next;
+        //Curr->next holds the address of tha next element that we picked
+        if(curr->next) pq.push(curr->next);
+    }
+    return dummy->next;
 }
 
 
@@ -983,7 +984,7 @@ Node* cloneRandomList(Node* head){
     }
     //Step3 : Break the bonds b/w original and clones
     Node* original = head;
-    Node* copy = head;
+    Node* copy = head->next;
     temp = copy;//Store the ans;
 
     while(original && copy){

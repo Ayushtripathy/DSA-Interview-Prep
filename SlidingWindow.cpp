@@ -221,7 +221,7 @@ int longestKSubstr(string s, int k) {
     //Store distinct chars in map
     while(j < s.length()) {
         map[s[j]]++;//Push in the map
-        if(map.size() < k) j++;//Not enough unique chars so increasethe window
+        if(map.size() < k) j++;//Not enough unique chars so increase the window
         else if(map.size() == k){
             maxLen = max(maxLen,j - i + 1);
             j++;
@@ -277,16 +277,16 @@ int longestNonRepeatingSubstring(string s) {
         map[s[j]]++;
         if(map.size() == j - i + 1){//Window is equal to unique chars
             maxLen = max(maxLen,j - i + 1);
-            j++;
         }
+        //Window size exceeds the unique chars num
         else if(map.size() < j - i + 1){//Found a duplicate char
-        while(map.size() < j - i + 1){
-            map[s[i]]--;
-            if(map[s[i]] == 0) map.erase(s[i]);
-            i++;
+            while(map.size() < j - i + 1){
+                map[s[i]]--;
+                if(map[s[i]] == 0) map.erase(s[i]);
+                i++;
+            }
         }
         j++;
-        }
     }
     return maxLen;
 }

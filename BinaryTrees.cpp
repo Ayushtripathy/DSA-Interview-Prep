@@ -693,7 +693,7 @@ int getMaxWidth(TreeNode* root){
     if (!root) return 0;
  
     int result = 0;
-    queue<pair<TreeNode*,int>> q;
+    queue<TreeNode*> q;
     q.push(root);
     
     while (!q.empty()) {

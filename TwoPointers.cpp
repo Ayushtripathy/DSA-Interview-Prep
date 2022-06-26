@@ -32,7 +32,7 @@ void sortColors(vector<int>& nums) {
 int removeDuplicates(vector<int>& nums) {
     // if(nums.size() == 0) return 0;
     int left = 0;
-    for(int right =1; right< nums.size(); right++){
+    for(int right = 1; right< nums.size(); right++){
         //Found a different element
         if(nums[left] != nums[right]) left++;
         //Replace the diff element
@@ -123,7 +123,7 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
 	}
 	return result;
 }
-   
+
 
 // Trapping Rain water
 // Brute force
@@ -274,14 +274,14 @@ bool backspaceCompare(string S, string T) {
 
 
 // Reverse Pairs
-//T.C - O(NlogN + 2N) S.C - O(1)
+//T.C - O(NlogN) S.C - O(N)
 void checkCount(vector<int>& nums, int start, int mid, int end,int &count) {
     int l = start, r = mid + 1;
     while (l <= mid && r <= end){
         if ((long) nums[l] > (long) 2 * nums[r]){
             count += (mid - l + 1);
             r++;
-            }
+        }
         else l++;
     }
     
@@ -307,7 +307,7 @@ void mergeSort(vector<int>& nums, int start, int end,int &count){
     mergeSort(nums,start, mid,count);
     mergeSort(nums,mid+1,end,count);
         
-    checkCount(nums,start,mid,end);
+    checkCount(nums,start,mid,end,count);
     return;
         
 }
@@ -317,4 +317,27 @@ int reversePairs(vector<int>& nums) {
     int count = 0;
     mergeSort(nums,0,nums.size()-1,count);
     return count;
+}
+
+
+// Sorted Squares Array
+// T.C - O(N)  S.C - O(N)
+vector<int> sortedSquares(vector<int>&nums){
+    int n = nums.size();
+    int start = 0;
+    int end = n-1;
+    int pos = n-1;
+    vector<int>res(n);
+
+    while(start <= end){
+        if(abs(nums[start]) < abs(nums[end])){
+            res[pos--] = nums[end]*nums[end];
+            end--;
+        }
+        else{
+            res[pos--] = nums[start]*nums[start];
+            start++;
+        }
+    }
+    return res;
 }

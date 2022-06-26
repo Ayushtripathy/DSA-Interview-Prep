@@ -150,7 +150,7 @@ bool hasZeroSumSubarray(int nums[], int n){
     return false;
 }
 //Largest Subarray with zero-sum
-//T.C - O(NlogN)  S.C - O(N)
+//T.C - O(N)  S.C - O(N)
 int largestZeroSum(vector<int>&arr){
     //Brute-force -> find all subarrays and store the max length subarray with zero sum
     unordered_map<int,int>map;//Map stores the prefix sum and idx upto the sum
@@ -359,7 +359,7 @@ class TinyUrl {
 
 
 // Longest Consecutive Subsequence
-//T.C - O(N)  S.C - O(N)
+//T.C - O(3N)  S.C - O(N)
 int longestConsecutive(vector<int>& nums) {
     unordered_map<int, int>M;
     for(auto n:nums) M[n]++;//Insert all elements of nums in map
@@ -367,7 +367,7 @@ int longestConsecutive(vector<int>& nums) {
     int ans = 0;//It will store the longest consecutive seq size
 
     for(auto n : nums){
-        //If we find the prev num in map
+        //If we find the prev num in map then we should start from that prev num na
         if(M.find(n-1) != M.end()) continue;//Do nothing
         else{//If we encounter a new element
             int size = 1;//Store the size of curr longest consecutive seq

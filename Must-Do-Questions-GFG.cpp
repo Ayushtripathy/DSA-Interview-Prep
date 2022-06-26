@@ -9,12 +9,10 @@
 // Spirally traversing a matrix
 // Largest Number formed from an Array
 // Smallest Positive missing number
-// Array Product except itself
 // Cycle in a Circular Array
 // Ugly Numer 1
 // Count primes
 // Maximum distinct elements after removing k elements
-// Pascals Triangle
 // Find all Missing Numbers (easy): LC 448
 // Find the Duplicate Number (easy): LC 287
 // Find all Duplicate Numbers (easy): LC 442
@@ -35,12 +33,13 @@
 // Remove common characters and concatenate
 // Second most repeated string in a sequence
 // Regular Expression Matching
+// Generate Valid IP Addresses
+// Reversing Words in string
 
 
 
 
 //                              Tree
-// Mirror a Tree
 // Construct tree from level order
 // Check if a binary tree is subtree of another binary tree				
 // Reconstruct itinerary
@@ -60,7 +59,6 @@
 
 
 //                       Recursion & Backtracking
-// Generate IP Addresses
 // Word Boggle
 // Find shortest safe route in a path with landmines
 // Special Keyboard
@@ -70,19 +68,15 @@
 
 
 //                           Sorting
-// Wave array		
-// Count the number of possible triangles		
 // Triplets with sum with given range	
 // Count all distinct pairs with difference equal to k
 // Count Inversions		
 // Relative Sorting		
 // Maximum Index
 // Minimum Number of Arrows to Burst Balloons		
-// Find four elements that sum to a given value
 // Minimum no. of swaps required to sort the array
 // K-th Element of Two Sorted Arrays
 // Missing Number in AP
-// Sort array according to count of set bits
 // Insertion Sort Algorithm
 // Selection Sort Algorithm
 // Bubble Sort Algorithm
@@ -95,18 +89,13 @@
 // Heap Sort Algorithm
 // Introsort Algorithm
 // Counting Sort Algorithm
-// Inversion Count of an array
 // Sort elements by their frequency and Index
-// Sort an array based on order defined by another array
 // Efficiently sort an array with many duplicated values
 // Find largest number possible from set of given numbers
-// Find the surpasser count for each element of an array
 // Segregate positive and negative integers using Merge Sort
 // Group anagrams together from given list of words
-// Valid Pairs
 // First Missing Positive
 // Find The Repeating And Missing Number
-// Intersection Of Two Arrays
 // Find K Closest Elements
 // Order of People Heights
 // Attend Maximum Parties

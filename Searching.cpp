@@ -11,8 +11,7 @@ int binarySearch(int arr[], int size, int target){
         else if (arr[mid] > target){
             high = mid - 1;
         }
-        else
-            low = mid + 1;
+        else low = mid + 1;
     }
     return -1;
 }
@@ -372,19 +371,26 @@ int searchBitonicArray(int arr[],int size,int low, int high,int target){
 
 
 //Search in Row wise And Column wise Sorted Array
-//T.C - O(n+m)
-int searchSortedMatrix(int arr[][],int size,int key){
-    if(size==0) return -1;
+//T.C - O(n+m) S.C - O(1)
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    if(matrix.size() == 0) return false;//No element in matrix
+    int rows = matrix.size();
+	int cols = matrix[0].size(),
+    int row = 0, col = cols - 1;
 
-    if(key < arr[0][0] || key > arr[size-1][size-1]) return -1;
+    // if((target < matrix[0][0]) || (target > matrix[n-1][m-1])) return false;//Out of bounds target
 
-    int row = 0,col = size-1;
-    while(row < size && col >= 0){
-        if(arr[row][col] == key) return 1;
-        if(arr[row][col] > key) col--;
-        else row++;
-    }
-    return -1;
+	while (row < rows && col > -1) {//While still in matrix
+        int cur = matrix[row][col];
+       //Found the target in curr cell
+        if (cur == target) return true;
+        //Curr cell val is smaller so move to next row(greater value);
+        if (target > cur) row++;
+        //If curr cell value is greater then the lower cell ones
+        //will also be greater so move to prev col(small value)
+        else col--;
+    }    
+    return false;//Target not found
 }
 
 
