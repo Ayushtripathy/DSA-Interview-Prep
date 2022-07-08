@@ -189,17 +189,14 @@ int findFloor(int arr[], int size, int target){
 
     while (start <= end){
         int mid = start + (end - start) / 2;
-        if (arr[mid] == target){
-            return mid;
-        }
+        if (arr[mid] == target) return mid;
         //Found a smaller element
         else if (arr[mid] < target){
             res = mid;
             //Now search for the greater one
             start = mid + 1;
         }
-         else if (arr[mid] > target)
-            end = mid - 1;
+        else if (arr[mid] > target) end = mid - 1;
     }
     return res;
 }
@@ -227,8 +224,8 @@ int findCeil(int arr[], int size, int target){
 
 
 //Next Alphabetical Element
- //T.C - O(logN)
- int nextAlphabet(char arr[], int size, char target){
+//T.C - O(logN)
+int nextAlphabet(char arr[], int size, char target){
     int start = 0;
     int end = size - 1;
     char res = -1;
@@ -307,16 +304,16 @@ int minDifferenceElement(int arr[],int size,int key){
 //T.C - O(logN)
 int findMinInRotatedSortedArray(vector<int>num){
     int start=0,end=num.size()-1;
-        
-        while (start<end) {
-            int mid = (start+end)/2;
-            if (num[start]<num[end]) return num[start];
-            //In case of duplicates
-            // if(nums[left] == nums[mid ] && nums[right] == nums[mid]) left ++, right -- ;
-            if (num[mid]>=num[start]) start = mid+1;//Left half is sorted go right half
-            else end = mid;
-        }
-        return num[start];
+    
+    while (start < end) {
+        int mid = (start+end) >> 1;
+        if (num[start] < num[end]) return num[start];
+        //In case of duplicates
+        // if(nums[left] == nums[mid] && nums[right] == nums[mid]) left ++, right -- ;
+        if (num[mid] >= num[start]) start = mid+1;//Left half is sorted go right half
+        else end = mid;
+    }
+    return num[start];
 }
 
 
@@ -326,14 +323,15 @@ int findMinInRotatedSortedArray(vector<int>num){
 //T.C - O(logN) && O(N) for finding max of peak elements
 int peakElement(int arr[], int size){
     int low = 0, high = size-1;
+
     while(low < high){//Didn't use low<=high because mid can be the ans itself
-    int mid = (low+high)/2;
-    if(arr[mid] > arr[mid+1]){
-        high = mid; //Because mid can be the ans itself
+        int mid = (low+high)/2;
+        if(arr[mid] > arr[mid+1]){
+            high = mid; //Because mid can be the ans itself
         }
         else low = mid + 1;
-        }
-        return arr[low];
+    }
+    return arr[low];
 }
 
 
@@ -341,17 +339,15 @@ int peakElement(int arr[], int size){
 //T.C - O(logN)
 int findMaxBitonicArray(int arr[],int size, int low, int high){
     //If only one element is present
-    if (low == high) 
-        return arr[low]; 
-        //If there're 2 elements & 1st is greater then the 1st element is max
-        if ((high == low + 1) && arr[low] >= arr[high]) 
-        return arr[low]; 
-        //If second is greater then the second element is max
-        if ((high == low + 1) && arr[low] < arr[high])
-        return arr[high]; 
-
- return peakElement(arr,size,low,high)
-
+    if (low == high)  return arr[low]; 
+    
+    //If there're 2 elements & 1st is greater then the 1st element is max
+    if ((high == low + 1) && arr[low] >= arr[high])  return arr[low]; 
+    
+    //If second is greater then the second element is max
+    if ((high == low + 1) && arr[low] < arr[high]) return arr[high]; 
+    
+    return peakElement(arr,size,low,high);
 }
 
 
@@ -446,21 +442,21 @@ int minPageAllocation(int arr[], int size,int students){
 
 //Aggressive Cows
 // T.C - O(NlogN)
-bool canPlaceCows(int arr[], int size,int cows,int distance){
-   int cowCoordinate = arr[0];
+bool canPlaceCows(int arr[], int size,int cows,int dist){
+   int cowCoordinate = arr[0];//Place 1st cow
    int cowCount = 1;
 
    for(int i = 1; i < size; i++){
        if(arr[i] - cowCoordinate >= dist){
-           count++;
+           cowCount++;//Cow placed
            cowCoordinate = arr[i];
        }
        if(cows == cowCount) return true;
    } 
-   return false;
+   return false;//Not able to place all cows
 }
 int aggressiveCows(int arr[], int size,int cows){
-    if(cows>size) return -1;
+    // if(cows>size) return -1;
 
     int low = 1;
     int high = arr[size-1] - arr[0];
@@ -481,34 +477,29 @@ int aggressiveCows(int arr[], int size,int cows){
 
 //Painter Partition
 //T.C - O(NlogN)
-int isPartitionPossible(){
-     int allotedPainters = 1;
+int isPartitionPossible(int arr[], int size,int painters,int limit){
+    int allotedPainters = 1;
     int sum = 0;
 
     for(int i = 0; i < size ;i++){
         sum += arr[i];
         if(sum > limit){
-            allocatedStudents++;
+            allotedPainters++;
             sum = arr[i];
         }
     }
-
     return allotedPainters;
 }
 int paintersPartition(int arr[], int size,int painters){
     if(painters > size) return -1;
 
     //For Upper Bound
-      int sum = 0;
-      int minBound = 0;
-      for (int i = 0; i < n; i++){
-          minBound = max(minBound,arr[i]);
-          sum += arr[i];
-      }
-
-      //For Lower Bound
-    int low = minBound;
-    int high = sum;
+    int low = 0;
+    int high = 0;
+    for (int i = 0; i < n; i++){
+        low = max(low,arr[i]);
+        high += arr[i];
+    }
 
     while(low <= high) {
         int mid = (low + high) >> 1;
@@ -570,6 +561,7 @@ int minSubarraySum(int arr[], int size,int target){
 bool blackBox(int arr[], int size,int limit,int m){
     int count = 1;
     int sum = 0;
+
     for(int i = 0; i < size;++i){
         if(arr[i] > limit) return false;
 
@@ -577,9 +569,7 @@ bool blackBox(int arr[], int size,int limit,int m){
             count++;
             sum = arr[i];
         }
-        else{
-            sum += arr[i];
-        }
+        else sum += arr[i];
     }
     return count <= m;
 }
@@ -590,9 +580,7 @@ int splitArraySum(int arr[], int size,int m){
     int ans = high;
      while(low <= high){
         int mid = (low+high) >> 1;
-        if(!blackBox(arr,size,mid,m)){
-            low = mid + 1;
-        }
+        if(!blackBox(arr,size,mid,m)) low = mid + 1;//See if we can find more large sum
         else{
             ans= mid;
             high = mid - 1;
@@ -605,7 +593,7 @@ int splitArraySum(int arr[], int size,int m){
 //Divide Chocolates
 //T.C - O(NlogN)
 int canGetMoreThanKSubarrays(int arr[], int size,int limit, int k){
-     int count = 0;
+    int count = 0;
     int sum = 0;
     for(int i = 0; i < size;++i){
         sum += arr[i];
@@ -618,19 +606,17 @@ int canGetMoreThanKSubarrays(int arr[], int size,int limit, int k){
 }
 int divideChocolates(int arr[], int size,int k){
     int low = 1;
-     int high  = accumulate(arr, arr+size, high);
-     int ans = 1;
-     while(low <= high){
-         int mid = low + (high - low) / 2;
-         if(canGetMoreThanKSubarrays(arr,size,mid,k)){
-             ans = mid;
-             low = mid + 1; //Because we need Max
-         }
-         else{
-             high = mid - 1;
-         }
-     }
-     return ans;
+    int high  = accumulate(arr, arr+size, high);
+    int ans = 1;
+    while(low <= high){
+        int mid = low + (high - low) / 2;
+        if(canGetMoreThanKSubarrays(arr,size,mid,k)){
+            ans = mid;
+            low = mid + 1; //Because we need Max
+        }
+        else high = mid - 1;
+    }
+    return ans;
 }
 
 
@@ -675,15 +661,15 @@ int shipWithinDays(vector<int>& weights, int days) {
 //Minimized Maximum of Products Distributed to Any Store
 //T.C - O(NlogN)
 int minimizedMaximum(int n, vector<int>& quantities) {
-    int m=quantities.size(), l=1,r=0;
-    for(auto quantity: quantities) r=max(r,quantity);
+    int m = quantities.size(), l=1,r=0;
+    for(auto quantity: quantities) r = max(r,quantity);
         
-    int mid=0, ans=0;
+    int ans=0;
     while(l<=r){
-        mid=(l+r)/2;
-        int count=0;
+        int mid = (l+r) >> 1;
+        int count = 0;
         for(auto quantity: quantities){
-            count+=quantity/mid;
+            count += quantity/mid;
             if(quantity%mid) count++;
         }
 
@@ -697,21 +683,21 @@ int minimizedMaximum(int n, vector<int>& quantities) {
 //Koko Eating Bananas
 //T.C - O(NlogN)
 int minEatingSpeed(vector<int>& piles, int h) {
-        int m=piles.size(), l=1,r=0;
-        for(auto bananas: piles) r=max(r,bananas);
+    int m = piles.size(), l=1,r=0;
+    for(auto bananas: piles) r = max(r,bananas);
         
-        int mid=0, ans=0;
-        while(l<=r){
-            mid=(l+r)/2;
-            int count=0;
-            for(auto bananas: piles){
-                count+=bananas/mid;
-                if(bananas%mid) count++;
-            }
-            if(count<=h) ans=mid,r=mid-1;
-            else l=mid+1;
+    int ans=0;
+    while(l<=r){
+        int mid=(l+r)/2;
+        int count=0;
+        for(auto bananas: piles){
+            count += bananas/mid;
+            if(bananas%mid) count++;
         }
-        return ans;
+        if(count<=h) ans = mid,r = mid-1;
+        else l = mid+1;
+    }
+    return ans;
 }
 
 
@@ -741,14 +727,14 @@ pair<int,int> getNthRoot(int num,int root){
 //T.C - O(logN)
 int singleNonDuplicate(vector<int>& nums) {
     int low = 0, high = nums.size() - 2;
-    while(low<=high){
+    while(low <= high){
         int mid = (low+high) >> 1;
         if(nums[mid] == nums[mid^1]){//Compare the odd and even instance
         low = mid + 1;
         } 
         else high = mid - 1;
-        }
-        return nums[low];
+    }
+    return nums[low];
 }
 
 
@@ -811,77 +797,25 @@ int kthElementSortedArray(int arr1[], int size1,int arr2[], int size2,int k){
 double totalTime(vector<int>&dist, int speed){
     double time = 0.0;
     for(int i = 0; i<dist.size()-1; i++){
-            time+= ceil((double)dist[i]/(double)speed); //taking ceil for first n-1 elements because we can take only integer intervals
-            }
-            time+= ((double)dist[dist.size()-1]/(double)speed); // for the last distance only decimal time needs to be taken to avoid miscalculation
-            return time;
+        time += ceil((double)dist[i]/(double)speed); //taking ceil for first n-1 elements because we can take only integer intervals
+    }
+    time+= ((double)dist[dist.size()-1]/(double)speed); // for the last distance only decimal time needs to be taken to avoid miscalculation
+    return time;
 }
 int minSpeedOnTime(vector<int>& dist, double hour) {
-        int lo = 1, hi = 1e7;
-        int mid;
-        int ans = -1;
-        while(lo<=hi){
-            mid = (lo+((hi-lo)>>1));
-            double time = totalTime(dist,mid);
-            if(time<=hour){
-                ans = mid;
-                hi = mid-1;
-            }
-            else lo = mid+1;
-        }
-        return ans;
-}
-
-
-//Ugly Number III
-//T.C - O(logN)
-lcm(ll a, ll b) {
-    return a*b / __gcd(a, b);
-}
-int nthUglyNumber(int n, int a, int b, int c) {
-    int N = n;
-    int A = a;
-    int B = b;
-    int C = c;
-    int low = 1;
-    int high = 2000000;
-    int ans;
-    //Increment count with  formula (AUBUC)
-    while(low <= high){
-        int mid = (low + high) / 2;
-        int count = 0;
-        count += mid/A;
-        count += mid/B;
-        count += mid/C;
-        count -= mid/lcm(A,B);
-        count -= mid/lcm(B,C);
-        count -= mid/lcm(C,A);
-        count += mid/lcm(A,lcm(B,C));
-
-        if(count >= N){
+    int lo = 1, hi = 1e7;
+    int ans = -1;
+    
+    while(lo<=hi){
+        int mid = (lo+((hi-lo)>>1));
+        double time = totalTime(dist,mid);
+        if(time <= hour){
             ans = mid;
-            high = mid - 1;
+            hi = mid-1;
         }
-        else low = mid + 1;
+        else lo = mid+1;
     }
     return ans;
-}
-
-
-//Equilibrium Index
-//T.C - O(N)
-int equilibrium(int arr[], int n){
-    int sum = 0; // initialize sum of whole array
-    int leftsum = 0; // initialize leftsum
- 
-     for (int i = 0; i < n; ++i) sum += arr[i];
-     
-     for (int i = 0; i < n; ++i){
-         sum -= arr[i]; // sum is now right sum for index i
-        if (leftsum == sum) return i;
-        leftsum += arr[i];
-    }
-    return -1;
 }
 
 

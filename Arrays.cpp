@@ -351,3 +351,20 @@ vector<int> majorityElement(vector<int>& nums) {
     if (count2 > size/3) ans.push_back(num2);
     return ans;
 }
+
+
+//Equilibrium Index
+//T.C - O(N)
+int equilibrium(int arr[], int n){
+    int sum = 0; // initialize sum of whole array
+    int leftSum = 0; // initialize leftSum
+ 
+     for (int i = 0; i < n; ++i) sum += arr[i];
+     
+     for (int i = 0; i < n; ++i){
+         sum -= arr[i]; // sum is now right sum for index i
+        if (leftSum == sum) return i;
+        leftSum += arr[i];
+    }
+    return -1;
+}

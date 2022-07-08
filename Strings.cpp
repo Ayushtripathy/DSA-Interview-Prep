@@ -33,3 +33,27 @@ bool isAnagram(string s, string t) {
     }
     return true;//Is anagram(no char remains in array)
 }
+
+
+// String to Integer(atoi)
+// T.C - O()  S.C - O()
+int myAtoi(string s){
+
+}
+
+// Reverse Words in a string
+//T.C - O(N)  S.C - O(N)
+string reverseWords(string s) {        
+    vector<string> vec;
+    stringstream ss(s);
+    string word;
+        
+    while(ss >> word) vec.push_back(word);
+        
+    string res = "";
+
+    for(int i=vec.size()-1;i>=0;i--) res += vec[i] + ' ';
+        
+    res.pop_back();
+    return res;
+}

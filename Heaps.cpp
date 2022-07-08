@@ -366,7 +366,7 @@ vector<int> topKFrequent(vector<int>& nums, int k) {
 struct MyComp {
     bool operator() (const pair<int, string>& a, const pair<int, string>& b) {
         if(a.first != b.first) return a.first > b.first;//If word count is not equal return the more freq
-        else return a.second < b.second;//If the count is equal return the smallerr one
+        else return a.second < b.second;//If the count is equal return the smaller one
     }
 };
 vector<string> topKFrequent(vector<string>& words, int k) {
@@ -484,7 +484,7 @@ vector<int> mergeKArrays(vector<vector<int>>arr){
 
 // Kth Largest Sum Subarray
 //Brute force - Find sum of all subarrays using 2 loops,store them in an array,sort it and return k-1 element
-//T.C - O(N*NlogN) S.C - O(N*N)
+//T.C - O(N*N + NlogN) S.C - O(N*N)
 int kthLargestSum(vector<int>&arr,int n,int k){
     vector<int>res;
 	// Pick starting point
@@ -526,16 +526,24 @@ int kthLargestSum(vector<int>&arr,int n,int k){
 
 // Kth Smallest Number in a Sorted Matrix
 //T.C - O(N*NlogK) S.C - O(K)
+typedef pair<int,pair<int,int>> ppi;
 int kthSmallest(vector<vector<int>>& matrix, int k) {
-    priority_queue<int>pq; 
+    priority_queue<ppi, vector<ppi> , greater<ppi>> pq;
     int n = matrix.size();
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            pq.push(matrix[i][j]);
-            if(pq.size() > k) pq.pop();
-        }
+    //Push the first cell in min heap
+    for(int i=0; i<n; ++i) pq.push({mat[0][i],{0,i}});
+        
+    int ans;
+    while(k--){//We need only kth smallest
+        int val = pq.top().first;
+        int row = pq.top().second.first;
+        int col = pq.top().second.second;
+        pq.pop();
+        ans = val;//Store the ans
+        //If its not the kth element go to the next row element
+        if(row != n-1) pq.push({mat[row+1][col],{row+1,col}});
     }
-    return pq.top();   
+    return ans;
 }
 
 
@@ -544,7 +552,7 @@ int kthSmallest(vector<vector<int>>& matrix, int k) {
 string reorganizeString(string s) {
     vector<int>freq(26);
 
-    // Step 1 Count the occ. of each charcater in given string
+    // Step 1 Count the occ. of each character in given string
     for(auto ch : s) {
         //If occ. of any char exceeds half of str length then its not possible to reorganize
         if(++freq[ch-97] > (s.length()+1)/2) return "";
@@ -581,7 +589,7 @@ string reorganizeString(string s) {
 vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
     // Brute force - sort the  points and return the k closest/Smallest pts by calculating dist
     vector<vector<int>>res;//We want to return k points
-    if(points.size()==0) return res;
+    if(points.size() == 0) return res;
     priority_queue<pair<int,pair<int,int>>> pq;//Build a max heap
 
     //Traverse the points
@@ -621,7 +629,7 @@ vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k
     for(int i=0;i<nums1.size();i++) {
         for(int j=0;j<nums2.size();j++) {
 
-            int sum = nums1[i]+nums2[j];//Take sum of 2 nums
+            int sum = nums1[i] + nums2[j];//Take sum of 2 nums
 
             //There is space in pq so insert the sum 
             if (pq.size() < k) pq.push({sum,{nums1[i],nums2[j]}});
@@ -652,16 +660,16 @@ class KthLargest {
     int size;
     //T.C - O(NlogK)  S.C - O(K)
     KthLargest(int k, vector<int> nums) {
-        size=k;
+        size = k;
         for(int i=0;i<nums.size();i++) {
             pq.push(nums[i]);
-            if(pq.size()>k) pq.pop();//we just have to keep k largest
+            if(pq.size() > k) pq.pop();//we just have to keep k largest
         }
     }
     //T.C - O(logN)  S.C - O(1)
     int add(int val) {
-        pq.push(val);//NOw pq size will exceed  k
-        if(pq.size()>size) pq.pop();//Del the min ones to maintain k elements only in min heap
+        pq.push(val);//Now pq size will exceed  k
+        if(pq.size() > size) pq.pop();//Del the min ones to maintain k elements only in min heap
         return pq.top();//This will give min from pq i.e k largest
     }
 };
@@ -831,7 +839,7 @@ int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
 	while (k > 0) {
 		k -= pq.top();//Remove a freq from heap
 
-		if (k >= 0) pq.pop();//If k still ahs some value
+		if (k >= 0) pq.pop();//If k still has some value
 	}
 	return pq.size();
 }
@@ -843,7 +851,7 @@ class MedianFinder {
     // Brute force -  As numbers are incoming find their pos to be inserted(insertion sort) and shift the rest elements(n)
     // Do this for n times so T.C - O(N^2) 
     priority_queue<int> lows;//Gives the max from small elements
-    priority_queue<int, vector<int>, greater<int>> highs;//Gives the min from large elements
+    priority_queue<int, vector<int>, greater<int>>highs;//Gives the min from large elements
     public:
     MedianFinder() {}
     
@@ -870,3 +878,31 @@ class MedianFinder {
       return lows.size() > highs.size() ? lows.top() : (lows.top() + highs.top()) / 2.0;
     }
 };
+
+
+//Minimum sum of squares of character counts in a given string after removing “k” characters.
+//T.C - O(K*logN) S.C - O(N)
+int minStringValue(string str, int k){
+    if(k >= str.length()) return 0;
+    int freq[26] = {0};
+    //Store the freq of each char
+    for(int i=0;i<str.length();i++) freq[str[i] - 'a']++;
+
+    priority_queue<int>pq;//Store the freq in max heap
+    for(int i=0;i<26;i++) pq.push(freq[i]);
+
+    while(k--){//This is to remove the highly frequent char
+        //Extract max k freq and decrease them by 1
+        int temp = pq.top();
+        pq.pop();
+        pq.push(--temp);
+    }
+    //Calculate the sum of squares by taking values from heap
+    int result = 0;
+    while(!pq.empty()){
+        int temp = pq.top();
+        result += temp*temp;
+        pq.pop();
+    }
+    return result;
+}

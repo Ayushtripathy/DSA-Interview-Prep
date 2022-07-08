@@ -45,13 +45,11 @@ void stackLL(){
     
     int peek(){
     // If stack is not empty , return the top element
-    if (!isEmpty())
-        return top->data;
-    else
-        exit(1);
-        }
+    if (!isEmpty()) return top->data;
+    else exit(1);
+    }
         
-        void pop(){
+    void pop(){
     Node* temp;
     if(!top) exit(1);
     else{
@@ -101,9 +99,9 @@ int main(){
 }
 
 
-//Valid Parantheses
+//Valid Parentheses
 //T.C - O(N) S.C - O(N)
-bool isValidParantheses(string str){
+bool isValidParentheses(string str){
     stack<char> st;
     if(str.length() == 0) return true;
     if(str.length() == 1) return false;
@@ -118,11 +116,12 @@ bool isValidParantheses(string str){
             if(c == '}' && stack.top() != '{') return false;
             if(c == ')' && stack.top() != '(') return false;
             if(c == ']' && stack.top() != '[') return false;
+            st.pop();
         }
         //If c is an opening bracket
-        else st.push();
+        else st.push(c);
     }
-    if(stack.empty) return true;
+    if(stack.empty()) return true;
     return false;
 }
 
@@ -136,15 +135,13 @@ vector<int> nextGreaterElements(vector<int>& nums,int n){
     //Traverse from the end
     for(int i=0; i<2n-1; ++i){
         //Remove any smaller elements in stack
-        while(!st.empty() && arr[i%n]>=st.top()) st.pop();
-        if(!st.empty()){
-            //Remaining element would be next greater
-            ans[i] = st.top();
-        }
+        while(!st.empty() && arr[i%n] >= st.top()) st.pop();
+        //Remaining element would be next greater
+        if(!st.empty()) ans[i] = st.top();
         else ans[i] = -1; //No element greater is present
         st.push(arr[i%n]);
     }
-       return ans;
+    return ans;
 }
 vector<int> nextSmallerElements(vector<int>& nums,int n){
     vector<int>ans(n);
@@ -152,25 +149,23 @@ vector<int> nextSmallerElements(vector<int>& nums,int n){
     //Traverse from the end
     for(int i=0; i<2n-1; i++){
         //Remove any greater elements in stack
-        while(!st.empty() && arr[i%n]<=st.top()) st.pop();
-        if(!st.empty()){
-            //Remaining element wouuld be next greater
-            ans[i] = st.top();
-        }
+        while(!st.empty() && arr[i%n] <= st.top()) st.pop();
+        //Remaining element would be next smaller
+        if(!st.empty()) ans[i] = st.top();
         else ans[i] = -1; //No element greater is present
         st.push(arr[i%n]);
     }
-       return ans;
+    return ans;
 }
 
 
 //Reverse a Stack(Recursion)
-//T.C - O()  S.C - O()
+//T.C - O(N^2)  S.C - O(N)
 void insertAtBottom(stack<int>&st,int element){
     if(st.empty()){
         st.push(element);
         return;
-        }
+    }
     int el = st.top();
     st.pop();
     insertAtBottom(st,element);
@@ -188,35 +183,35 @@ void reverseStack(stack<int> &stack){
 
 
 //Sort a stack(Recursion)
-//T.C - O(N*N)  S.C - O(N)
-void sortedInsert(stack<int> &stack, int element){
-    if(stack.empty() || element > stack.top()){
-        stack.push(element);
+//T.C - O(N^N)  S.C - O(N)
+void sortedInsert(stack<int> &st, int element){
+    if(st.empty() || element > st.top()){
+        st.push(element);
         return;
     }
 
-    int el = stack.top();
-    stack.pop();
-    sortedInsert(stack,element);
-    stack.push(el);
+    int el = st.top();
+    st.pop();
+    sortedInsert(st,element);
+    st.push(el);
 }
-void sortStack(stack<int> &stack){
-    if(stack.empty()) return;
+void sortStack(stack<int> &st){
+    if(st.empty()) return;
     
-    int top = stack.top();
-    stack.pop();
-    sortStack(stack);
-    sortedInsert(stack,top);
+    int top = st.top();
+    st.pop();
+    sortStack(st);
+    sortedInsert(st,top);
 }
 
 
 //Stock Span Problem
 //T.C - O(N)  S.C - O(N)
 vector<int> stockSpan(int price[],int size){
-    vector<int>output;
+    vector<int>output(size,0);
     stack<int>st;
     st.push(0);//Push the first element index
-    output[0] = 1;//Deafult value is 1
+    output[0] = 1;//Default value is 1
 
     for(int i = 1;i<size;i++){
         //Remove all the prices lesser than current price in stack
@@ -242,8 +237,6 @@ bool MATRIX[N][N] = {{0, 0, 1, 0},
 bool knows(int a, int b) return MATRIX[a][b];
 int findCelebrity(int n){
     stack<int>st;
-
-    int celeb;
     //Push all elements to stack
     for(int i = 0; i < n;i++) st.push(i);
 
@@ -261,7 +254,7 @@ int findCelebrity(int n){
 
     if(st.empty()) return -1;
 
-    celeb = st.top();
+    int celeb = st.top();
     st.pop();
 
     for(int i =0; i<n;++i){
@@ -302,7 +295,7 @@ class LRUCache{
 
     void addNode(Node* newNode){
         Node* temp = head->next;
-        newNode->next = temp;
+        newNode->next = temp; 
         newNode->prev = head;
         head->next = newNode;
         temp->prev = newNode;
@@ -324,7 +317,7 @@ class LRUCache{
             int ans = resNode->val;
             map.erase(key);//Remove from the map
             deleteNode(resNode);
-            addNode(resNode);
+            addNode(resNode);//Add again as it becomes recently used now
             map[key] = head->next//Store the new address
             return ans;
         }
@@ -339,7 +332,7 @@ class LRUCache{
         }
         if(map.size() == cacheCapacity){//If size is exceeded
             map.erase(tail->prev->key);//Remove node from map
-            deleteNode(tail->prev);//Delete the nodr just before tail
+            deleteNode(tail->prev);//Delete the node just before tail
         }
         addNode(new Node(key,value));//Add new node
         map[key] = head->next;//Store the address of node
@@ -359,13 +352,14 @@ int largestRectangleArea(vector<int> &heights) {
       for (int k = i; k <= j; k++) {
         min_height = min(min_height, heights[k]);
       }
+      //Also store the max area
       max_area = max(max_area, min_height * (j - i + 1));
     }
   }
   return max_area;
 }
 //Stack Based
-//T.C - O(5N)  S.C - O(3N)
+//T.C - O(3N)  S.C - O(3N)
 int largestRectangleArea(vector<int> &heights){
     stack<int>st;
     int leftSmall[heights.size()];
@@ -381,6 +375,7 @@ int largestRectangleArea(vector<int> &heights){
         st.push(i);
     }
 
+    //Next smaller element to right
     for(int i = heights.size() - 1; i >= 0; i--){
         //Remove the greater elements from stack
         while(!st.empty() && heights[st.top()] >= heights[i]) st.pop();
@@ -390,11 +385,12 @@ int largestRectangleArea(vector<int> &heights){
         st.push(i);
     }
 
+    //Calculate max area
     int maxArea = 0;
     for(int i=0;i< heights.size(); i++){
         maxArea = max(maxArea,heights[i]*(rightSmall[i] - leftSmall[i] + 1));
     }
-    return maxA;
+    return maxArea;
 }
 //Most Optimized
 //T.C - O(2N)  S.C - O(N)
@@ -421,19 +417,20 @@ int largestRectangleArea(int* heights,int size){
 //Max Rectangle in Binary Matrix with all 1's
 //T.C - O(N*M) S.C - O(M)
 int maxAreaMatrix(int M[MAX][MAX],int n,int m){
-     //Compute area for 1'st row
-     int area = largestRectangleArea(M[0],m);
+    //Compute area for 1'st row
+    int area = largestRectangleArea(M[0],m);
 
-     for(int i=1;i<n;++i){
-         for(int j=0;j<m;++j){
-             //Update row by adding prev row's value
-             if(M[i][j] != 0) M[i][j] += M[i-1][j]; 
-             else M[i][j] = 0;//If row value is zero
-         }
-         //Row is updated now 
-         area = max(area,largestRectangleArea(M[i],m))
-     }
-     return area;
+    //Start from 2nd row
+    for(int i=1;i<n;++i){
+        for(int j=0;j<m;++j){
+            //Update row by adding prev row's value
+            if(M[i][j] != 0) M[i][j] += M[i-1][j]; 
+            else M[i][j] = 0;//If row value is zero
+        }
+        //Row is updated now 
+        area = max(area,largestRectangleArea(M[i],m))
+    }
+    return area;
 }
 
 
@@ -443,15 +440,14 @@ bool findRedundantBrackets(string &str){
     stack<char> st;
     for(int i = 0;i<str.length();++i){
         //Push the operators and opening braces
-        if(str[i] == '(' || str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') st.push(str[i]);
-        else {//Found a closing bracket
-            if(str[i] == ')'){
-                bool isRedundant = true;
-                //Until we find an opening bracket
-                while(st.top() != '('){
-                    //If it's an operator
-                    if(st.top() == '+' || st.top() == '-' || st.top() == '*' || st.top() == '/') isRedundant = false;
-                    st.pop();
+        if(str[i] != ')') st.push(str[i]);
+        else if(str[i] == ')') {//Found a closing bracket
+            bool isRedundant = true;
+            //Until we find an opening bracket
+            while(st.top() != '('){
+                //If it's an operator
+                if(st.top() == '+' || st.top() == '-' || st.top() == '*' || st.top() == '/') isRedundant = false;
+                st.pop();
             }
             //If no operator was found between the brackets
             if(isRedundant) return true;
@@ -459,17 +455,16 @@ bool findRedundantBrackets(string &str){
         }
     }
     return false;
-    }
 }
+
 
 //Minimum Cost to Make String Valid
 //T.C - O(N) S.C - O(N)
 int findMinCost(string str){
     //For odd braces
-    if(str.length()%2 != 0){
-        return -1;
-    }
+    if(str.length()%2 != 0) return -1;
     stack<char> st;
+
     for(int i=0; i<str.length();++i){
         if(str[i] == '(') st.push(str[i]);
         else{
@@ -478,15 +473,15 @@ int findMinCost(string str){
             else st.push(str[i]);
         }
     }
-        //For the remaining invalid braces
-        int a = 0,b = 0;
-        while(!st.empty()){
-            if(st.top() == '(') b++;
-            else a++;
-            st.pop();
-        }
-        int cost = (((a+1) >> 1) + ((b+1) >> 1));
-        return cost;
+    //For the remaining invalid braces
+    int a = 0,b = 0;
+    while(!st.empty()){
+        if(st.top() == '(') b++;
+        else a++;
+        st.pop();
+    }
+    int cost = (((a+1) >> 1) + ((b+1) >> 1));
+    return cost;
 }
 
 
@@ -547,6 +542,28 @@ class SpecialStack {
 
         return mini;
     }  
+};
+class MinStack {
+    stack<pair<int, int>> st;
+    public:    
+    void push(int val) {
+        int minimum;
+        if(st.empty()) minimum = val;//First time pushing in stack
+        else minimum = min(val,st.top().second);//Keep track of min
+        st.push({val,minimum});//Push the el with curr min
+    }
+    
+    void pop() {
+        st.pop();
+    }
+    
+    int top() {
+     return st.top().first;
+    }
+    
+    int getMin() {
+        return st.top().second;
+    }
 };
 
 
@@ -623,7 +640,7 @@ int postfixEvaluation(string str){
 string infixToPostfix(stack<char> st,string infix){
     string postfix;
     for(int i=0;i<infix.length();i++){
-        //IF it's an operand
+        //If it's an operand
         if((infix[i] >= 'a' && infix[i] <= 'z') || (infix[i] >= 'A' && infix[i] <= 'Z')) postfix += infix[i];
         else if(infix[i] == '(') st.push(infix[i]);
         else if(infix[i] == ')'){
@@ -665,15 +682,15 @@ void deleteUtil(stack<int> &st,int size,int current){
     deleteUtil(st,size,current+1);
     st.push(temp);
 }
-void deleteMiddleStack(stack<int>st,int sizeStack){
+void deleteMiddleStack(stack<int>st,int size){
     if(!st.empty()) return;
-    deleteUtil(stack,sizeStack,0);
+    deleteUtil(stack,size,0);
 }
 
 
-//Length of the Longest Valid Parantheses
+//Length of the Longest Valid Parentheses
 //T.C - O(N) S.C - O(N)
-int longestValidParantheses(string s){
+int longestValidParentheses(string s){
     stack<int>st;
     st.push(-1);
     int maxLen = 0;
@@ -682,7 +699,7 @@ int longestValidParantheses(string s){
         else{
             st.pop();//Pop the idx
             if(st.empty()) st.push(i);
-            else{//There must be a valid length for parantheses
+            else{//There must be a valid length for parentheses
                int len = i - st.top(); 
                maxLen = max(maxLen, len);
             }
@@ -692,15 +709,63 @@ int longestValidParantheses(string s){
 }
 
 
+// Decode String
+// T.C - O(N) S.C - O(N)
+string decodeString(string s) {
+    stack<string> wordStack;//Stores the str chunks
+    stack<int> numStack;//Stores the numerical chunks
+        
+    string currNum = "";//Num just before the open bracket
+    string currStr = "";//Str just before the closing bracket
+        
+    for(char ch : s){
+        //If it's a digit just store it in curr num
+        if(isdigit(ch)) currNum += ch;
+            
+        //Found an open bracket
+        else if(ch == '['){
+            numStack.push(stoi(currNum));//Push into numStack(convert str to int)
+            wordStack.push(currStr);//Push into wordStack
+            //Reset both
+            currNum = "";
+            currStr = "";
+        }
+            
+        //Found a closing bracket
+        else if(ch == ']'){
+            //Extract the num by which we have to repeat the str
+            int prevNum = numStack.top();
+            numStack.pop();
+            //Extract the prev formed str to append to final result
+            string prevStr = wordStack.top();
+            wordStack.pop();
+                
+            //Repeat the currStr by prevNum times
+            string temp = "";
+            while(prevNum != 0){
+                temp += currStr;
+                prevNum--;
+            }
+            //Update the curr str
+            currStr = prevStr + temp;
+        }
+            
+        //If it's a char store it in curr str 
+        else currStr += ch;
+    }
+    return currStr;
+}
+
+
 //N stacks in Array
 //T.C - O(1) S.C - O(2S+N)
 class NStack{
     public:
     int *arr;
     int *top;//To store the stack top
-    int *next;//Store the prev tops or address of next freespot
+    int *next;//Store the prev tops or address of next freeSpot
     int n,s;
-    int freespot;
+    int freeSpot;
     NStack(int N, int S){
         n = N;
         s = S;
@@ -711,15 +776,15 @@ class NStack{
         for(int i = 0; i <n;++i) top[i] = -1;
         for(int i = 0; i <s;++i) next[i] = i+1;
         next[s-1] = -1;//Last index
-        freespot = 0;
+        freeSpot = 0;
     }
 
     // Pushes 'X' into the Mth stack. Returns true if it gets pushed into the stack, and false otherwise.
     bool push(int x, int m){
-        if(freespot == -1) return false;//Overflow
+        if(freeSpot == -1) return false;//Overflow
 
-        int index = freespot;//Find index
-        freespot = next[index]//Update freespot
+        int index = freeSpot;//Find index
+        freeSpot = next[index]//Update freeSpot
         arr[index] = x;//Insert in array
         next[index] = top[m-1]//Update next;
         top[m-1] = index;
@@ -733,11 +798,10 @@ class NStack{
         //Reverse push operation
         int index = top[m-1];
         top[m-1] = next[index];
-        next[index] = freespot;
-        freespot = index;
+        next[index] = freeSpot;
+        freeSpot = index;
 
         return arr[index];
-
     }
 };
 
@@ -765,7 +829,6 @@ vector<int> maxOfMinWindowSize(int arr[],int size){
     for(int i=1;i<=size;++i){
         res[i-1] = ans[i];
     }
-
     return res;
 }
 
@@ -773,16 +836,17 @@ vector<int> maxOfMinWindowSize(int arr[],int size){
 //132 Pattern Geeky Buildings
 //T.C - O(N) S.C - O(N)
 bool find132pattern(vector<int>& nums) {
+    //In 132 pattern -> nums[i]is from loop nums[j] is in stack and nums[k] is in s3
     int s3 = INT_MIN;
     stack<int> st;
-    for( int i = nums.size()-1; i >= 0; i -- ){
+    for(int i=nums.size()-1;i>=0;i--){
         if( nums[i] < s3 ) return true;
         else while( !st.empty() && nums[i] > st.top() ){ 
             s3 = st.top(); 
             st.pop(); 
         }
         st.push(nums[i]);
-        }
+    }
     return false;
 }
 
@@ -811,7 +875,6 @@ string Reduced_String(int k,string s){
         ans = st.top().first + ans;
         st.pop();
     }
-
     return ans;
 }
 

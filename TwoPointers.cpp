@@ -341,3 +341,44 @@ vector<int> sortedSquares(vector<int>&nums){
     }
     return res;
 }
+
+
+// Celebrity Problem
+// T.C - O(N)  S.C - O(1)
+int findCelebrity(int n){
+    int firstPerson = 0;
+    int lastPerson = n-1;
+
+    while(firstPerson < lastPerson){
+        if(knows(firstPerson,lastPerson)){
+            firstPerson++;//can't be celebrity
+        }
+        else lastPerson--;//can't be celebrity'
+    }
+
+    // Finally we reach one person which can be celebrity
+    int celebrity = firstPerson;//Acc to us he/she is the celeb
+
+    //Now let's verify this
+    bool knowsAny = false;
+    bool knownToAll = true;
+
+    //Check if the celeb knows anyone
+    for(int i=0;i<n;i++){
+        if(knows(celebrity,i)){
+            knowsAny = true;
+            break;
+        }
+    }
+
+    //Check if some person doesn't know celeb
+    for(int i=0;i<n;i++){
+        if(i != celebrity && !knows(i,celebrity)){
+            knownToAll = false;
+            break;
+        }
+    }
+
+    if(!knownToAll && knowsAny) celebrity = -1;//No celeb is there
+    return celebrity;
+}

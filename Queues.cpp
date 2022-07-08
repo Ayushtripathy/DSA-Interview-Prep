@@ -31,7 +31,7 @@ int main(){
 
 
 //Queue Implementation(2 Stacks)
-//T.C - O(1)Amortised S.C - O(2N)
+//T.C - O(1) Amortized S.C - O(2N)
 int main(){
     stack<int>input;
     stack<int>output; 
@@ -313,34 +313,6 @@ vector<char> firstNonRepeating(string &str){
 }
 
 
-//Minimum sum of squares of character counts in a given string after removing “k” characters.
-//T.C - O(K*logN) S.C - O(N)
-int minStringValue(string str, int k){
-    if(k >= str.length()) return 0;
-    int freq[26] = {0};
-    //Store the freq of each char
-    for(int i=0;i<str.length();i++) freq[str[i] - 'a']++;
-
-    priority_queue<int>pq;//Store the freq in max heap
-    for(int i=0;i<26;i++) pq.push(freq[i]);
-
-    while(k--){//This is to remove the highly frequent char
-        //Extract max k freq and decrease them by 1
-        int temp = pq.top();
-        pq.pop();
-        pq.push(--temp);
-    }
-    //Calculate the sum of squares by taking values from heap
-    int result = 0;
-    while(!pq.empty()){
-        int temp = pq.top();
-        result += temp*temp;
-        pq.pop();
-    }
-    return result;
-}
-
-
 //Interleave First half of queue with Second half
 //T.C - O(N) S.C - O(N)
 void interLeaveQueue(queue<int>& q){
@@ -360,7 +332,7 @@ void interLeaveQueue(queue<int>& q){
         st.pop();
     }
 
-    for(int i = 0; i <half;i++){
+    for(int i=0;i<half;i++){
         //queue: 15 14 13 12 11 16 17 18 19 20
         q.push(q.front());
         q.pop();
