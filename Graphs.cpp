@@ -479,7 +479,7 @@ void main(){
 
 //Kruskal's Algorithm
 //Based on Greedy approach
-//T.C - O(3MlogM + M*4a)  S.C - O(M+2N)
+//T.C - O(3*MlogM + M*4a)  S.C - O(M+2N)
 struct node{
     int u;
     int v;
@@ -629,7 +629,7 @@ int main(){
 
 
 //Bellman Ford Algorithm
-// Similar to Dijkstras but works for negative weights too
+// Similar to Dijkstra's but works for negative weights too
 //In case of undirected graphs, convert to directed
 //It is DP based can detect negative weight cycle
 //T.C - O(V*E)  S.C - O(V)
@@ -1208,7 +1208,7 @@ int minStepKnight(vector<int>&KnightPos,vector<int>&TargetPos,int n){
 
 
 // Circle of Strings
-//Euler Path -> Every edge should be travelled exactly once
+//Euler Path -> Every edge should be traveled exactly once
 // Euler Circuit -> Euler path having same start and end vertex 
 //T.C - O()  S.C - O()
 void dfs(int start, vector<int> adj[], vector<bool> &visited) {

@@ -5,12 +5,17 @@
     "heapify",
     "Indegree",
     "inorder",
+    "Kosaraju's",
+    "Kruskal's",
     "Leetcode",
     "Parenthesization",
     "stoi",
     "Subarray",
     "Subarrays",
     "Supersequence",
+    "Topo",
+    "upperbound",
+    "Warshall",
     "wordlen",
     "xori"
   ]

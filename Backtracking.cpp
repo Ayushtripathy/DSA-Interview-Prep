@@ -25,7 +25,7 @@ bool isPalindrome(string str,int idx){
     //We've reached past half of the string and haven;t return false yet
     if(idx >= str.length()/2) return true;
 
-    if(str[idx != str[str.length() - idx -1]]) return false;
+    if(str[idx] != str[str.length() - idx -1]) return false;
 
     return isPalindrome(str,idx+1);
 }
@@ -38,7 +38,7 @@ int fib(int n){
 }
 
 
-TypesofSub{
+TypesOfSub{
     // Consider an array:
     //  {1,2,3,4}
     //  Subarray: contiguous sequence in an array i.e.
@@ -73,10 +73,10 @@ void printSubsequence(string input, string output){
         return;
     }
  
-    // output is passed with including the Ist character of input string
+    //Output is passed with including the Ist character of input string
     printSubsequence(input.substr(1), output + input[0]);
  
-    // output is passed without including the Ist character of Input string
+    //Output is passed without including the Ist character of Input string
     printSubsequence(input.substr(1), output);
 }
 
@@ -125,8 +125,6 @@ bool subsequenceEqualToK(int idx,vector<int>&ds,int s,int sum,int arr[],int n){
 
     return false;//Did not find any subsequence equal to k sum
 }
-
-
 // Count the subsequences with sum K
 // T.C - O(2^N)  S.C - O(2^N)
 int countSubsequences(int arr[],int size,int sum,int idx,int s){
@@ -163,6 +161,7 @@ int kthGrammar(int n, int k) {
     //We have to take !solve because the right half values are complement of prev row
     else return !kthGrammar(n-1,k-mid);//For right half the values for k changes
 }
+
 
 // All Possible Unique Subsets
 // T.C - O(N*(2^N))  S.C - O(N*(2^N))
@@ -212,24 +211,18 @@ void solve(int open ,int close,string temp,vector<string> &res){
     }
 
     //When we consider open braces
-    if(open != 0){//We can't start with close brace cuz then it can't be balanced
-    string openBrace = temp;//This string will have the open brace path
-    openBrace += "(";
-    solve(open-1,close,openBrace,res);
-    }
+    //We can't start with close brace cuz then it can't be balanced
+    if(open != 0) solve(open - 1,close,temp + "(",res);
 
     //When we consider close braces
-    if(close > open){
-    string closeBrace = temp;//This string will have the close brace path
-    closeBrace += ")";
-    solve(open,close-1,closeBrace,res);
-    }
+    //More closed braces are there
+    if(close > open) solve(open,close-1,temp + ")",res);
 }
 vector<string> generateParenthesis(int n) {
     vector<string> res;
     //Open and close braces will be equal to n
-    int open=n;//Keep track of open braces
-    int close=n;//Keep track of close braces
+    int open = n;//Keep track of open braces
+    int close = n;//Keep track of close braces
     solve(open,close,"",res);
     return res;
 }
@@ -239,17 +232,17 @@ vector<string> generateParenthesis(int n) {
 //T.C - O(2^t*K) where k is time to push a subset of size k to ans  S.C - O(K*x) where x is no of combos
 void findCombo(int index,int target,vector<int>& arr,vector<vector<int>> &ans,vector<int>&ds){
     //Found the sum on a recursive path
-    if(index==arr.size()){
-        if(target==0) ans.push_back(ds);
+    if(index == arr.size()){
+        if(target == 0) ans.push_back(ds);
         return;
     }
     //Now comes the choice step
     //We can only go to include case if curr element is not exceeding the target
-    if(arr[index]<=target){
+    if(arr[index] <= target){
     //If we include the digit at curr idx for sum
     ds.push_back(arr[index]);
     //Decrease the target as we now only need to find rest of the target
-    findCombo(index,target-arr[index],arr,ans,ds);
+    findCombo(index,target - arr[index],arr,ans,ds);
     ds.pop_back();//Backtracking
     }
         
@@ -334,7 +327,7 @@ void findSum(int idx,int sum,vector<int>&arr,int size,vector<int>&sumSubset){
     }
  
     // Subset including curr idx element
-    findSum(idx+1,sum+arr[i],arr,size,sumSubset);//If curr element is part of subsetsum
+    findSum(idx+1,sum + arr[i],arr,size,sumSubset);//If curr element is part of subsetsum
  
     // Subset excluding curr idx element
     findSum(idx+1,sum,arr,size,sumSubset);
@@ -465,7 +458,7 @@ bool solveSudoku(vector<vector<char>>& board) {
                     if(isValid(board,i,j,c)){
                         board[i][j] = c;
                         //After placing the char at i and j
-                        if(solve(board)) return true;//Check if the rest of the sudoku can be solved
+                        if(solveSudoku(board)) return true;//Check if the rest of the sudoku can be solved
                         else board[i][j] = '.';//Remove the char and backtrack for some other possibilities
                     }
                 }
@@ -539,7 +532,9 @@ vector<vector<string>> partition(string s) {
 
 // Rat in A Maze
 // T.C - O(4^(N*M))  S.C - O(M*N)
-void findPath(int i,int j,vector<vector<int>>&a,int n,vector<string>&ans,string move,vector<vector<int>>&vis,int dx[],int dy[]){
+int dx[] = {1,0,0,-1};
+int dy[] = {0,-1,1,0};
+void findPath(int i,int j,vector<vector<int>>&a,int n,vector<string>&ans,string move,vector<vector<int>>&vis){
     if(i == n-1 && j == n-1){//We reached the destination point
         ans.push_back(move);
         return;
@@ -554,7 +549,7 @@ void findPath(int i,int j,vector<vector<int>>&a,int n,vector<string>&ans,string 
         if(nx >= 0 && ny >= 0 && nx < n && ny < n && !vis[nx][ny] && a[nx][ny] == 1){
             vis[i][j] = 1;//Mark the curr points as visited
             //Recur for rest of the grid with new dirs 
-            findPath(nx,ny,a,n,ans,move+dir[idx],vis,dx,dy);
+            findPath(nx,ny,a,n,ans,move + dir[idx],vis);
             vis[i][j] = 0;//Restore to original for other paths
         }
     }
@@ -563,10 +558,9 @@ void findPath(int i,int j,vector<vector<int>>&a,int n,vector<string>&ans,string 
 vector<string> ratInMaze(vector<vector<int>> &m, int n) {
     vector<string>ans;
     vector<vector<int>>vis(n,0);
-    int dx[] = {1,0,0,-1};
-    int dy[] = {0,-1,1,0};
+    
     //If starting coordinate is zero then we can't start
-    if(m[0][0] == 1) findPath(0,0,m,n,ans,"",vis,dx,dy);
+    if(m[0][0] == 1) findPath(0,0,m,n,ans,"",vis);
     return ans;
 }
 
@@ -683,31 +677,30 @@ bool isValid(int x,int y,int N){
     return true;
 }
 void solveKnightTour(int visited[N][N],int x=0,int y=0,int pos=1,int N){
-    visited[x][y] = pos;//Store the pos when visiting the curr cell
+    vis[x][y] = pos;//Store the pos when visiting the curr cell
 
-    if(pos >= N*N){//We have visited all the cells
+    if(pos >= N*N){//We have vis all the cells
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
-            cout<<visited[i][j]<<" ";
+            cout<<vis[i][j]<<" ";
         }
         cout<<endl;
     }
     cout<<endl;
 
-    visited[x][y] = 0;//Backtracking
+    vis[x][y] = 0;//Backtracking
     return;
     }
 
-    //We come here if we haven't visited all cells
+    //We come here if we haven't vis all cells
     for(int k=0;k<8;k++){//Check in all directions for knight
     int nx = x + dx[k];
     int ny = y + dy[k];
 
-    if(isValid(nx,ny) && !visited[nx,ny]){
-        solveKnightTour(visited,,nx,ny,pos+1,N);
+    if(isValid(nx,ny) && !vis[nx,ny]) solveKnightTour(vis,,nx,ny,pos+1,N);
+    
     }
-    }
-    visited[x][y] = 0;
+    vis[x][y] = 0;
 }
 
 
@@ -791,9 +784,10 @@ void targetDice(string path = "", int target) {
 
 // Letter Combinations of a Phone Number
 // T.C - O(9^N) S.C - O(1)
-void letterCombinations(string digits,string output,int idx,vector<string>&ans,vector<string>&keypad){
+const vector<string> keypad = {"", "", "abc", "def", "ghi", "jkl","mno", "pqrs", "tuv", "wxyz"};
+void letterCombo(string digits,string output,int idx,vector<string>&keypadCombo){
     if(idx >= digits.length()){//Base case
-        ans.push_back(output);
+        keypadCombo.push_back(output);
         return;
     }
 
@@ -803,16 +797,15 @@ void letterCombinations(string digits,string output,int idx,vector<string>&ans,v
 
     for(int i=0;i<mapping.length();i++){
         output.push_back(mapping[i]);//Store the combo
-        letterCombinations(digits,output,idx + 1,ans,keypad);//Recur for further combos
+        letterCombo(digits,output,idx + 1,keypadCombo);//Recur for further combos
         output.pop_back();//Backtrack for different possibilities
     }
 }
 vector<string> letterCombinations(string digits){
     vector<string> keypadCombo;
-    if(digits.length() == 0) return ans;
+    if(digits.length() == 0) return keypadCombo;
     string output;
-    const vector<string> keypad = {"", "", "abc", "def", "ghi", "jkl","mno", "pqrs", "tuv", "wxyz"};
     int idx = 0;
-    letterCombinations(digits,output,idx,keypadCombo,keypad);
+    letterCombo(digits,output,idx,keypadCombo);
     return keypadCombo;
 }

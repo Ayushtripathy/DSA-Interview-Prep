@@ -188,10 +188,9 @@ vector<vector<int>> levelOrder(TreeNode* root) {
         if(node->right) q.push(node->right);// Push the right childs
 
         level.push_back(node->val);//Store the node of current level
-        
         }
        res.push_back(level);//Push the level to final ans
-     }
+    }
     return res;
 }
 
@@ -247,7 +246,6 @@ vector<int> diagonalTraversal(TreeNode* root) {
               if(curr->left) q.push(curr->left);//Push the left node for further nodes
               curr = curr->right;//Keep moving right to sum until the end of diagonal
               ans.push_back(curr->data);
-              curr = curr->right;
             }
         }
     return ans;
@@ -313,7 +311,7 @@ void rightBoundary(TreeNode* root,Vector<int> &ans){
     }
 }
 void addLeaves(TreeNode* root,vector<int> &ans){
-    if(isLeaf(root)){//TRaverse the tree and add the leaf nodes to ans
+    if(isLeaf(root)){//Traverse the tree and add the leaf nodes to ans
         res.push_back(root->data);
         return;
     }
@@ -384,6 +382,7 @@ vector<int>topView(TreeNode* root){
     while (!q.empty()){
         TreeNode* curr = q.front().first;
         int verticalLevel = q.front().second;
+        q.pop();
 
         //Store the first node for every vertical line
         if(hash.find(verticalLevel) == hash.end()){//Haven't encounter the node earlier
@@ -506,7 +505,6 @@ bool isBalanced(TreeNode* root){
 
     //In any case the left and right node should have ht. diff of at most 1
     if(abs(lh - rh) <= 1 && isBalanced(root->left) && isBalanced(root->right)) return true;
-
     return false;
 }
 
@@ -519,8 +517,10 @@ int heightTree(TreeNode* root,int maxDia){
     int lh = heightTree(root->left,maxDia);
     int rh = heightTree(root->right,maxDia);
 
-    int maxDia = max(lh+rh,maxDia);
+    //Check if curr node gives the largest dist
+    int maxDia = max(lh + rh,maxDia);
 
+    //Return that side's height
     return 1 + max(lh,rh);
 }
 int diameterTree(TreeNode* root){
@@ -561,7 +561,7 @@ void leftLeafSumUtil(TreeNode* root,int &res, int direction){
 }
 int sumOfLeftLeaves(TreeNode* root) {
     int res = 0;
-    dfs(root,res, -1);
+    leftLeafSumUtil(root,res, -1);
     return res;
 }
 
@@ -584,7 +584,7 @@ int maxPathUtil(TreeNode* node,int &maxSum){
     int leftSum = max(0,maxPathUtil(node->left,maxSum));//Taking max with 0
     int rightSum = max(0,maxPathUtil(node->right,maxSum));//To avoid negative sum
 
-    int maxSum = max((leftSum+rightSum+node->val),maxSum);
+    int maxSum = max((leftSum + rightSum + node->val),maxSum);
 
     return (node->val + max(leftSum,rightSum));//Whichever path has max sum from left and right 
 }
@@ -710,6 +710,28 @@ int getMaxWidth(TreeNode* root){
     }
     return result;
 }
+//For including Null values
+int widthOfBinaryTree(TreeNode* root) {
+    if(!root) return 0;
+    unsigned int maxWidth = 0;
+    queue<pair<TreeNode*, int>> q;
+    q.push({root,1});
+    while(!q.empty()) {
+        unsigned int l = q.front().second;
+        unsigned int r = l; // right started same as left
+        int size = q.size();
+        while(size--){
+            TreeNode* node = q.front().first;
+            r = q.front().second;
+            q.pop();
+                
+            if (node->left) q.push({node->left,r*2});
+            if (node->right) q.push({node->right,r*2 + 1});
+        }
+        maxWidth = max(maxWidth,(r + 1 - l));
+    }
+    return maxWidth;
+}
 
 
 // Sums of all the Diagonals Binary Tree
@@ -737,7 +759,7 @@ vector<int> diagonalSum(TreeNode* root) {
             }
         }
         ans.push_back(sum);
-        }
+    }
     return ans;
 }
 
@@ -771,7 +793,7 @@ void changeSumTree(TreeNode* root){
 }
 
 
-// Check If Binary Tree Is Sum Tree Or Not
+// Check If Binary Tree is Sum Tree Or Not
 //T.C - O(N)  S.C - O(H)
 int checkSum(TreeNode* root,int &flag){
     if(!root) return 0;
@@ -779,7 +801,7 @@ int checkSum(TreeNode* root,int &flag){
     //If it's a leaf node just return its own value(it has no child)
     if(!root->left && !root->right) return root->val;
 
-    if(flag==0) return 0;//Flag will be false if it doesn't follow sum property
+    if(flag == 0) return 0;//Flag will be false if it doesn't follow sum property
 
     //Recur in both sides to check sum property
    int left = checkSum(root->left);
@@ -792,7 +814,7 @@ int checkSum(TreeNode* root,int &flag){
    return left + right + root->val;
 }
 bool isSumTree(TreeNode* root) {
-   int flag=1;
+   int flag = 1;
     checkSum(root,flag);
     return flag;
 }
@@ -968,10 +990,9 @@ TreeNode* markParents(TreeNode* root,map<TreeNode*,TreeNode*>&parent,int start){
 int timeToBurnTree(TreeNode* root, int start) {
     map<TreeNode*,TreeNode*> parents;
     //Map parents to nodes and return the from which we have to start burning tree
-    TreeNode* burningPoint = markParents(root,parent,start);
+    TreeNode* burningPoint = markParents(root,parents,start);
 
-    int maxTime = findMaxDistance(parent,burningPoint);
-    return maxTime;
+    return findMaxDistance(parent,burningPoint);
 }
 
 
@@ -1023,7 +1044,7 @@ TreeNode* treeHelper(vector<int>&postorder,vector<int>& inorder,int postS,int po
     if(inS > inE || postS > postE) return NULL;//Inorder & Postorder start and end overlap
 
     int rootData = postorder[postE];//The root is at nth idx of postorder
-    rootIndex = -1;//Now we have to find the root in inorder array
+    int rootIndex = -1;//Now we have to find the root in inorder array
     for(int i=inS;i<=inE;++i){
         if(inorder[i] == rootData){
             rootIndex = i;//Found the idx in inorder
@@ -1046,9 +1067,9 @@ TreeNode* treeHelper(vector<int>&postorder,vector<int>& inorder,int postS,int po
     TreeNode *root = new TreeNode(rootData);
 
     //Now go to left and build the tree
-    root->left = treeHelper(postorder,inorder,leftPreStart,leftPreEnd,leftInStart,leftInEnd);
+    root->left = treeHelper(postorder,inorder,leftPostStart,leftPostEnd,leftInStart,leftInEnd);
     //Now go to right and build the tree
-    root->right = treeHelper(postorder,inorder,rightPreStart,rightPreEnd,rightInStart,rightInEnd);
+    root->right = treeHelper(postorder,inorder,rightPostStart,rightPostEnd,rightInStart,rightInEnd);
 
     return root;
 }
@@ -1098,42 +1119,29 @@ TreeNode* deserialize(string data) {
 
         //Get the str object to make left root of tree
         getline(s,str,',');
-        if(str == '#') curr->left = NULL;
+        if(str == '#') curr->left = NULL;//If left child is null
         else{
+            //Create the new node
             TreeNode* leftNode = new TreeNode(stoi(str));
-            curr->left = leftNode;
-            q.push(leftNode);
+            curr->left = leftNode;//Append the left child
+            q.push(leftNode);//Push in queue the left child
         }
 
         //Get the str object to make right root of tree
         getline(s,str,',');
-        if(str == '#') curr->right = NULL;
+        if(str == '#') curr->right = NULL;//If right child is null
         else{
+            //Create the new node
             TreeNode* rightNode = new TreeNode(stoi(str));
-            curr->right = rightNode;
-            q.push(rightNode);
+            curr->right = rightNode;//Append the right child
+            q.push(rightNode);//Push in queue the right child
         }
     }
     return root;
 }
 
 
-//  Flatten a Binary Tree to Linked List
-//Recursive Solution
-//T.C - O(N)  S.C - O(N)
-void flattenToSortedDLL(TreeNode* root,TreeNode* head){
-    if(!root) return;
-
-    flattenToSortedDLL(root->right,head);
-
-    root->right = head;
-
-    if(head) head->left = root;
-
-    head = root;
-
-    flattenToSortedDLL(root->left,head);
-}
+// Flatten a Binary Tree to Linked List
 //Optimized Solution
 //T.C - O(N)  S.C - O(1)
 void flatten(TreeNode* root){
@@ -1222,6 +1230,7 @@ vector<double> averageOfLevels(TreeNode* root) {
     return ans;
 }
 
+
 // Level Order Successor of a node
 //T.C - O(N)  S.C - O(N)
 TreeNode* levelOrderSuccessor(TreeNode* root,TreeNode* key){
@@ -1307,6 +1316,7 @@ TreeNode* connect(TreeNode* root) {
     return root;
 }
 
+
 // All Paths for a Sum(Upto leaves)
 //T.C - O(N) S.C - O(H)
 void findPaths(TreeNode* root, int sum, vector<int>& path, vector<vector<int> >& paths){
@@ -1373,20 +1383,20 @@ bool isEvenOddTree(TreeNode* root) {
     q.push(root);
     int level = 0;
 
-    while(q.empty()){
+    while(!q.empty()){
         int size = q.size();
-        int prev = level%2 == 0 ? 0 : INT_MAX;//Store thr prev node in a given level
+        int prev = level%2 == 0 ? 0 : INT_MAX;//Store the prev node in a given level
         while(size--){
             auto node = q.front();
             q.pop();
 
-            if(level%2==0){//If its an even level
+            if(level%2 == 0){//If its an even level
             //For even level nodes should be odd and strictly increasing
-            if(node->val %2 ==0 || node->val <= prev) return false;
+            if(node->val%2 == 0 || node->val <= prev) return false;
             }
             else{
             //For odd level nodes should be even and strictly decreasing
-            if(node->val %2 == 1 || node->val >= prev) return false;
+            if(node->val%2 == 1 || node->val >= prev) return false;
             }
 
             prev = node->val;
@@ -1394,17 +1404,19 @@ bool isEvenOddTree(TreeNode* root) {
             if(node->left) q.push(node->left);
             if(node->right) q.push(node->right);
         }
+        level++;
     }
+    return true;
 }
 
 
 // Check if given graph is tree or not
 //T.C - O(N+Even) S.C - O(N)
 bool cycleDFS(int node, int parent, vector<int> adj[], vector<int> &vis){
-    vis[node] = 1;
-    for (auto it : adj[node]){
-        if (!vis[it]){
-            if (cycleDFS(it, node, adj, vis)) return true;
+    vis[node] = 1;//Mark visited
+    for (auto it : adj[node]){//TRaverse neighbors
+        if (!vis[it]){//Not visited yet
+            if (cycleDFS(it, node, adj, vis)) return true;//Check further for cycle
         }
         else if (it != parent) return true;//Only parent could mark the node visited
     }

@@ -22,7 +22,7 @@ int findCeil(TreeNode* root,int key){
         }
         else{
             ceil = root->data;//Found a node greater than key
-            root = root->left;//Now minimise the greatest node by going left 
+            root = root->left;//Now minimize the greatest node by going left 
         }
     }
     return ceil;
@@ -30,7 +30,7 @@ int findCeil(TreeNode* root,int key){
 
 // Floor in a Binary Search Tree
 //T.C - O(H)  S.C - O(1)
-int findfloor(TreeNode* root,int key){
+int findFloor(TreeNode* root,int key){
     int floor = -1;
     while(root){
         if(root->data == key){
@@ -52,25 +52,26 @@ int findfloor(TreeNode* root,int key){
 // Insert a given Node in Binary Search Tree
 // T.C - O(H)  S.C - O(1)
 TreeNode* insertIntoBST(TreeNode* root, int val) {
-    if(!root) return new TreeNode(val);
+    if(!root) return new TreeNode(val);//Its the first node
+    
     TreeNode* curr = root;
 
     while(true){
-    if(val >= curr->val){
-        if(curr->right) curr = curr->right;
-        else{
-            curr->right = new TreeNode(val);
-            break;
+        if(val >= curr->val){
+            if(curr->right) curr = curr->right;
+            else{
+                curr->right = new TreeNode(val);
+                break;
+            }
         }
-    }
-
-    else{
-        if(curr->left) curr = curr->left;
+        
         else{
-            curr->left = new TreeNode(val);
-            break;
+            if(curr->left) curr = curr->left;
+            else{
+                curr->left = new TreeNode(val);
+                break;
+            }
         }
-    }
     }
     return root;
 }
@@ -126,16 +127,20 @@ TreeNode* deleteNode(TreeNode* root, int key) {
 
 // K-th Smallest/Largest Element in BST
 //T.C - O(min(K,N))  S.C - O(min(K,N))
-TreeNode* kthSmallest(TreeNode* root,int &k){
-	if(!root) return NULL;
-	
-	TreeNode* left=kthSmallest(root->left,k);
-	if(left!=NULL) return left;//If left side returns some smallest element
-	k--;
+void inorder(TreeNode* root, int& k,int &ans) {
+    if (!root) return;
 
-	if(k==0) return root;
-	
-	return kthSmallest(root->right,k);
+    inorder(root->left,k,ans);//We need smallest so check left
+
+    //K is 0 so we have found our kth ans
+    if (--k == 0) ans = root->val;
+
+    inorder(root->right,k,ans);//Left doesn't give kth smallest so go right
+}  
+int kthSmallest(TreeNode* root, int k) {
+    int ans;
+    inorder(root,k,ans);
+    return ans;
 }
 TreeNode* kthLargest(TreeNode* root,int &k){
 	if(!root) return NULL;
@@ -148,6 +153,7 @@ TreeNode* kthLargest(TreeNode* root,int &k){
 	
 	return kthLargest(root->left,k);
 }
+
 
 // LCA of a Binary Search Tree
 // T.C - O(H)  S.C - O(1)
@@ -248,33 +254,6 @@ TreeNode* bstFromLevelOrder(vector<int>& levelOrder) {
 }
 
 
-//BST Iterator
-// T.C - O(1) S.C - O(logN)
-class BSTIterator {
-    //If inorder storing is allowed - Store inorder and return elements
-    stack<TreeNode*> st;
-    public:
-    BSTIterator(TreeNode* root) {
-        pushAll(root);//Pushes al left nodes to stack
-    }
-    
-    int next() {
-        TreeNode* temp = st.top();
-        st.pop();
-        pushAll(temp->right);//go to right node and then push all left nodes to stack
-        return temp->val;
-    }
-    
-    bool hasNext() {
-        return !st.empty();
-    }
-    private:
-    void pushAll(TreeNode* node) {
-        for(;node!=NULL;st.push(node),node = node->left);
-    }
-};
-
-
 // Pair sum in a BST
 // Using inorder
 // T.C - O(2N)  S.C - O(N)
@@ -295,7 +274,7 @@ bool findTarget(TreeNode* root, int k) {
         }
     return false;    
 }
-//Using BST Iterator
+//Using BST Iterator(Time O(1) & Space O(logN)
 // T.C - O(N) S.C - O(2*H)
 class BSTIterator {
     //If inorder storing is allowed - Store inorder and return elements
@@ -320,7 +299,7 @@ class BSTIterator {
     }
     private:
     void pushAll(TreeNode* node) {
-        for(;node!=NULL;){
+        while(node){
             st.push(node);
             if(reverse) node = node->right;
             else node = node->left;
@@ -484,8 +463,9 @@ NodeValue largestBST(TreeNode* root){
     return NodeValue(INT_MIN,INT_MAX,max(left.maxSize,right.maxSize));
 }
 int largestBSTSubtree(TreeNode* root){
-    return largestBST(root).maxSize;
+    int largestSubTree = largestBST(root).maxSize;
 }
+
 
 // Count subtrees in a BST whose nodes lie within a given range
 //T.C - O(N)  S.C - O(H)
@@ -543,7 +523,7 @@ void convertToBST(TreeNode* root){
 TreeNode* balanceBST(TreeNode* root) {
     vector<int> inorderVal;
 
-    storeInorder(root,inorderVal);s
+    storeInorder(root,inorderVal);
 
     return sortedArrayToBST(0,inorderVal.size() - 1,inorderVal);
 }
@@ -585,9 +565,9 @@ TreeNode* mergeTwoBST(TreeNode* root1,TreeNode* root2){
     flattenToSortedDLL(root1,head1);
     head1->left = NULL;
 
-    TreeNode* head1 = NULL;
-    flattenToSortedDLL(root1,head1);
-    head1->left = NULL;
+    TreeNode* head2 = NULL;
+    flattenToSortedDLL(root2,head2);
+    head2->left = NULL;
 
     //Step2. Merge the two sorted LL into one linear tree
      Tree* head = _mergeTwoSortedLL(head1,head2);
@@ -643,4 +623,35 @@ float findMedianBST(TreeNode *root){
         float ans = ((curr->data + prev->data)*1.0)/(2*1.0);//prev stores the n/2 part for even
         return ans;
     }
+}
+
+
+// Maximum Sum BST in Binary Tree
+// T.C - O(N)  S.C - O()
+class Node {
+    bool isBST;//Keeps track of if tree(subtree) is bst
+    int minVal, maxVal, sum;
+};
+Node helper(TreeNode *node, int &res) {
+    //If node is null return default value
+    if (!node) return { true, INT_MAX, INT_MIN, 0 };
+
+    Node left = helper(node->left, res);//Get the left sum
+    Node right = helper(node->right, res);//Get the right sum
+    
+    //If left and right both are BST and node value is in range
+    if (left.isBST && right.isBST && left.maxVal < node->val && right.minVal > node->val) {
+        //Calculate the sum
+        int sum = left.sum + right.sum + node->val;
+        res = max(res, sum);//Store the max sum
+
+        //Return {[is a bst],[min val from curr and left,min val from curr and right],[sum]}
+        return {true,min(left.minVal,node->val),max(right.maxVal,node->val),sum };
+    }
+    else return { false, 0, 0, 0 };
+}
+int maxSumBST(TreeNode* root) {
+    int res = 0;
+    helper(root, res);
+    return res;
 }
