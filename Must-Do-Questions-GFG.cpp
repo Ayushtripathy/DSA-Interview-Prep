@@ -1,13 +1,10 @@
 //                               Arrays
-// Subarray with given sum
 // Rearrange array alternatively
 // Reverse array in groups
 // Pythagorean Triplet
 // All Chocolate Distribution Problems
 // Element with left side smaller and right side greater
 // Convert array into Zig-Zag fashion
-// Spirally traversing a matrix
-// Largest Number formed from an Array
 // Smallest Positive missing number
 // Cycle in a Circular Array
 // Ugly Numer 1
@@ -21,12 +18,9 @@
 
 
 //                              Strings
-// Permutations of a given string
 // Remove Duplicates
 // Form a Palindrome
-// Longest Distinct Characters in the string
 // CamelCase Pattern Matching
-// Smallest window in a string containing all the characters of another string
 // Non Repeating Character
 // Check if strings are rotations of each other or not
 // Repeated Character
@@ -41,7 +35,6 @@
 
 //                              Tree
 // Construct tree from level order
-// Check if a binary tree is subtree of another binary tree				
 // Reconstruct itinerary
 // Print all root-to-leaf paths in any order
 
@@ -96,6 +89,5 @@
 // Group anagrams together from given list of words
 // First Missing Positive
 // Find The Repeating And Missing Number
-// Find K Closest Elements
 // Order of People Heights
 // Attend Maximum Parties

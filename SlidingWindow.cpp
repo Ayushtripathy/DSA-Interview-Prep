@@ -40,13 +40,14 @@ void variableSlidingWindow(){
 //Sliding Window Maximum
 //T.C - O(N) S.C - O(K)
 vector<int> maxSlidingWindow(vector<int>& nums, int k){
-     deque<int> dq;
+    deque<int> dq;
     vector<int> ans;
+
     for(int i=0;i<nums.size();i++){
         //remove out of bounds of window before k
-        if(!dq.empty() && dq.front()==i-k) dq.pop_front();
+        if(!dq.empty() && dq.front() == i - k) dq.pop_front();
         //remove the min ones from queue
-        while(!dq.empty() && nums[dq.back()]<=nums[i]) dq.pop_back();
+        while(!dq.empty() && nums[dq.back()] <= nums[i]) dq.pop_back();
         
         //push the element(curr max) in window
         dq.push_back(i);
@@ -58,28 +59,26 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k){
 }
 
 
-//Maximum Sum Subarray of Size K
+// Maximum Sum Subarray of Size K
 //T.C - O(N) S.C - O(1)
-int slidingWindowMaxSum(int arr[], int size,int k){
-    //Sum of 1st k size subarray sum
-    int sum = 0;
-    for(int i=0;i<k;i++) sum += arr[i];
-
-    //Sliding window
-    int maxSum = sum;
+long maximumSumSubarray(int K, vector<int> &Arr , int N){
+    long maxSum = INT_MIN;
+    long sum = 0;
+        
     int left = 0;
-    int right = k-1;
-    //Moving the slider
-    while(right != size-1){
-        sum -= arr[left];
-        left++;
-
-        sum += arr[right];
+    int right = 0;
+        
+    while(right < N){
+        sum += Arr[right];
+            
+        if(right - left + 1 == K){
+            maxSum = max(sum,maxSum);
+            sum -= Arr[left];
+            left++;
+        }
         right++;
-
-        maxSum = max(maxSum,sum);
     }
-    return 
+    return maxSum;
 }
 
 
@@ -113,18 +112,19 @@ vector<int> firstNegative(vector<int>& nums, int k){
     queue<int> q;
     vector<int> ans;
     int i=0,j=0;
-    while(j < nums.size()){///j is less than size
-    if(nums[j] < 0) q.push(nums[j]);//Push negative element to queue
-    if(j - i + 1 < k) j++;//Haven't reached the window size yet
-    else{//Reached the window  size
-    if(q.empty()) ans.push_back(0);//No negative element for that window
-    else{
-        ans.push_back(q.front());//First negative integer is in front of queue for that window
-        if(q.front() == nums[i]) q.pop();//Found an element which acted as min -ve but now is out of bounds
-          }//Move the window slider
-          i++;
-          j++;
-       }
+    while(j < nums.size()){
+        if(nums[j] < 0) q.push(nums[j]);//Push negative element to queue
+        
+        if(j - i + 1 == k){ //Reached the window  size
+            if(q.empty()) ans.push_back(0);//No negative element for that window
+            
+            else{
+                ans.push_back(q.front());//First negative integer is in front of queue for that window
+                if(q.front() == nums[i]) q.pop();//Found an element which acted as min -ve but now is out of bounds
+            }//Move the window slider
+            i++;
+        }
+        j++;
     }
     return ans;
 }
@@ -149,10 +149,10 @@ int countOccurrence(string s, string p){
             if (mp[s[j]] == 0) count--;
         }
 
-        //window length not achived yet
+        //window length not achieved yet
         if (j-i+1 < k) j++;
 
-        //window length achived, find ans and slide the window
+        //window length achieved, find ans and slide the window
         else if (j-i+1 == k){
             //If pattern is completely exhausted in the window
             if (count == 0) ans++;//Anagram found
@@ -173,22 +173,22 @@ int countOccurrence(string s, string p){
 //Variable Size Sliding Window
 //T.C - O(N) S.C - O(1)
 int largestSubarraySumK(vector<int> arr,int k){
+    //Not for negative integers
 	int i = 0, j = 0, sum = 0;
 	int maxWin = INT_MIN;
 
 	while (j < arr.size()) {
 		sum += A[j];
-		if (sum < k) j++;//Increase window size
-		else if (sum == k) {
+		if (sum == k) {
 			maxWin = max(maxWin, j - i + 1);
-			j++;
-		} else if (sum > k) {
+		}
+        else if (sum > k) {
 			while (sum > k) {
 				sum -= A[i];//Balancing the sum by subtracting
 				i++;
 			}
-			j++;
 		}
+		j++;
 	}
 	return maxWin;
 }
@@ -217,23 +217,21 @@ int minSubArrayLen(int s, vector<int>& nums){
 int longestKSubstr(string s, int k) {
     unordered_map<char, int>map;
     int i = 0, j = 0;
-    int maxLen = INT_MIN;
+    int maxLen = -1;
     //Store distinct chars in map
     while(j < s.length()) {
         map[s[j]]++;//Push in the map
-        if(map.size() < k) j++;//Not enough unique chars so increase the window
-        else if(map.size() == k){
-            maxLen = max(maxLen,j - i + 1);
-            j++;
-        }
+
+        if(map.size() == k) maxLen = max(maxLen,j - i + 1);
+    
         else if(map.size() > k){//More than required unique chars in map
             while(map.size() > k){
                 map[s[i]]--;//Remove the chars from left in map
                 if(map[s[i]] == 0) map.erase(s[i]);
                 i++;
             }
-            j++;
         }
+        j++;
     }
     return maxLen;
 }
@@ -242,7 +240,7 @@ int longestKSubstr(string s, int k) {
 //Fruit into Baskets
 //T.C - O(N) S.C - O(1)
 int totalFruit(vector<int>& fruits) {
-    if(fruits.length() == 0) return 0;
+    if(fruits.size() == 0) return 0;
 
     int left = 0, right = 0, maxLen = 0;
     unordered_map<int,int> map;
@@ -294,41 +292,40 @@ int longestNonRepeatingSubstring(string s) {
 
 //Smallest Window containing Substring (Doubt)????
 string minWindow(string s, string t) {
-    int i=0,j=0,minLen = INT_MAX;
-    string ans = "";
-    unordered_map<char,int> map;
-    for(auto it:t) mp[it]++;//Push the small string to map
+    unordered_map<char, int> map;
+    int ans = INT_MAX; 
+    int start = 0; 
+        
+    for(auto x : t) map[x]++;//Store t in map
+    
     int count = map.size();
+    int i = 0, j = 0;
 
-    while(j < s.length()){//Calculation Step
-        if(map.find(s[j]) != map.end()){//Found the char in map
-            map[s[j]]--;
-            if(map[s[j]] == 0) count--;//we're done with one of the char
+    while (j < s.length()) {
+        map[s[j]]--;//Reduce the char at j from map
+
+        //Char completely removed then remove the count of chars to look for
+        if (map[s[j]] == 0) count--;
+
+        //Found all the str2 chars in str1
+        if (count == 0) {
+            while (count == 0) {
+                if (ans > j - i + 1) {//Found min len
+                    ans = j - i + 1;//Store min length
+                    start = i;//start of that min substr
+                }
+                
+                map[s[i]]++;//Add the char at i to map
+                    
+                if (map[s[i]] > 0) count++;//Num of chars increases
+                i++;//Move window from left to right
+            }
         }
-        if(count > 0) j++;//still chars remain to be found in main string so inc the win
-        else if(count == 0){//Found an ans
-            minLen = min(minLen,j - i + 1);
-             while(count==0){
-                 if(mp.find(s[i])==mp.end()){
-                     i++;
-                     ans=min(ans,j-i+1);   // updating the answer
-                     }
-                else{
-                   mp[s[i]]++;
-                   if(mp[s[i]]>0){
-                       i++;
-                       count++;
-                   }
-                   else{
-                       i++;
-                       ans=min(ans,j-i+1);   // updating the answer
-                   }
-               }
-           }
-           j++;
-        }
+        j++;//Move forward from right
     }
-    return minLen;
+        
+    if (ans != INT_MAX) return s.substr(start, ans);
+    else return "";
 }
 
 
@@ -344,16 +341,15 @@ bool checkInclusion(string s1, string s2) {
             map[s2[j]]--;
             if(map[s2[j]] == 0) count--;
         }
-        if(j - i + 1 < s1.length()) j++;
-        else if(j - i + 1 == k){
+        if(j - i + 1 == s1.length()){
             if(count == 0) return true;
             if(map.find(s2[i]) != map.end()){
                 map[s2[i]]++;
                 if(map[s2[i]] == 1) count++;
             }
             i++;
-            j++;
         }
+        j++;
     }
     return false;
 }
@@ -363,18 +359,18 @@ bool checkInclusion(string s1, string s2) {
 int longestOnes(vector<int>& nums, int k) {
     int count = 0;
     int maxLen = 0;
-    int i=0,j=0;
+    int i = 0,j = 0;
     
-    while(j<nums.size()){
-        if(nums[j]==0) count++;//Count the zeroes flipped
+    while(j < nums.size()){
+        if(nums[j] == 0) count++;//Count the zeroes flipped
 
-        if(count<=k) {//Zeroes flipped are less than window
+        if(count <= k) {//Zeroes flipped are less than window
             maxLen = max(maxLen,j-i+1);//Store the max len
             j++;
         }
-        if(count>k) {//Zeroes flipped exceeds the window
-            while(count>k) {
-                if(nums[i]==0) count--;//Discard the left zeroes that were flipped
+        if(count > k) {//Zeroes flipped exceeds the window
+            while(count > k) {
+                if(nums[i] == 0) count--;//Discard the left zeroes that were flipped
                 i++;//Move the slider
             }
             j++;
@@ -387,19 +383,22 @@ int longestOnes(vector<int>& nums, int k) {
 //Longest Substring with Same Letters after Replacement
 //T.C - O(N) S.C - O(1)
 int characterReplacement(string s, int k) {
-     vector<int> letterCount(26, 0);
-        int maxLen = 0, start = 0, end = 0, mostLetter = 0;
-        while(end < s.size()) {
-            letterCount[s[end]-'A']++;
-            mostLetter = max(mostLetter, letterCount[s[end]-'A']);//Gives the count of most popular element in the window
-            if(end-start+1-mostLetter > k){//Is window m most popular char ke alawa aur 'k' dusre element hi ho skte h kyuki m sirf unhi k ko flip kr skta hu
-                letterCount[s[start]-'A']--;//Remove char count from left because window is moving to right
-                start++;
-            }
-            maxLen = max(maxLen, end-start+1);
-            end++;
+    vector<int> letterCount(26, 0);
+    int maxLen = 0;
+    int start = 0, end = 0;
+    int mostLetter = 0;
+    
+    while(end < s.size()) {
+        letterCount[s[end]-'A']++;
+        mostLetter = max(mostLetter, letterCount[s[end]-'A']);//Gives the count of most popular element in the window
+        if(end - start + 1 - mostLetter > k){//Is window m most popular char ke alawa aur 'k' dusre element hi ho skte h kyuki m sirf unhi k ko flip kr skta hu
+            letterCount[s[start]-'A']--;//Remove char count from left because window is moving to right
+            start++;
         }
-        return maxLen;
+        maxLen = max(maxLen, end - start + 1);
+        end++;
+    }
+    return maxLen;
 }
 
 
@@ -481,21 +480,24 @@ vector<int> findSubstring(string s, vector<string>& words) {
     int k = p.size();
     int i=0, j=0;
         
-         while(j < s.size()){
-            if(map.find(s[j]) != map.end()){
-                map[s[j]]--;
-                if(map[s[j]] == 0) count--;
-            }
-            if(j - i + 1 < k) j++;
-            else if(j - i + 1 == k){
-                if(count == 0) ans.push_back(i);
-                 if(map.find(s[i]) != map.end()){
-                map[s[i]]++;
-                if(map[s[i]] == 1) count++;
-                  }
-                i++,j++;
-            }
+    while(j < s.size()){
+        if(map.find(s[j]) != map.end()){
+            map[s[j]]--;
+            if(map[s[j]] == 0) count--;
         }
+                
+        if(j - i + 1 == k){
+            if(count == 0) ans.push_back(i);
+            
+            if(map.find(s[i]) != map.end()){
+            map[s[i]]++;
+            if(map[s[i]] == 1) count++;
+            }
+            
+            i++;
+        }
+        j++;
+    }
         
     return ans;
 }
@@ -539,7 +541,7 @@ int maxPerfectNumbers(int arr[],int size,int k){
 
 // Subarrays with K Different Integers
 //T.C - O(2N)  S.C - O(K)
-int atmostK(vector<int>& arr, int K) {
+int atMostK(vector<int>& arr, int K) {
     int i = 0, j = 0, substrings = 0;
     unordered_map<int, int> freq;
     const int N = arr.size();

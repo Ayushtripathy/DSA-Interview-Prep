@@ -1,65 +1,3 @@
-// Set Matrix Zeroes
-// Normal Approach
-// T.C - O(N*M)  S.C - O(N+M)
-void setZeroes(vector<vector<int>>& matrix) {
-    int m = matrix.size();
-    int n = matrix[0].size();
-    int row[m];
-    int col[n];
-        
-    for(int i=0;i<m;i++) row[i] = false;    
-    for(int i=0;i<n;i++) col[i] = false;
-    
-    for(int i=0;i<m;i++){
-        for(int j=0;j<n;j++){
-            if(matrix[i][j] == 0){
-                row[i] = true;
-                col[j] = true;
-            }
-        }
-    }
-        
-    for(int i=0;i<m;i++){
-        for(int j=0;j<n;j++){
-            if(row[i] || col[j]) matrix[i][j] = 0;
-        }
-    }
-}
-// Optimal Approach
-// T.C - O(N*M)  S.C - O(1)
-void setZeroes(vector<vector<int>>& a) {
-    int n = a.size();
-    int m = a[0].size();
-    bool firstRow = false;  // do we need to set first row zero
-    bool firstCol = false;  // do we need to ser first col zero
-    
-    for(int i=0; i<n; i++){
-        for(int j=0; j<m; j++){
-			if(a[i][j] == 0){   // store rows and cols state in first row and col
-                if(i==0) firstRow = true;
-                if(j==0) firstCol = true;
-                a[i][0] = 0;
-                a[0][j] = 0;
-            }
-        }
-    }
-    
-    for(int i=1; i<n; i++){
-        for(int j=1; j<m; j++){
-            if(a[i][0] == 0 || a[0][j] == 0) a[i][j] = 0;
-        }
-    }
-        
-    if(firstRow){
-        for(int i=0;i<m;i++) a[0][i] = 0;
-    }
-        
-    if(firstCol){
-        for(int i=0;i<n;i++) a[i][0] = 0;
-    }
-}
-
-
 // Maximum Sum Subarray(Kadane's Algo)
 // T.C - O(N)  S.C - O(1)
 int maxSubArray(vector<int>& nums) {
@@ -134,29 +72,6 @@ vector<vector<int>> generate(int numRows) {
 		pascal.push_back(row);
 	}
 	return pascal;
-}
-
-
-// Rotate Image(Matrix)
-// T.C - 2*O(N^2)  S.C - O(1)
-void rotateImage(vector<vector<int>>& matrix) {
-    //Transpose the matrix
-    for(int i=0;i<matrix.size();i++){
-        for(int j=i;j<matrix[0].size();j++){
-            swap(matrix[i][j],matrix[j][i]);
-        }
-    }
-
-    //Reverse every row
-    for(int i=0;i<matrix.size();i++){
-        int li = 0;
-        int ri = matrix[i].size() - 1;
-        while(li<ri){
-            swap(matrix[i][li],matrix[i][ri]);
-            li++;
-            ri--;
-        }
-    }
 }
 
 
@@ -367,4 +282,58 @@ int equilibrium(int arr[], int n){
         leftSum += arr[i];
     }
     return -1;
+}
+
+
+//Product of Array Except Self
+//Brute Force
+//T.C - O(N^2) S.C - O(1)
+vector<int> productExceptSelf(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> ans(n, 1);
+        
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(i == j) continue;
+            ans[i] = ans[i] * nums[j]; 
+        }
+    }
+
+    return ans;
+}
+//Better Approach
+//T.C - O(N) S.C - O(N)
+vector<int> productExceptSelf(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> ans(n);
+    vector<int> left(n);
+    vector<int> right(n);
+        
+    left[0] = 1;
+    for(int i = 1; i < nums.size(); i++) left[i] = left[i-1]*nums[i-1];
+        
+    right[n - 1] = 1;
+    for (int j = n - 2; j >= 0; j--) right[j] = right[j+1]*nums[j+1];
+        
+    for (int k = 0; k < n; k++)  ans[k]= left[k]*right[k];
+        
+    return ans;
+}
+//Most Optimal
+//T.C - O(N)  S.C - O(1)
+vector<int> productExceptSelf(vector<int>& nums) {
+    int n = nums.size();
+        
+    vector<int> ans(n);
+        
+    ans[0] = 1; // ans array used as right product array
+        
+    for(int i=1;i<n;i++) ans[i] = nums[i+1]*ans[i+1];
+        
+    int right = 1;
+    for(int i=n-1;i>=0;i++){
+        ans[i] = right*ans[i];
+        right = right*nums[i];
+    }
+    return ans;
 }

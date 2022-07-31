@@ -73,7 +73,6 @@ vector<int>bfsGraph(int V, vector<int> adj[]){
             }
         }
     }
-
     return ans;
 }
 
@@ -88,9 +87,7 @@ void dfs(int node, vector<int> &vis, vector<int> adj[], vector<int> &storeDfs){
 
     // Traverse the adjacent nodes of that extracted node
     for (auto it : adj[node]){
-        if (!vis[it]){
-            dfs(it, vis, adj, storeDfs);
-        }
+        if (!vis[it]) dfs(it, vis, adj, storeDfs);
     }
 }
 vector<int> dfsGraph(int V, vector<int> adj[]){
@@ -99,9 +96,7 @@ vector<int> dfsGraph(int V, vector<int> adj[]){
 
     // For disconnected graphs
     for (int i = 1; i <= V; i++){
-        if (!vis[i]){
-            dfs(i, vis, adj, storeDfs);
-        }
+        if (!vis[i]) dfs(i, vis, adj, storeDfs);
     }
     return storeDfs;
 }
@@ -241,7 +236,7 @@ vector<int> topoSort(int V, vector<int> adj[]) {
     for (int i = 0; i < V; i++) {
         for (auto it : adj[i]) indegree[it]++;//Edge present from 1 to 2
     }
-    //Push the indegrees with 0 value to queue
+    //Push the indegree with 0 value to queue
     queue<int> q;
     for (int i = 0; i < V; i++){
         if (indegree[i] == 0) q.push(i);
@@ -259,7 +254,7 @@ vector<int> topoSort(int V, vector<int> adj[]) {
             if (indegree[it] == 0) q.push(it);
         }
     }
-    // if (count == N) return false;
+    // if (count == V) return false;
     // return true; // To Check Cycle in Directed Graph BFS
     return topo;
 }
@@ -352,9 +347,9 @@ void shortestPathWeightedDAG(int src,int V, vector<pair<int,int>> adj[]) {
         //If that node has been visited already
         if (dist[node] != INT_MAX) { 
             for (auto it : adj[node]) {
-    // Dist for curr node and the weight of adj node is less than Dist saved already for that node
-            if (dist[node] + it.second < dist[it.first]){
-            dist[it.first] = dist[node] + it.second;
+                // Dist for curr node and the weight of adj node is less than Dist saved already for that node
+                if (dist[node] + it.second < dist[it.first]){
+                    dist[it.first] = dist[node] + it.second;
                 }
             }
         }
@@ -364,6 +359,7 @@ void shortestPathWeightedDAG(int src,int V, vector<pair<int,int>> adj[]) {
         (dist[i] == INT_MAX) ? count << "INF" : cout << src << "-" << i << dist[i] << "";
 }
 
+
 //Dijkstra's Algorithm
 //T.C - O((N+E)*logN)  S.C - O(N) + O(N) + O(N+E)
 // (Shortest Path from Src to every node in undirected weighted graphs)
@@ -371,12 +367,12 @@ void shortestPathWeightedDAG(int src,int V, vector<pair<int,int>> adj[]) {
 // Can use a Set to overwrite repeated nodes
 // It differs from the minimum spanning tree because the shortest distance between two
 // vertices might not include all the vertices of the graph.
-void Dijkstra(vector<pair<int,int>>adj[],int src,int V){
+vector<int> Dijkstra(vector<pair<int,int>>adj[],int src,int V){
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
     vector<int> distTo(V + 1, INT_MAX);
 
     distTo[src] = 0;
-    pq.push(make_pair(0, src));
+    pq.push({0, src});
 
     while (!pq.empty){
         int dist = pq.top().first;      // Dist covered yet
@@ -384,17 +380,15 @@ void Dijkstra(vector<pair<int,int>>adj[],int src,int V){
         pq.pop();
         vector<pair<int, int>>::iterator it;
         for (auto it : adj[prevNode]){
-            int next = it.first;     // Node
-            int nextDist = it.second // Distance
-            if (dist + nextDist < distTo[next]){ // If new distance is less than prev stored
-                distTo[next] = dist + nextDist;
-                pq.push(make_pair(distTo[next], next));
+            int node = it.first;     // Node
+            int weight = it.second // Distance
+            if (dist + weight < distTo[node]){ // If new distance is less than prev stored
+                distTo[node] = dist + weight;
+                pq.push({distTo[node], node});
             }
         }
     }
-
-    for (int i = 1; i <= N; i++)
-        (dist[i] == INT_MAX) ? cout << "INF" : cout << src << "-" << i << distTo[i] << "";
+    return distTo;
 }
 
 
@@ -403,7 +397,7 @@ void Dijkstra(vector<pair<int,int>>adj[],int src,int V){
 void primsAlgo(int V,vector<pair<int,int>>adj[]){
     // We require 3 arrays to store parent,keys,present in array or not
     int parent[V] = {-1};
-    int key[v] = {INT_MAX};
+    int key[V] = {INT_MAX};
     bool mstSet[V] = {false};
     priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
 
@@ -427,9 +421,7 @@ void primsAlgo(int V,vector<pair<int,int>>adj[]){
         }
     }
     //Print the output
-    for(int i=1;i<V;i++){
-        cout<<parent[i]<<"-"<<i<<endl;
-    }
+    for(int i=1;i<V;i++) cout<<parent[i]<<"-"<<i<<endl;
 }
 
 
@@ -448,7 +440,7 @@ int findParent(int node){
     //Path compression - Directly connect node to parent
     return parent[node] = findParent(parent[node]);
 }
-void union(int u,int v){
+void findUnion(int u,int v){
     u = findParent(u);
     v = findParent(v);
 
@@ -465,7 +457,7 @@ void main(){
     cin>>m;
     while(m--){
         int u,v;
-        union(u,v);
+        findUnion(u,v);
     }
     //If  u and v belong to the same components
     if(findParent(2) != findParent(3)){
@@ -545,7 +537,7 @@ int main(){
 
 
 //Floyd Warshall Algorithm
-//T.C - O(V*V*V) S.C - O(V*V)
+//T.C - O(V^3) S.C - O(V*V)
 //For every u,v in Graph G,find shortest path from u to v
 //Based on DP and works for both directed and undirected
 vector<vector<int>> floydWarshall(int graph[][V]){
@@ -608,7 +600,7 @@ int main(){
 
     //2. Transpose the graph(reverse links)
     vector<int>transpose[n];
-    for (int i = 0; i <n; i){
+    for (int i=0;i<n;i++){
         vis[i] = 0;//Unmark the visited nodes
         //Reverse links
         for(auto it: adj[i]) transpose[it].push_back(i);
@@ -691,7 +683,7 @@ int main(){
 //T.C - O(V*V) S.C - O(V+E)
 void islandPresent(vector<vector<char>>&grid,int i,int j){
     //Boundary checking
-    if(i<0 || i>=grid.size() || j<0 || j>=grid[0].size()) return;
+    if(i < 0 || i >= grid.size() || j < 0 || j >= grid[0].size()) return;
 
     //If already visited(2) or no land(0)
     if(grid[i][j] == '0') return;
@@ -703,7 +695,6 @@ void islandPresent(vector<vector<char>>&grid,int i,int j){
     islandPresent(grid,i,j-1);//Check in upward dir
     islandPresent(grid,i-1,j);//Check in left dir
     islandPresent(grid,i,j+1);//Check in downward dir
-
 }
 int numIslands(vector<vector<char>>&grid){
     //Count the no. of disconnected components
@@ -726,33 +717,28 @@ int numIslands(vector<vector<char>>&grid){
 vector<int> courseScheduling(int courses, vector<int> prerequisites[]) {
     vector<int> indegree(courses, 0);
     //Calculate the indegree of vertices
-    for (int i = 0; i < courses; i++) {
-        for (auto it : prerequisites[i]) indegree[it]++;//Edge present from 1 to 2
+    for(int i = 0; i < courses; i++) {
+        for(auto it : prerequisites[i]) indegree[it]++;//Edge present from 1 to 2
     }
     //Push the indegrees with 0 value to queue
     queue<int> q;
-    for (int i = 0; i < courses; i++){
-        if (indegree[i] == 0) q.push(i);
+    for(int i = 0; i < courses; i++){
+        if(!indegree[i]) q.push(i);
     }
 
     vector<int> topo;
-    int count = 0;
-        while (!q.empty()){
+    while(!q.empty()){
         int node = q.front();
         q.pop();
-        count++;
         topo.push_back(node);//Push to ans
-        for (auto it : prerequisites[node]){
-            indegree[it]--;//Reduce the indegree of adjacent nodes
-            if (indegree[it] == 0) q.push(it);
+        for(auto it : prerequisites[node]){
+            if(--indegree[it] == 0) q.push(it);//Reduce the indegree of adjacent nodes
         }
     }
+
     //Return only if scheduling is possible
-    if(count == numCourses) return topo;
-    else{
-        vector<int>dummy;
-        return dummy;
-        }
+    if(topo.size() == numCourses) return topo;
+    else return{};
 }
 
 
@@ -816,7 +802,7 @@ void dfs(int src,vector<vector<int>>&graph,vector<int>&vis,string &ans){
         if(!vis[it]) dfs(it,graph,vis,ans);
     }
     char ch = src + 'a';//convert src(int form) to char form
-    ans += ch;
+    ans = ch + ans;//Add the new char in front
 }
 string findOrder(string dict[], int N, int K){
     vector<vector<int>>graph(K);
@@ -993,7 +979,7 @@ int main(){
 // Min no. of operations
 // T.C - O(end-start+1)  S.C - O(N)
 int findMinMoves(int start,int end,int arr[]){
-    int vis[end+1];
+    int vis[end + 1];
     vis[start] = 1;
 
     queue<pair<int,int>>q;
@@ -1147,27 +1133,29 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
     unordered_set<string>word;//for O(1) lookup of dictionary
     for(int i=0;i<wordList.size();i++) word.insert(wordList[i]);
 
-    if(word.find(end) == word.end()) return 0;//End word has to be in dictionary but start may or maynot be
+    if(word.find(endWord) == word.end()) return 0;//End word has to be in dictionary but start may or maynot be
     int len = 0;
 
     while(!q.empty()){
         len++;
         int qlen = q.size();
-        for(int i=0;i<qlen;i++){//Run for all strings in queue
-        string s = q.front();//Extract the string from queue
-        q.pop();
-        for(int j=0;j<wordSize;j++){//Check for the no. of chars that begin word has
-            char org = s[j];//Need to store the original to restore it
-        for(char ch='a';ch<='z';ch++){
-            s[j] = ch;//Replace each char of the str extracted from the queue with all alphabets
-            if(s==end) return len+1;//s becomes the end word while replacing
-            if(word.find(s) == word.end()) continue;//Word formed after replacement is not in dictionary
 
-            word.erase(s);//Found the word in the dictionary but haven't reached the end;
-            q.push(s);//Push to queue and repeat the replacements
-        }
-        s[j] = org;//So when we move to next char the prev char restores its original form
-        }
+        while(qlen--){//Run for all strings in queue
+            string s = q.front();//Extract the string from queue
+            q.pop();
+            
+            for(int j=0;j<wordSize;j++){//Check for the no. of chars that begin word has
+                char org = s[j];//Need to store the original to restore it
+                for(char ch='a';ch<='z';ch++){
+                    s[j] = ch;//Replace each char of the str extracted from the queue with all alphabet
+                    if(s == end) return len + 1;//s becomes the end word while replacing
+                    if(word.find(s) == word.end()) continue;//Word formed after replacement is not in dictionary
+                    
+                    word.erase(s);//Found the word in the dictionary but haven't reached the end;
+                    q.push(s);//Push to queue and repeat the replacements
+                }
+                s[j] = org;//So when we move to next char the prev char restores its original form
+            }
         }
     }
     return 0;
@@ -1176,34 +1164,39 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
 
 // Min Steps by Knight
 // T.C - O(N*N)  S.C - O(N*N)
-int minStepKnight(vector<int>&KnightPos,vector<int>&TargetPos,int n){
-    int k1 = KnightPos[0];
-    int k2 = KnightPos[1];
-    int t1 = TargetPos[0];
-    int t2 = TargetPos[1];
-    vector<vector<int>> arr(N,vector<int>(N,0));
-    if(k1 == t1 && k2 == t2) return 0;
-
-    queue<pair<int,int>>q;
-    q.push({k1-1,k2-1});//Minus 1 to make 0 based indexing
-    //8 Dirs for knight
-    int dx[] = { -2, -1, 1, 2, -2, -1, 1, 2 };
-    int dy[] = { -1, -2, -2, -1, 1, 2, 2, 1 };
-    while(!q.empty()){
-        int i = q.front().first;
-        int j = q.front().second;
+int minStepToReachTarget(vector<int>&KnightPos, vector<int>&TargetPos, int N){
+	int x = KnightPos[0];
+	int y = KnightPos[1];
+	int tx = TargetPos[0];
+	int ty = TargetPos[1];
+	    
+	int vis[N+1][N+1] = {0};
+	int dis[N+1][N+1] = {0};
+	    
+	int dx[] = {-2,-2,-1,-1,1,1,2,2};
+	int dy[] = {-1,1,-2,2,-2,2,-1,1};
+	    
+	queue<pair<int,int>> q;
+	q.push({x,y});
+	vis[x][y] = 1;
+	dis[x][y] = 0;
+	    
+	while(!q.empty()){
+        int currX = q.front().first;
+        int currY = q.front().second;
         q.pop();
-
-        for(int i=0;i<8;i++){//Check in 8 dirs where knight can go
-            int nx = i + dx[i];
-            int ny = j + dy[i];
-            if(nx >=0 && nx<n && ny >=0 && ny<n && arr[nx][ny]==0){
-                arr[nx][ny] = arr[i][j] + 1;
-                q.push({nx,ny});
+        
+        for(int i=0;i<8;i++){
+            int xc = currX + dx[i];
+            int yc = currY + dy[i];
+            if(xc > 0 && xc <= N && yc > 0 && yc <= N && vis[xc][yc] == 0) {
+                vis[xc][yc] = 1;
+                dis[xc][yc] = dis[currX][currY] + 1;
+                q.push({xc,yc});
             }
         }
     }
-    return arr[t1-1][t2-1];
+    return dis[tx][ty];
 }
 
 
@@ -1214,16 +1207,15 @@ int minStepKnight(vector<int>&KnightPos,vector<int>&TargetPos,int n){
 void dfs(int start, vector<int> adj[], vector<bool> &visited) {
    visited[start] = true;
    for (auto it: adj[start]) {
-     if (visited[it] == false)
-       dfs(it, adj, visited);
+     if (!visited[it]) dfs(it, adj, visited);
    }
 } 
 bool IsConnected(int s, int V, vector<int> adj[], vector<bool> &mark) {
-   vector < bool > visited(26, false);
+   vector <bool> visited(26, false);
    dfs(s, adj, visited);
 
    for (int i = 0; i < 26; i++){
-     if (!visited[i] && mark[i]) return false;
+    if (!visited[i] && mark[i]) return false;
    }
    return true;
 }
@@ -1278,8 +1270,7 @@ vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges){
             q.pop();
             ans.push_back(node);//The ans stored after the last iteration is output
             for(auto it:adj[node]){
-                indegree[it]--;
-                if(indegree[it] == 1) q.push(it);
+                if(--indegree[it] == 1) q.push(it);
             }
         }
     }
@@ -1330,12 +1321,12 @@ int findMaxArea(vector<vector<int>>& grid){
 //Flood Fill Algorithm
 //T.C - O(N)  S.C - O(N)
 vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor){
-    if(sr==sc && sc==newColor && image[sr][sc]==newColor) return image;
+    if(sr == sc && sc == newColor && image[sr][sc] == newColor) return image;
 
-    int m=image.size();
-    int n=image[0].size();
+    int m = image.size();
+    int n = image[0].size();
 
-    queue<pair<int,int>> q;//Store thr xy coordinates
+    queue<pair<int,int>> q;//Store the xy coordinates
     q.push({sr,sc});//Push the initial coordinates
     int prevColor = image[sr][sc];
     image[sr][sc] = newColor;//Paint the initial point with new color
@@ -1354,7 +1345,7 @@ vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int ne
             int ny = j + dy[i];
 
             //Covers all the invalid conditions
-            if(nx>=0 && ny>=0 && nx<m && ny<n && image[nx][ny]==prevColor){
+            if(nx >= 0 && ny >= 0 && nx < m && ny < n && image[nx][ny] == prevColor){
             //If we somehow get here it means that we can change value in this point
             image[nx][ny] = newColor;//Paint the point
             q.push({nx,ny});
@@ -1362,44 +1353,4 @@ vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int ne
         }
     }
     return image;
-}
-
-
-//Critical Connections in a Network
-//T.C - O()  S.C - O()
-void dfs(int node, int parent,vector<int>&vis ,vector<int>&low,vector<int>&time,int timer,vector<vector<int>>&adj,vector<vector<int>>&bridges){
-    vis[node]=1;
-    low[node]=time[node]=timer++;//Increment the time whenever we visit a node
-    for(auto it : adj[node]){//Traverse the adj node
-        if(it == parent) continue;//If adj node is parent then skip
-            
-        if(!vis[it]){//Found an unvisited node
-            dfs(it,node,vis,low,time,timer,adj,bridges);//Dfs further
-            low[node]=min(low[node],low[it]);
-            if(low[it]>time[node]){
-                bridges.push_back({node,it}); 
-            }
-        }
-        else low[node]=min(low[node],time[it]);
-    }
-}
-vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
-    vector<vector<int>>adj(n);
-    //Convert and store as graph
-    for(auto &x:connections){
-        adj[x[0]].push_back(x[1]);
-        adj[x[1]].push_back(x[0]);
-    }
-    //To store ans
-    vector<vector<int>>bridges;
-        
-    vector<int>vis(n,0); 
-    vector<int>low(n,-1);
-    vector<int>time(n,-1);
-    int timer=0;
-       
-    for(int i=0;i<n;i++){
-        if(!vis[i]) dfs(i,-1,vis,low,time,timer,adj,bridges);
-    }
-    return bridges;
 }

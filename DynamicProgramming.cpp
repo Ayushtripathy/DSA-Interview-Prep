@@ -1053,10 +1053,11 @@ class ScrambledString {
 
         int n = s1.length();
         int flag = false;
+        // Check for every breakpoint(i)
         for(int i=1; i <= n-1; i++){
-            //Swapped means check for left of str with right of str and right of str with left
+            //Swapped means check for left of str1 with right of str2 and left of str2 with right of str1
             int swapStr = isScramble(s1.substr(0,i),s2.substr(n-i,i)) && isScramble(s1.substr(i),s2.substr(0,n-i));
-            //Not swapped means check for left of str with left and right of str with right
+            //Not swapped means check for left of str1 with left2 and right of str1 with right of str2
             int notSwapStr = isScramble(s1.substr(0,i),s2.substr(0,i)) && isScramble(s1.substr(i),s2.substr(i));
 
             if(swapStr || notSwapStr){//Any one case gives scrambled string

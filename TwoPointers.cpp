@@ -16,7 +16,7 @@ pair<int,int> pairSum(vector<int>&nums,int target){
 // Dutch National Flag Problem
 //T.C - O(N)  S.C - O(1)
 void sortColors(vector<int>& nums) {
-    int l= 0 , mid = 0, h = nums.size() - 1;
+    int l = 0 , mid = 0, h = nums.size() - 1;
     while (mid <= h){
         //If we encounter a 0, we know that it will be on the low end of the array so swap
         if (nums[mid] == 0) swap(nums[mid++], nums[l++]);
@@ -32,13 +32,15 @@ void sortColors(vector<int>& nums) {
 int removeDuplicates(vector<int>& nums) {
     // if(nums.size() == 0) return 0;
     int left = 0;
+
     for(int right = 1; right< nums.size(); right++){
         //Found a different element
         if(nums[left] != nums[right]) left++;
         //Replace the diff element
         nums[left] = nums[right];
     }
-    return left+1;
+
+    return left + 1;
 }
 
 
@@ -81,47 +83,33 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 // Four Sum Pairs Problem
 //T.C - O(N^2 + NlogN)  S.C - O(1)
 vector<vector<int>> fourSum(vector<int>& nums, int target) {
-	vector<vector<int>> result;
-	int n = nums.size();
-	if (n < 4) return result;
+    vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+    
+    //First num fixed
+    for(int i = 0; i < nums.size(); i++){
+        if(i != 0 && nums[i] == nums[i-1]) continue;
+        //Second Num fixed
+        for(int j = i + 1; j < nums.size(); j++){
+            if(j != i +1 && nums[j] == nums[j-1]) continue;
+            
+            //Now do the two pointer approach
+            int si = j + 1;
+            int ei = nums.size() - 1;
 
-	sort(nums.begin(), nums.end());
-	for (int i = 0; i < n-3; ++i) {
-		/* Conditions for pruning */
-		// target too small, no point in continuing
-		if (target <= 0 and nums[i] > 0) break;
-		// nums[i] has become too large, no point in continuing
-		if ((long long)(nums[i] + nums[i+1] + nums[i+2] + nums[i+3]) > (long long)target) break;
-		// nums[i] is so small, even the largest elements cannot help reach the sum
-		if ((long long)(nums[i] + nums[n-3] + nums[n-2] + nums[n-1]) < (long long)target) continue; 
-		 // skip duplicates
-		if (i > 0 and nums[i] == nums[i-1]) continue;
-
-		/* Now explore further */
-		for (int j = i+1; j < n - 2; ++j) {
-			/* Some more pruning */
-			// nums[j] has become too large, no point in continuing
-			if ((long long)(nums[i] + nums[j] + nums[j+1] + nums[j+2]) > target) break;
-			// nums[j] is so small, even the largest elements cannot help reach the sum
-			if ((long long)(nums[i] + nums[j] + nums[n-2] + nums[n-1]) < target) continue; 
-			if (j > i+1 and nums[j] == nums[j-1]) continue; // skip duplicates
-
-			/* Explore the solution space */
-			int left = j+1, right = n-1;
-			while (left < right) {
-				long long sum = nums[i] + nums[j] + nums[left] + nums[right];
-				if (sum == target) {
-					result.push_back({nums[i], nums[j], nums[left], nums[right]});
-					int last_left = nums[left], last_right = nums[right];
-					while (left < right and nums[left] == last_left) ++left;
-					while (left < right and nums[right] == last_right) --right;
-				}
-                else if (sum < target) ++left;
-				else --right;
-			}
-		}
-	}
-	return result;
+            while(si < ei){
+                long sum = (long)((long)((long)nums[i] + (long)nums[j]) + (long)((long)nums[si] + (long)nums[ei]));
+                if(target - sum == 0){
+                    ans.push_back({nums[i],nums[j],nums[si],nums[ei]});
+                    si++;
+                    while(si < ei && nums[si] == nums[si - 1]) si++;//Skip duplicates
+                }
+                else if(sum < target) si++;
+                else ei--;
+            }
+        }
+    }
+    return ans;
 }
 
 
@@ -153,16 +141,17 @@ int trappingWater(vector<int>& height) {
     int left = 0, right = height.size()-1;
     int leftMax = 0, rightMax = 0;
     int res = 0;
-    while(left<=right){
+
+    while(left <= right){
         //If the height of right building is greater
-        if(height[left]<=height[right]){
+        if(height[left] <= height[right]){
             //If the curr height at left is greater than prev max height at left
             if(height[left] > leftMax) leftMax = height[left];//Update the max height at left
             else res += leftMax - height[left];//Else store the water amount
             left++;//Move to next building to right
         }
         else{ //If the height of left building is greater
-            if(height[right] > rightMax) rightMax = height[right];
+            if(height[right] > rightMax) rightMax = height[right];//Update the max height at right
             else res += rightMax - height[right];//Else store the water amount
             right--;//Move to next building to left
         }
@@ -175,47 +164,30 @@ int trappingWater(vector<int>& height) {
 //T.C - O(N^2 + NlogN)  S.C - O(1)
 int threeSumClosest(vector<int>& nums, int target) {
     if(nums.size() < 3) return 0;//Need at least 3 elements
-    int closest = nums[0]+nums[1]+nums[2];//Initial closest sum to target
+
+    int closest = nums[0] + nums[1] + nums[2];//Initial closest sum to target
+    
     sort(nums.begin(), nums.end());//Sort the array
 
-    for(int first = 0 ; first < nums.size()-2 ; ++first) {
+    for(int first=0;first<nums.size()-2;++first) {
         //In case of duplicates
         if(first > 0 && nums[first] == nums[first-1]) continue;
-        int second = first+1;
-        int third = nums.size()-1; 
+        
+        int second = first + 1;
+        int third = nums.size() - 1; 
 
         while(second < third) {
-            int curSum = nums[first]+nums[second]+nums[third];
+            int curSum = nums[first] + nums[second] + nums[third];
             //If req target sum is found
             if(curSum == target) return curSum;
             //Check if curr sum that we found is more closer to target than prev
-            if(abs(target-curSum)<abs(target-closest)) {
-                closest = curSum;
-            }
+            if(abs(target - curSum) < abs(target - closest)) closest = curSum;
+
             if(curSum > target) --third;
             else ++second;
         }
     }
     return closest;
-}
-
-
-// Squaring a Sorted Array
-//T.C - O(N)  S.C - O(1)
-vector<int> sortedSquares(vector<int>& A) {
-    vector<int> res(A.size());
-    int l = 0, r = A.size() - 1;
-    for (int k = A.size() - 1; k >= 0; k--) {
-        if (abs(A[r]) > abs(A[l])){//If right num is greater than left num
-            res[k] = A[r] * A[r];//So store the square of that from the end
-            r--;
-        } 
-        else{
-            res[k] = A[l] * A[l];
-            l++;
-        }
-    }
-    return res;
 }
 
 
@@ -238,38 +210,17 @@ int findUnsortedSubarray(vector<int>& nums) {
 
 // Backspace String Compare
 //T.C - O(N)  S.C - O(1)
-bool backspaceCompare(string S, string T) {
-    int l = S.length()-1;
-    int r = T.length()-1;
-    int c = 0;
-    int c1 = 0;
-    while(l  >= 0 || r >= 0){
-		//look for first pos where can compare for S
-        while(l >= 0 && (S[l]=='#' || c > 0)){
-            if(S[l]=='#') ++c;
-            else --c;
-            --l;
-        }
-        
-		//look for first pos where can compare for T
-        while(r >= 0 && (T[r]=='#' || c1 > 0)){
-            if(T[r]=='#')++c1;
-            else --c1;
-            --r;
-        }
-
-		//both finished
-        if(l < 0 && r < 0) return true;
-		//Just one finished
-        if(l < 0) return false;
-        if(r < 0) return false;
-		//Both not ending, can compare
-        if(S[l]!=T[r]) return false;
-
-        --l;
-        --r;
+string build(string s){
+    int charPos = 0;
+       
+    for(int i=0;i<s.size();i++){
+        if(s[i] == '#') charPos = max(0,--charPos);
+        else s[charPos++] = s[i];
     }
-    return true;
+    return s.substr(0,charPos);
+}
+bool backspaceCompare(string s, string t) {
+    return build(s) == build(t);
 }
 
 
@@ -330,6 +281,7 @@ vector<int> sortedSquares(vector<int>&nums){
     vector<int>res(n);
 
     while(start <= end){
+        //Jiska square bada whi jaega result m
         if(abs(nums[start]) < abs(nums[end])){
             res[pos--] = nums[end]*nums[end];
             end--;

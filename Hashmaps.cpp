@@ -42,7 +42,7 @@ class MyHashMap {//Not for a fixed range and solves collisions
         if(it != map[i].end()) map[i].erase(it);//Remove the searched key from map
     }
 };
-//Design Hashset(Troll implementation->limited size)
+//Design HashSet(Troll implementation->limited size)
 // T.C - O(1)  S.C - O(N)
 class MyHashSet {
     private:
@@ -83,20 +83,23 @@ char firstRepeating(string &str) {
 // Subarray Sum Equals K
 //T.C - O(N)  S.C - O(N)
 int subarraySum(vector<int>& nums, int k) {
-    int sum=0; 
-    int cnt = 0;
-        
-    unordered_map<int,int> map; 
-    map[0]++;
+    int sum = 0;
+    int count = 0;
+       
+    unordered_map<int, int>map;
         
     for(int i=0;i<nums.size();i++){
-        sum += nums[i];
-        if(map.find(sum-k)!=map.end()){
-            cnt += map[sum - k];
-        }
-        map[sum]++;
-    }
-    return cnt;
+        sum += nums[i];//Add curr num to sum
+            
+        if(sum == k) count++;//If the sum gets equal to k then found subarray
+            
+        //If sum - k is found in map means another subarray equal to k is found
+        //So increase count by times sum - k was encountered in map 
+        if(map.find(sum - k) != map.end()) count += map[sum - k]; //doesn't work with count++ {[0,0,0,0,0,0,0,0,0,0] 0}
+            
+        map[sum]++;//Inc the count of this sum in map
+    } 
+    return count;
 }
 
 
@@ -361,19 +364,20 @@ class TinyUrl {
 // Longest Consecutive Subsequence
 //T.C - O(3N)  S.C - O(N)
 int longestConsecutive(vector<int>& nums) {
-    unordered_map<int, int>M;
-    for(auto n:nums) M[n]++;//Insert all elements of nums in map
+    unordered_map<int, int>map;
+    for(auto n : nums) map[n]++;//Insert all elements of nums in map
         
     int ans = 0;//It will store the longest consecutive seq size
 
     for(auto n : nums){
         //If we find the prev num in map then we should start from that prev num na
-        if(M.find(n-1) != M.end()) continue;//Do nothing
+        if(map.find(n-1) != map.end()) continue;//Do nothing
+        
         else{//If we encounter a new element
             int size = 1;//Store the size of curr longest consecutive seq
             int curr = n+1;//Next element
             //As long as we find the next element in map
-            while(M.find(curr) != M.end()) {
+            while(map.find(curr) != map.end()) {
                 curr++;//Increment the next element
                 size++;//Increase the size
             }
