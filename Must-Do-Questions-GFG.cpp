@@ -10,9 +10,9 @@
 // Ugly Numer 1
 // Count primes
 // Maximum distinct elements after removing k elements
-// Find all Missing Numbers (easy): LC 448
-// Find the Duplicate Number (easy): LC 287
-// Find all Duplicate Numbers (easy): LC 442
+// Find all Missing Numbers LC 448
+// Find the Duplicate Number LC 287
+// Find all Duplicate Numbers LC 442
 
 
 
@@ -63,7 +63,6 @@
 //                           Sorting
 // Triplets with sum with given range	
 // Count all distinct pairs with difference equal to k
-// Count Inversions		
 // Relative Sorting		
 // Maximum Index
 // Minimum Number of Arrows to Burst Balloons		

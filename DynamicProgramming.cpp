@@ -1406,27 +1406,41 @@ class UniquePath {
     //Dynamic Programming
     //T.C - O(N*M)  S.C - O(N*M)
     int uniquePaths(int m, int n) {
-        vector<vector<int>> dp(m, vector<int> (n));//Dp array
-        
-        for(int i = 0; i < m; i++){//Traverse each cell
-            for(int j = 0; j < n; j++){
-                // if(mat[i][j] == -1) dp[i][j] = 0;//If matrix has obstacles
-                if(i == 0 && j == 0) dp[i][j] = 1;//Reached destination
-                else {
-                    //Go in left dir
-                    int leftSide = 0;
-                    if(i-1 >= 0) leftSide = dp[i-1][j];//Find paths in left
+        vector<vector<int>> dp(m, vector<int>(n, 1));
+        //First row and col are filled with 1 so start loops with 1
+        //Why first row and col 1 -> Because we can only reach those by 1 way
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                //Curr cell will hold paths from prev up + prev left
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
 
-                    //Go in upward dir
-                    int upSide = 0;
-                    if(j-1 >= 0) upSide = dp[i][j-1];//Find paths in up
-                    
-                    dp[i][j] = leftSide + upSide;//Store total paths
+    //Dynamic Programming
+    //T.C - O(N*M)  S.C - O(N*M)
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+        
+        if(obstacleGrid[0][0]) return 0;//First cell is obstacle so not path
+        
+        vector<vector<int> > dp(m + 1, vector<int> (n + 1, 0));
+
+        dp[0][1] = 1;//Why??
+
+        //Rest is same as unique paths 1
+        for (int i = 1; i <= m; i++){
+            for (int j = 1; j <= n; j++){
+                //Only update/explore the path if no obstacle(here obstacle is 1)
+                if (!obstacleGrid[i - 1][j - 1]){
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
                 }
             }
         }
-        return dp[m-1][n-1];
-    }
+        return dp[m][n];
+    } 
 };
 
 
@@ -1445,11 +1459,11 @@ int minPathSum(vector<vector<int>>& grid) {
                 
             else {                    
                 int leftSide = grid[i][j];
-                if(i-1 >= 0) leftSide += dp[i-1][j];//Store the path sum if we go left
+                if(j-1 >= 0) leftSide += dp[i][j-1];//Store the path sum if we go left(prev col)
                 else leftSide += 1e9;//Out of bounds
                     
                 int upSide = grid[i][j];
-                if(j-1 >= 0) upSide += dp[i][j-1]; //Store the path sum if we go up           
+                if(i-1 >= 0) upSide += dp[i-1][j]; //Store the path sum if we go up(prev row)          
                 else upSide += 1e9;//Out of bounds
                         
                 dp[i][j] = min(leftSide,upSide);//Store the min of the two path sums
@@ -1803,6 +1817,37 @@ int longestIncreasingPath(vector<vector<int>>& matrix) {
 }
 
 
-//Minimum Characters For Palindrome
-// T.C - O()  S.C - O()
-int minCharsPalindrome(string str) {}
+//Find maximum sum submatrix present in a matrix
+//T.C - O(N^3) S.C - O(N^2)
+int kadene(vector<int>& nums) {
+    int csum = nums[0];
+    int osum = nums[0];
+        
+    for(int i=1;i<nums.size();i++){
+        if(csum >= 0) csum += nums[i];
+        else csum = nums[i];
+            
+        osum = max(csum,osum);
+    }
+    return osum;
+}
+int findMaxSumSubmatrix(vector<vector<int>> &mat){
+    //Using Kadane's Algorithm
+    if(mat.size() == 0) return 0;//Edge Case
+    int m = mat.size();
+    int n = mat[0].size();
+
+    int maxSum = INT_MIN;
+
+    for(int i=0;i<m;i++){//For every row take a sum array
+        vector<int>ans(n);
+        for(int j=i;j<m;j++){//Take Row one by one
+            for(int k=0;k<n;k++){//Take Column one by one
+                ans[k] += mat[j][k];
+            }
+            //After making sum array of row apply kadene for max sum subarray
+            maxSum = max(maxSum,kadene(ans));
+        }
+    }
+    return maxSum;
+}

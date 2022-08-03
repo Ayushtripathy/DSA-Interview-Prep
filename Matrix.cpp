@@ -59,8 +59,9 @@ void setZeroes(vector<vector<int>>& a) {
     for(int i=0; i<n; i++){
         for(int j=0; j<m; j++){
 			if(a[i][j] == 0){   // store rows and cols state in first row and col
-                if(i==0) firstRow = true;
-                if(j==0) firstCol = true;
+                if(i == 0) firstRow = true;
+                if(j == 0) firstCol = true;
+
                 a[i][0] = 0;
                 a[0][j] = 0;
             }
@@ -161,4 +162,126 @@ vector<int> spiralOrder(vector<vector<int>>&matrix){
         left++;//Move left to a level after
     }
     return res;
+}
+
+
+// Valid Sudoku
+// T.C - O(9^2)  S.C - O(9^2)
+bool isValidSudoku(vector<vector<char>>& board) {
+    //Brute force  -> Iterate 3 times and check for row, col and box
+    
+    //Single iteration
+    vector<set<int>> rows(9), cols(9), blocks(9);//Keeps track of nums
+        
+    for(int i=0;i<9;i++){
+        for (int j=0;j<9;j++) {
+            //The cell must be filled to check further
+            if (board[i][j] == '.') continue;
+                
+            int curr = board[i][j] - '0';//Extract the num from the cell
+
+            //Check if duplicate is present in any case
+            int rowDup = rows[i].count(curr);
+            int colDup = cols[j].count(curr);
+            int blockDup = blocks[(i/3)*3 + j/3].count(curr);
+
+            if (rowDup || colDup || blockDup) return false;
+
+            //Mark the nums as visited(push position in set) 
+            rows[i].insert(curr);
+            cols[j].insert(curr);
+            blocks[(i/3)*3+j/3].insert(curr);
+        }
+    }
+    return true;//No duplicate so valid sudoku
+}
+
+
+// 0 1 Matrix
+// T.C - O(N*M)  S.C - O(N*M)
+vector<int> dirs = {0, 1, 0, -1, 0};
+vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+    int row = matrix.size();
+    int col = matrix[0].size();
+    
+    queue<pair<int, int>> q;//DO BFS
+    
+    //Extract the cell coordinates of 0
+    for(int i=0;i<row;++i){
+        for(int j=0;j<col;++j){
+            if (matrix[i][j] == 0) q.push({i, j});
+            else matrix[i][j] = -1; // Marked as not processed yet!
+        }
+    }
+
+    while(!q.empty()){//Now queue has some cells which are 0
+        int x = q.front().first;//Extract the coordinates
+        int y = q.front().second;
+        q.pop();
+            
+        //Check in all 4 dirs
+        for(int i=0;i<4;++i) {
+            int nx = x + dirs[i];
+            int ny = y + dirs[i+1];
+
+            //Invalid conditions so skip
+            if (nx < 0 || nx == row || ny < 0 || ny == col || matrix[nx][ny] != -1) continue;
+            
+            matrix[nx][ny] = matrix[x][y] + 1;//Add 1 to prev val in cell
+            q.push({nx, ny});//After updating add the new neighbor cell to queue
+        }
+    }
+    return matrix;
+}
+
+
+//Shortest path in a maze – Lee Algorithm
+//T.C - O(N*M)  S.C - O(N*M)
+class Node{
+    public:
+    int x,
+    int y,
+    int dist
+};
+int dx[] = { -1, 0, 0, 1 };
+int dy[] = { 0, -1, 1, 0 };
+int shortestPath(vector<vector<int>>& maze, int sr, int sc, int er, int ec){
+    if(maze.size() == 0 || maze[sr][sc] == 0 || maze[er][ec] == 0) return -1;
+    
+    int row = maze.size();
+    int col = maze[0].size();
+    
+    //Create a 2D array to mark the visited cells
+    vector<vector<bool>> vis(row, vector<int>(col));
+    
+    queue<Node> q;//Create a queue
+    vis[sr][sc] = true;//Mark the src visited
+    q.push({sr, sc, 0});//Push in queue the coordinates for BFS
+    int minDist = INT_MAX;
+    
+    while(!q.empty()){
+        Node node = q.front();//Extract the node and its data
+        q.pop();
+        int i = node.x;
+        int j = node.y;
+        int dist = node.dist;
+        
+        if(i == er && j == ec){//REached the destination node
+            minDist = dist;//Update the minDist
+            break;
+        }
+
+        //Check in all 4 dirs
+        for(int k=0;k<4;++k) {
+            //New coordinates
+            int nx = i + dx[k];
+            int ny = j + dy[k];
+
+            if(isValid(maze,vis,nx,ny)){
+                vis[nx][ny] = true;//Mark the cell as visited
+                q.push({nx, ny, dist+1});//Push in queue the coordinates for BFS
+            }
+        }
+    }
+    return minDist != INT_MAX ? minDist : -1;//Return the minDist or -1 if not found
 }

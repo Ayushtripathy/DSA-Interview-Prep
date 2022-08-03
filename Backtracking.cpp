@@ -442,7 +442,7 @@ bool isValid(vector<vector<char>>&board,int row,int col,char c){
     for(int i=0;i<9;i++){
         if(board[i][col] == c) return false;//Found one in same col
         if(board[row][i] == c) return false;//Found one in same row
-        if(board[3*(row/3)+i/3][3*(col/3)+i%3]==c) return false;
+        if(board[3*(row/3)+i/3][3*(col/3)+i%3] == c) return false;
     }
     return true;
 }
@@ -601,37 +601,36 @@ int josephus(int n, int k){
 }
 
 
-// Path with Maximum Gold
-// T.C - O(4^N)  S.C - O(1)
-void collectGold(vector<vector<int>>&grid,int i,int j,vector<vector<bool>>&vis,vector<int>&lootBag){
-    //Cover all invalid cases
-    if(i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size() || vis[i][j] || grid[i][j] == 0) return;
-    
+// T.C - O(4^N)  S.C - O(N^2 + Stack space)
+int dx[4]={-1,1,0,0};
+int dy[4]={0,0,-1,1};
+int getMaxGold(vector<vector<int>>&grid,int i,int j,int row,int col,vector<vector<bool>> &vis){
+    //Covers all invalid conditions
+    if(i < 0 || i >= row || j < 0 || j >= col || grid[i][j] == 0 || vis[i][j]) return 0;
+
+    int maxGoldPath = 0;
     vis[i][j] = true;//Mark the cell visited
-    lootBag.push_back(grid[i][j]);//Store the loot in the current cell
 
-    collectGold(grid,i-1,j,vis,lootBag);
-    collectGold(grid,i,j+1,vis,lootBag);
-    collectGold(grid,i,j-1,vis,lootBag);
-    collectGold(grid,i+1,j,vis,lootBag);
-
+    for(int k=0;k<4;k++){//Traverse in all 4 dirs
+        //Store the max gold path from all 4 dirs
+        maxGoldPath = max(maxGoldPath,getMaxGold(grid,i+dx[k],j+dy[k],row,col,vis));
+    }
+    vis[i][j] = false;//Set false for using other paths
+    
+    //Return the curr gold in cell plus the further path with max gold
+    return grid[i][j] + maxGoldPath; 
 }
 int getMaximumGold(vector<vector<int>>& grid) {
     int maxGold = 0;
-    //To mark the cells already looted
-    vector<vector<bool>> vis(grid.size(),vector<bool>(grid[0].size(),false));
-    //Traverse the whole grid
-    for(int i=0;i<grid.size();i++){
-        for(int j=0;j<grid[i].size();j++){
-            //There is gold present in cell and it hasn't been looted before
-            if(grid[i][j] != 0 && !vis[i][j]){
-                vector<int> lootBag;//It'll store the loot for every dfs call
-                collectGold(grid,i,j,vis,lootBag);
-                //Calculate the loot in the bag
-                int sum = 0;
-                for(int val : lootBag) sum += val;
-                //Store the max gold loot
-                maxGold = max(maxGold,sum);
+    int row = grid.size();
+    int col = grid[0].size();
+    vector<vector<bool>>vis(row,vector<bool>(col,false));//One cell visited once
+
+    for(int i=0;i<row;i++){
+        for(int j=0;j<col;j++){
+            if(grid[i][j] != 0){
+                //Store max gold
+                maxGold = max(maxGold,getMaxGold(grid,i,j,row,col,vis));
             }
         }
     }
