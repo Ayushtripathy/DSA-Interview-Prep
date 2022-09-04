@@ -334,3 +334,33 @@ int findCelebrity(int n){
     if(!knownToAll && knowsAny) celebrity = -1;//No celeb is there
     return celebrity;
 }
+
+
+// Container With Most Water
+// T.C - O(N)  S.C - O(1)
+int maxArea(vector<int>&height){
+    //Take two pointers at extreme ends
+    int left = 0;
+    int right = height.size() - 1;
+
+    int maxWater = 0;
+
+    while(left < right){
+        //It can't be negative as right > left always
+        int breadth = right - left;
+        //Take the min bar height as the min ht will form the area
+        int length = min(height[right], height[left]);
+
+        int currWater = length * breadth;//Calculate the currWater
+        maxWater = max(maxWater, currWater);//Update the max water
+
+        //Now which pointer to move?We need max area so skip the small ht
+        if(height[left] < height[right]) left++;
+        else if(height[right] < height[left]) right--;
+        else{
+            left++;
+            right--;
+        }
+    }
+    return maxWater;
+}

@@ -655,3 +655,25 @@ int maxSumBST(TreeNode* root) {
     helper(root, res);
     return res;
 }
+
+
+//Binary Search Tree to Greater Sum Tree
+//T.C - O(N)  S.C - O(1)
+void rev(TreeNode* root, int &sum){
+    if(!root) return ;
+        
+    rev(root->right, sum);
+	
+    // The root value is continuously updated with the help of sum.
+    root->val += sum;
+	
+    // And the count variable is changed so, that the next node in the traversal will be updated.
+    sum = root->val;
+    
+    rev(root->left, sum);
+}
+TreeNode* bstToGst(TreeNode* root) {
+	int sum = 0;
+    rev(root, sum);
+    return root;
+}

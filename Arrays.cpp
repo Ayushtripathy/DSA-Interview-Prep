@@ -337,3 +337,45 @@ vector<int> productExceptSelf(vector<int>& nums) {
     }
     return ans;
 }
+
+
+//Convert array into Zig-Zag fashion
+//T.C - O(N)  S.C - O(1)
+void zigZag(int arr[], int n){
+    //We have to swap alternate so jump by 2
+    for (int i = 1; i < n; i += 2){
+        //Check if prev element is greater than the current element
+        if (arr[i - 1] > arr[i]) swap(arr[i], arr[i - 1]);//If yes then swap
+ 
+        //If next element is greater than then the current element then also swap 
+        if (i + 1 < n && (arr[i + 1] > arr[i])) swap(arr[i], arr[i + 1]);
+    }
+}
+
+
+// Merge two sorted arrays
+// T.C - O(M + N) S.C - O(1) 
+void merge(int ar1[], int ar2[], int n, int m) {
+  // code here 
+  int gap = ceil((float)(n + m) / 2);
+  while (gap > 0) {
+    int i = 0;
+    int j = gap;
+    while (j < (n + m)) {
+      if (j < n && ar1[i] > ar1[j]) {
+        swap(ar1[i], ar1[j]);
+      } else if (j >= n && i < n && ar1[i] > ar2[j - n]) {
+        swap(ar1[i], ar2[j - n]);
+      } else if (j >= n && i >= n && ar2[i - n] > ar2[j - n]) {
+        swap(ar2[i - n], ar2[j - n]);
+      }
+      j++;
+      i++;
+    }
+    if (gap == 1) {
+      gap = 0;
+    } else {
+      gap = ceil((float) gap / 2);
+    }
+  }
+}

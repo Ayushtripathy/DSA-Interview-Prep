@@ -1851,3 +1851,8 @@ int findMaxSumSubmatrix(vector<vector<int>> &mat){
     }
     return maxSum;
 }
+
+
+// Maximal Square
+//T.C - O()  S.C - O()
+int maximalSquare(vector<vector<char>>& matrix) {}

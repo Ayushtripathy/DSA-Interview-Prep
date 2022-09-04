@@ -2,20 +2,25 @@
 int main(){
     int arr[5];
     int top = -1;
+    
     void push(int x){
-    arr[++top] = x;
+        arr[++top] = x;
     }
+    
     void pop(){
-    top--;
+        top--;
     }
+
     int top(){
-    return arr[top];
+        return arr[top];
     }
+
     int size(){
-    return top+1;
+        return top + 1;
     }
+
     bool isEmpty(){
-    return top == -1;
+        return top == -1;
     }
 }
 
@@ -26,15 +31,16 @@ void stackLL(){
     int data;
     Node* next;
     };
-    Node* top;
+
+    Node* top = NULL;
     
     void push(int data){
-    Node* temp = new Node();
-    if(!temp) exit(1);
-
-    temp->data = data;
-    temp->next = top;
-    top = temp;
+        Node* temp = new Node();
+        if(!temp) exit(1);
+        
+        temp->data = data;
+        temp->next = top;
+        top = temp;
     }
     
     int isEmpty(){
@@ -70,12 +76,14 @@ int main(){
         while(!q1.empty()){
             q2.push(q1.front());
             q1.pop()
-            }
-            swap(q1, q2);
-            }
+        }
+        swap(q1, q2);
+    }
+
     void pop(){
         q1.pop();
     }
+
     int top(){
         return q1.front();
     }
@@ -90,9 +98,11 @@ int main(){
            q1.pop();
        }
     }
+
     void pop(){
         q1.pop();
     }
+
     int top(){
         return q1.front();
     }
@@ -112,7 +122,7 @@ bool isValidParentheses(string str){
         if(c == '}'|| c == ')' || c == ']'){
             //If there wasn't any opening bracket for this
             if(st.empty()) return false; 
-            //If i took out } from string but there wasn't ant { in stack
+            //If i took out } from string but there wasn't a { in stack
             if(c == '}' && stack.top() != '{') return false;
             if(c == ')' && stack.top() != '(') return false;
             if(c == ']' && stack.top() != '[') return false;
@@ -162,7 +172,7 @@ vector<int> nextSmallerElements(vector<int>& nums,int n){
 //Reverse a Stack(Recursion)
 //T.C - O(N^2)  S.C - O(N)
 void insertAtBottom(stack<int>&st,int element){
-    if(st.empty()){
+    if(st.empty()){//Whenever stack gets empty insert the element in bottom
         st.push(element);
         return;
     }
@@ -170,7 +180,7 @@ void insertAtBottom(stack<int>&st,int element){
     st.pop();
     insertAtBottom(st,element);
 
-    st.push(el);
+    st.push(el);//After the recur call insert the el into stack
 }
 void reverseStack(stack<int> &stack){
     if(stack.empty()) return;
@@ -254,12 +264,12 @@ int findCelebrity(int n){
 
     if(st.empty()) return -1;
 
-    int celeb = st.top();
+    int celeb = st.top();//Celeb acc. to us
     st.pop();
 
     for(int i =0; i<n;++i){
         //Everybody knows celeb and celeb doesn't know anyone
-        if(i!=celeb && (knows(celeb,i)) || !knows(i,celeb)) return -1;
+        if(i != celeb && (knows(celeb,i)) || !knows(i,celeb)) return -1;
     }
     return celeb;
 }
@@ -341,10 +351,11 @@ class LRUCache{
 
 
 //Largest Area Histogram
-//T.C - O(N*N*N)  S.C - O(1)
+//T.C - O(N^3)  S.C - O(1)
 //Brute Force
 int largestRectangleArea(vector<int> &heights) {
   int max_area = 0;
+
   for (int i = 0; i < heights.size(); i++) {//First bar
     for (int j = i; j < heights.size(); j++) {//Second Bar
       int min_height = INT_MAX;
@@ -388,7 +399,8 @@ int largestRectangleArea(vector<int> &heights){
     //Calculate max area
     int maxArea = 0;
     for(int i=0;i< heights.size(); i++){
-        maxArea = max(maxArea,heights[i]*(rightSmall[i] - leftSmall[i] + 1));
+        int currArea = heights[i]*(rightSmall[i] - leftSmall[i] + 1);
+        maxArea = max(maxArea,currArea);
     }
     return maxArea;
 }
@@ -400,7 +412,7 @@ int largestRectangleArea(int* heights,int size){
 
     for(int i = 0; i < size;++i){
         //Found a smaller element in stack
-        while(!st.empty() && (i==size || heights[st.top()] >= heights[i])){
+        while(!st.empty() && (i == size || heights[st.top()] >= heights[i])){
             int height = heights[st.top()];//Right smaller
             st.pop();
             int width;
@@ -445,13 +457,13 @@ bool findRedundantBrackets(string &str){
             bool isRedundant = true;
             //Until we find an opening bracket
             while(st.top() != '('){
-                //If it's an operator
+                //If an operator was between open and close braces(no redundant)
                 if(st.top() == '+' || st.top() == '-' || st.top() == '*' || st.top() == '/') isRedundant = false;
-                st.pop();
+                st.pop();//Pop the operators
             }
             //If no operator was found between the brackets
             if(isRedundant) return true;
-            st.pop();
+            st.pop();//Pop the closing bracket we found in else if
         }
     }
     return false;
@@ -473,6 +485,7 @@ int findMinCost(string str){
             else st.push(str[i]);
         }
     }
+
     //For the remaining invalid braces
     int a = 0,b = 0;
     while(!st.empty()){
@@ -606,8 +619,9 @@ void mergeOverlappingIntervals(vector<vector<int>>& intervals){
 int postfixEvaluation(string str){
     stack<int>st;
     for(int i=0;i<str.length();i++){
+        //If its a number
         if(str[i] >= '0' && str[i] <= '9') st.push(str[i] - '0');
-        else{
+        else{//If its a operator
             int op2 = st.top();
             st.pop();
             int op1 = st.top();
@@ -675,7 +689,7 @@ string infixToPostfix(stack<char> st,string infix){
 //Find and Delete the middle element of a stack
 //T.C - O(N) S.C - O(N)
 void deleteUtil(stack<int> &st,int size,int current){
-    if(current == size/2) st.pop();
+    if(current == size/2) st.pop();//REached the mid so remove
 
     int temp = st.top();
     st.pop();
@@ -694,11 +708,12 @@ int longestValidParentheses(string s){
     stack<int>st;
     st.push(-1);
     int maxLen = 0;
+
     for(int i=0; i<s.length(); i++){
         if(s[i] == '(') st.push(i);//Opening Braces
         else{
             st.pop();//Pop the idx
-            if(st.empty()) st.push(i);
+            if(st.empty()) st.push(i);//We need to check further
             else{//There must be a valid length for parentheses
                int len = i - st.top(); 
                maxLen = max(maxLen, len);
@@ -823,6 +838,7 @@ vector<int> maxOfMinWindowSize(int arr[],int size){
         int len = right[i] - left[i] - 1;//Range for that particular element
         ans[len] = max(ans[len],arr[i]);//Store the max
     }
+
     for(int i=size-1;i>=0;i--) ans = max(ans[i],ans[i+1]);
 
     vector<int>res(size);
@@ -836,13 +852,13 @@ vector<int> maxOfMinWindowSize(int arr[],int size){
 //132 Pattern Geeky Buildings
 //T.C - O(N) S.C - O(N)
 bool find132pattern(vector<int>& nums) {
-    //In 132 pattern -> nums[i]is from loop nums[j] is in stack and nums[k] is in s3
+    //In 132 pattern -> nums[i] is from loop nums[j] is in stack and nums[k] is in s3
     int s3 = INT_MIN;
     stack<int> st;
     for(int i=nums.size()-1;i>=0;i--){
-        if( nums[i] < s3 ) return true;
-        else while( !st.empty() && nums[i] > st.top() ){ 
-            s3 = st.top(); 
+        if(nums[i] < s3) return true;
+        else while(!st.empty() && nums[i] > st.top()){ 
+            s3 = st.top();//Store the smaller num from stack in s3
             st.pop(); 
         }
         st.push(nums[i]);
@@ -858,6 +874,7 @@ string Reduced_String(int k,string s){
 
     stack<pair<char,int>>st;//store the char and its count of occ
     string ans = "";
+
     for(int i=0;i<s.length();i++){
         if(st.empty()) st.push({s[i],1});
 
