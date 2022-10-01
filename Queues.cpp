@@ -281,7 +281,7 @@ int orangesRotting(vector<vector<int>>& grid){
             rotten.push({nx,ny});
             }
         }
-        if(!rotten.empty()) days++;//After every k oranges increment the days to rot
+        if(!rotten.empty()) days++;//After every k oranges increment the days to rot(Still rotten oranges are left so another day will be required)
     }
     return total == count ? days : -1;//All oranges are rotten
 }
@@ -406,3 +406,41 @@ class KQueue{
         return arr[index];
     }
 };
+
+//Rotten Oranges
+//T.C - O() S.C - O()
+int rottenOranges(vector<vector<int>&grid){
+    if(grid.empty()) return 0;
+    int totalOranges = 0;
+    int timeToRot = 0;
+    int rottenOranges = 0;
+
+    queue<pair<int,int>>q;
+    for(int i = 0; i < grid.size();i++){
+        for(int j = 0; j < grid[0].size();j++){
+            if(grid[i][j] != 0) totalOranges++;
+            if(grid[i][j] == 2) q.push({i,j});
+        }
+    }
+
+    int dx[4] = {0,0,1,-1};
+    int dy[4] = {1,-1,0,0};
+
+    while(!q.empty){
+        int k = q.size();
+        rottenOranges += k;
+        int i = q.front().first;
+        int j = q.front().second;
+
+        for(int z=0;z<4;z++){
+            int nx = i + dx[z];
+            int ny = j + dy[z];
+            
+            if(nx < 0 || ny < 0 || nx > grid.size() || ny > grid[0].size() || grid[nx][ny] != 1) continue;
+            q.push({nx,ny});
+        }
+        if(q.empty()) timeToRot++;
+    }
+
+    return totalOranges == rottenOranges ? timeToRot : -1;
+}

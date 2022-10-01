@@ -201,12 +201,12 @@ int firstElement(int arr[], int n, int k){
 //T.C - O(N)  S.C - O(N)
 vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
     vector<int> ans; // Initialize an empty vector to hold the result
-    set s = set(nums1.begin(), nums1.end()); // Storing elements of first array into a set, so we can get rid of duplicacy
+    set s = set(nums1.begin(), nums1.end()); // Storing elements of first array into a set, so we can get rid of duplicity
         
     for(int x: nums2){ // Iterate through the elements of second array
         if(s.find(x) != s.end()){ // Check if the element of second array is present in the set created from first array
             ans.push_back(x); // push matched element into result
-            s.erase(x); // remove element from the set, so we will not face any duplicacy in the next iteration
+            s.erase(x); // remove element from the set, so we will not face any duplicity in the next iteration
         }
     }
     return ans;
@@ -620,4 +620,27 @@ bool hasAllCodes(string s, int k) {
 
     //If the size of set(no. of codes generated) equals to 2^k subsets return true
     return hash.size() == pow(2, k);
+}
+
+
+// First Missing Positive
+// T.C - O(2N)  S.C - O(1)
+int firstMissingPositive(vector<int>& nums) {
+    int n = nums.size();
+    int i=0;//Start with the first element
+    while(i<n){
+        //If number is in req range and number and idx don't match 
+        if(nums[i] > 0 && nums[i] <=n && nums[i] != nums[nums[i] - 1]){
+            swap(nums[i],nums[nums[i] - 1]);//Place the num on its idx
+            //But don't move forward yet
+        }
+        else ++i;//If num is < 0 or >=n then skip it
+    }
+
+    //Traverse the arr again
+    for(int i=0;i<nums.size();i++){
+        //If num is not at idx then that num is missing
+        if(nums[i] != i+1) return i+1;
+    }
+    return n+1;//All nums are present return the next element > size
 }
